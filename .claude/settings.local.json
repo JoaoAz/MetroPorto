@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(python -c \"import pdfplumber; print\\(pdfplumber.__version__\\)\")"
-    ]
-  }
-}

@@ -31,6 +31,19 @@ python -m http.server 8742 --directory app
 Também funciona abrindo `app/index.html` diretamente (sem offline/PWA).
 Depois da primeira visita por http(s), a app funciona offline.
 
+## Publicar online (GitHub Pages)
+
+O repositório inclui um workflow (`.github/workflows/pages.yml`) que publica a
+pasta `app/` automaticamente a cada push para `main`:
+
+1. Criar um repositório em <https://github.com/new> (ex.: `metro-linha-b`).
+2. `git remote add origin https://github.com/<utilizador>/metro-linha-b.git`
+3. `git push -u origin main`
+4. No GitHub: **Settings → Pages → Source: GitHub Actions** (só na 1.ª vez).
+
+A app fica em `https://<utilizador>.github.io/metro-linha-b/`. Para atualizar
+horários online: correr o extrator com o novo PDF, `git commit` e `git push`.
+
 ## Atualizar horários (novo PDF)
 
 1. Colocar o novo PDF em `pdfs/` (manter a data no nome: `horarios_DD_MM_AAAA*.pdf`
