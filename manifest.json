@@ -1,0 +1,13 @@
+{
+  "name": "Metro do Porto · Linha B — Horários",
+  "short_name": "Linha B",
+  "description": "Próximos metros entre Estádio do Dragão e Póvoa de Varzim, com base nos horários oficiais.",
+  "lang": "pt-PT",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f4f6",
+  "theme_color": "#E31E24",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
