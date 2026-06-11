@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#E31E24">
+<title>Metro do Porto · Linha B — Próximos horários</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="line-badge">B</div>
+  <div>
+    <h1>Metro do Porto · Linha B</h1>
+    <p id="date-line" class="date-line">A carregar…</p>
+  </div>
+</header>
+
+<main>
+  <section class="selector card">
+    <div class="select-row">
+      <label for="origin">Origem</label>
+      <select id="origin"></select>
+    </div>
+    <button id="swap" class="swap-btn" type="button" title="Trocar sentido"
+            aria-label="Trocar origem e destino">⇅</button>
+    <div class="select-row">
+      <label for="destination">Destino</label>
+      <select id="destination"></select>
+    </div>
+  </section>
+
+  <div id="stale-banner" class="banner warn hidden"></div>
+
+  <section id="result">
+    <!-- Estado por omissão: visível apenas se o JavaScript ou os dados falharem -->
+    <div class="card state-msg">
+      <p><strong>Não foi possível iniciar a aplicação.</strong></p>
+      <p>Se é a primeira utilização, confirme que os horários foram gerados:
+      corra <code>python tools/extract.py</code> e recarregue a página.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <div class="override-row">
+    <label for="daytype-override">Ver horário de:</label>
+    <select id="daytype-override">
+      <option value="">Hoje (automático)</option>
+      <option value="weekday">Dias úteis</option>
+      <option value="saturday">Sábados</option>
+      <option value="sunday_holiday">Domingos e feriados</option>
+    </select>
+  </div>
+  <p id="source-line"></p>
+  <p id="notes-line"></p>
+</footer>
+
+<script src="data/schedule.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

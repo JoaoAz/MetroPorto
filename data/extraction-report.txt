@@ -1,0 +1,16 @@
+PDF: D:\MetroHorario\pdfs\horarios_06_04_2026_organized.pdf
+SHA-256: eea1bc8e0e19b33acbb52f8223a654df4f6a3a1ed312e1164014965870415eaa
+Validade (do nome do ficheiro): 2026-04-06
+Páginas: 6
+OK: lista de estações inbound = espelho da outbound
+pág. 1: weekday/outbound: 65 viagens (27 Bx), primeira 06:01 / última 00:32
+pág. 2: weekday/inbound: 67 viagens (27 Bx), primeira 05:44 / última 00:27
+pág. 3: saturday/outbound: 51 viagens (0 Bx), primeira 05:54 / última 00:32
+pág. 4: saturday/inbound: 51 viagens (0 Bx), primeira 05:44 / última 00:27
+pág. 5: sunday_holiday/outbound: 49 viagens (0 Bx), primeira 05:54 / última 00:32
+pág. 6: sunday_holiday/inbound: 49 viagens (0 Bx), primeira 05:44 / última 00:27
+
+Total de viagens: 332
+Estações (36): Estádio do Dragão, Campanhã, Heroísmo, 24 de Agosto, Bolhão, Trindade, Lapa, Carolina Michaelis, Casa da Música, Francos, Ramalde, Viso, NorteShopping | Sete Bicas, Senhora da Hora, Fonte do Cuco, Custóias, Esposade, Crestins, Verdes, Pedras Rubras, Lidador, Vilar do Pinheiro, Modivas Sul, Modivas Centro, VC Fashion Outlet | Modivas, Mindelo, Espaço Natureza, Varziela, Árvore, Azurara, Santa Clara, Vila do Conde, Alto de Pega, Portas Fronhas, São Brás, Póvoa de Varzim
+
+VALIDAÇÃO: OK (0 erro(s))
