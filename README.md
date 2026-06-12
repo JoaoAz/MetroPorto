@@ -1,92 +1,111 @@
-# Metro do Porto · Linha B — Horários
+# Metro do Porto — Planeador de viagens
 
-Web app de consulta dos próximos metros da Linha B (Estádio do Dragão ⇄ Póvoa de
-Varzim), com dados extraídos do PDF oficial do Metro do Porto. Funciona
-localmente, offline (PWA) e sem qualquer serviço externo.
+Web app estática (HTML/CSS/JS puro, sem build nem backend) para planear viagens
+na rede do Metro do Porto: próximos horários, percursos diretos ou com
+transbordo, duração, zonas Andante e preço estimado. Funciona offline (PWA) e
+sem serviços externos. Publicada em <https://joaoaz.github.io/MetroPorto/>.
+
+## Estado dos dados
+
+| Dados | Estado | Onde |
+|---|---|---|
+| Horários Linha B | **Reais** (PDF oficial 06/04/2026) | `data/schedules/line-b.json` |
+| Horários A, C, D, E, F | **Fictícios** (demonstração, marcados na app) | `data/schedules/line-*.demo.json` |
+| Topologia das 6 linhas (85 estações) | Triangulada de fontes públicas | `data/network.json` |
+| Tarifário Andante ocasional | Real (01/01/2026, metrodoporto.pt) | `data/fares.json` |
+| Zonas Andante por estação | **Por preencher** — a app não calcula preço até validar | `data/network.json` |
 
 ## Estrutura
 
 ```
-pdfs/                  PDFs oficiais (entrada do pipeline)
-tools/extract.py       extrai o PDF -> dados estruturados (Python + pdfplumber)
-tools/test_engine.js   testes do motor de cálculo (Node)
-app/                   web app estática (HTML/CSS/JS puro)
-app/engine.js            motor de cálculo (lógica pura, sem DOM)
-app/app.js               camada de interface
-app/data/schedule.json   horários estruturados (gerado — não editar)
-app/data/schedule.js     idem, como script (permite abrir via file://)
-app/data/holidays.json   feriados nacionais PT (gerado)
-data/extraction-report.txt  relatório de validação da última extração
-data/overrides.json    correções manuais (opcional, ver abaixo)
+pdfs/                       PDFs oficiais (entrada)
+data/network.json           EDITÁVEL: estações, aliases, zonas, linhas
+data/fares.json             EDITÁVEL: tarifário Andante
+data/schedules/             horários por linha (reais e .demo)
+data/overrides.json         correções manuais à extração (opcional)
+tools/extract.py            PDF -> data/schedules/line-b.json (pdfplumber)
+tools/gen_demo_schedules.py horários fictícios para linhas sem PDF
+tools/build_data.py         valida tudo e gera app/data/data.js
+tools/test_engine.js        testes das utilidades de tempo (Node)
+tools/test_router.js        testes do planeador, zonas e preço (Node)
+app/engine.js               utilidades de tempo/dia de serviço (lógica pura)
+app/router.js               pesquisa, percursos, transbordos, zonas, preço
+app/app.js + index.html     interface (2 modos: Planear viagem / Por linha)
+app/data/data.js            artefacto gerado — única dependência da app
 ```
 
 ## Como executar
 
 ```powershell
-# servir a app (qualquer servidor estático serve)
-python -m http.server 8742 --directory app
-# abrir http://localhost:8742
+python -m http.server 8742 --directory app   # http://localhost:8742
 ```
 
-Também funciona abrindo `app/index.html` diretamente (sem offline/PWA).
-Depois da primeira visita por http(s), a app funciona offline.
+## Pipeline de dados
 
-## Publicar online (GitHub Pages)
-
-A app está publicada em <https://joaoaz.github.io/MetroPorto/>.
-
-O workflow `.github/workflows/pages.yml` publica a pasta `app/` no branch
-`gh-pages` a cada push para `main` — o GitHub Pages serve esse branch.
-Para atualizar horários online: correr o extrator com o novo PDF,
-`git commit` e `git push origin main`; o resto é automático.
-
-## Atualizar horários (novo PDF)
-
-1. Colocar o novo PDF em `pdfs/` (manter a data no nome: `horarios_DD_MM_AAAA*.pdf`
-   — é daí que vem a data de validade mostrada na app).
-2. Correr:
-   ```powershell
-   python -m pip install pdfplumber   # só na primeira vez
-   python -X utf8 tools\extract.py
-   ```
-3. Confirmar `VALIDAÇÃO: OK` no fim. O relatório completo fica em
-   `data/extraction-report.txt`. Se houver erros, o extrator devolve exit code 1
-   e **não se deve publicar** o resultado sem rever.
-4. Correr os testes do motor: `node tools\test_engine.js`.
-
-### Correções manuais
-
-Se a extração automática falhar numa viagem concreta, criar `data/overrides.json`:
-
-```json
-{
-  "removeTrips": ["weekday-outbound-003"],
-  "editTrips":   { "weekday-outbound-005": { "times": ["06:01", "..."] } },
-  "addTrips":    [ { "dayType": "weekday", "direction": "outbound",
-                     "service": "B", "times": ["..."] } ]
-}
+```powershell
+python -X utf8 tools\extract.py            # 1. extrai o PDF da linha B
+python -X utf8 tools\gen_demo_schedules.py # 2. demos p/ linhas sem PDF (idempotente)
+python -X utf8 tools\build_data.py         # 3. valida e gera app/data/data.js
+node tools\test_engine.js                  # 4. testes
+node tools\test_router.js
 ```
 
-e reexecutar o extrator. Os overrides aplicados ficam registados no relatório e
-no campo `source.overridesApplied` do JSON.
+`build_data.py` falha (exit 1) com erros de coerência — não publicar nesse caso.
+Relatórios: `data/extraction-report.txt` e `data/build-report.txt`.
 
-## Modelo de dados (resumo)
+### Atualizar horários (novo PDF da Linha B)
 
-- 36 estações; `directions.outbound/inbound.stationOrder` define a ordem.
-- Cada viagem (`trips[]`) tem `times[]` com 36 entradas alinhadas à ordem do seu
-  sentido; `null` = o expresso (Bx) não para nessa estação.
-- Tipos de dia: `weekday`, `saturday`, `sunday_holiday` (o PDF junta domingos e
-  feriados num só quadro).
-- **Dia de serviço**: partidas depois da meia-noite (00:01–01:35) pertencem ao
-  dia anterior. Entre as 00:00 e as 03:59 a app consulta o quadro do dia
-  anterior. A mesma regra existe em `extract.py` (`service_minutes`) e em
-  `engine.js` (`tripMinutes`/`serviceContext`) — alterar nos dois sítios.
+Colocar o PDF em `pdfs/` (com a data no nome: `horarios_DD_MM_AAAA*.pdf`) e
+correr o pipeline acima. Correções pontuais: `data/overrides.json`.
+
+### Adicionar horários reais de outra linha
+
+1. Adaptar `tools/extract.py` ao PDF dessa linha (nº de colunas, nomes) e
+   gravar como `data/schedules/line-<id>.json` no formato unificado
+   (`trips[{dayType, dir: fwd|rev, service, times[]}]`, `demo: false`).
+2. Os nomes das estações do PDF são mapeados pelos `aliases` de
+   `data/network.json` — acrescentar aliases se o PDF usar nomes diferentes.
+3. Correr `build_data.py` — o ficheiro real substitui automaticamente o demo.
+
+### Preencher zonas (ativa o cálculo de preço)
+
+No `data/network.json`, preencher `zones` de cada estação com os códigos do
+diagrama oficial Andante (<https://andante.pt>): ex. `["C1"]`, ou
+`["C1","C2"]` se a estação estiver na fronteira de duas zonas (a app escolhe a
+que minimiza o preço). Enquanto um percurso atravessar estações sem zona, a
+app diz «preço não calculado» em vez de inventar.
+
+### Atualizar tarifário
+
+Editar `data/fares.json` (preços, `validFrom`, `source`) e correr
+`build_data.py`.
+
+## Decisões de engenharia
+
+- **Frontend estático + pipeline offline**: os dados mudam poucas vezes por
+  ano; um backend seria custo permanente sem benefício.
+- **Percursos por enumeração validada por horários** (não Dijkstra/RAPTOR):
+  a rede tem 6 linhas em árvore com tronco comum — todos os pares atuais se
+  resolvem com ≤1 transbordo. Enumeramos sequências de linhas (com fallback a
+  2 transbordos), escolhemos as correspondências com menos paragens e
+  validamos cada candidato contra os horários reais (próxima partida, tempo
+  mínimo de transbordo de 4 min, madrugada). BFS sem horários daria resultados
+  errados (ignora esperas); um motor time-expanded seria complexidade inútil.
+- **Dia de serviço**: partidas 00:00–01:35 pertencem ao dia anterior; corte às
+  04:00. Regra partilhada por `extract.py`, `build_data.py` e `engine.js` —
+  alterar nos três sítios.
+- **Zonas**: mínimo de zonas distintas ao longo do percurso, com programação
+  dinâmica para estações multi-zona. Mecanismo testado com dados fictícios;
+  dados reais por preencher (ver acima).
 
 ## Limitações conhecidas
 
-- Horários planeados, não tempo real (tolerância oficial: ±2 min).
-- Feriados municipais (ex.: S. João) não são considerados — apenas os 13
-  feriados nacionais, calculados até 5 anos à frente em `holidays.json`.
-- O extrator assume o layout atual do PDF (6 páginas, 36 colunas, cabeçalhos
-  rodados). Se o layout mudar, a validação falha de forma explícita — ajustar
-  `tools/extract.py`.
+- Horários planeados, não tempo real (tolerância oficial ±2 min).
+- A, C, D, E, F: horários fictícios até haver PDFs oficiais (badge na app).
+- Sequências de estações de A, C, D, E, F trianguladas de fontes públicas
+  (`dataStatus: fontes-publicas` em `network.json`) — validar com PDFs oficiais.
+- Zonas por estação não preenchidas → preço não calculado (mensagem clara).
+- Feriados: apenas os 13 nacionais; feriados municipais (ex.: S. João) não
+  são distinguidos — usar «Ver horário de» manualmente nesses dias.
+- Linha Rosa (G) e extensões em construção não incluídas.
+- Tempo de transbordo fixo (4 min) — não modela distâncias reais entre cais.

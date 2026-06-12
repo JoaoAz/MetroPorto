@@ -1,0 +1,21 @@
+{
+  "$comment": "FICHEIRO EDITÁVEL — tarifário Andante ocasional (Andante Azul). Atualizar quando o tarifário mudar; a app mostra validFrom e source. Preços em euros por número de zonas do título.",
+  "currency": "EUR",
+  "validFrom": "2026-01-01",
+  "source": "https://www.metrodoporto.pt/pages/287",
+  "minZones": 2,
+  "occasional": {
+    "Z2": 1.40,
+    "Z3": 1.85,
+    "Z4": 2.30,
+    "Z5": 2.80,
+    "Z6": 3.25,
+    "Z7": 3.75,
+    "Z8": 4.20,
+    "Z9": 4.65
+  },
+  "notes": [
+    "Título ocasional Andante Azul (viagem simples). O cartão custa 0,60 € na primeira compra.",
+    "Preço estimado: depende das zonas atravessadas; valores indicativos, confirmar no operador."
+  ]
+}

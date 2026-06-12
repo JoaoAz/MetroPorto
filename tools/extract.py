@@ -9,10 +9,10 @@ Uso:
 Sem argumento, usa o PDF mais recente em ..\pdfs\.
 
 Saídas:
-    app\data\schedule.json   — dados estruturados (fonte canónica)
-    app\data\schedule.js     — mesmo conteúdo como script (funciona em file://)
-    app\data\holidays.json   — feriados nacionais portugueses (calculados)
+    data\schedules\line-b.json — horários estruturados da Linha B
     data\extraction-report.txt — relatório de validação da extração
+
+Depois de extrair, correr tools\build_data.py para gerar os dados da app.
 
 Correções manuais (opcional): data\overrides.json
     {
@@ -34,7 +34,7 @@ from pathlib import Path
 import pdfplumber
 
 ROOT = Path(__file__).resolve().parent.parent
-APP_DATA = ROOT / "app" / "data"
+SCHEDULES_DIR = ROOT / "data" / "schedules"
 REPORT_PATH = ROOT / "data" / "extraction-report.txt"
 OVERRIDES_PATH = ROOT / "data" / "overrides.json"
 
@@ -225,33 +225,6 @@ def validate_trip(times, label):
     return ok
 
 
-# ---------------------------------------------------------------- feriados
-
-def easter(year):
-    """Domingo de Páscoa (algoritmo gregoriano anónimo)."""
-    a = year % 19
-    b, c = divmod(year, 100)
-    d, e = divmod(b, 4)
-    f = (b + 8) // 25
-    g = (b - f + 1) // 3
-    h = (19 * a + b - d - g + 15) % 30
-    i, k = divmod(c, 4)
-    l = (32 + 2 * e + 2 * i - h - k) % 7
-    m = (a + 11 * h + 22 * l) // 451
-    month, day = divmod(h + l - 7 * m + 114, 31)
-    return datetime.date(year, month, day + 1)
-
-
-def portuguese_holidays(year):
-    """Feriados nacionais obrigatórios em Portugal."""
-    e = easter(year)
-    fixed = [(1, 1), (4, 25), (5, 1), (6, 10), (8, 15),
-             (10, 5), (11, 1), (12, 1), (12, 8), (12, 25)]
-    days = [datetime.date(year, m, d) for m, d in fixed]
-    days += [e - datetime.timedelta(days=2), e, e + datetime.timedelta(days=60)]
-    return sorted(d.isoformat() for d in days)
-
-
 # ---------------------------------------------------------------- principal
 
 def main():
@@ -387,10 +360,6 @@ def main():
         for line in overrides_applied:
             log(f"override: {line}")
 
-    # --- feriados ---
-    this_year = datetime.date.today().year
-    holidays = {str(y): portuguese_holidays(y) for y in range(this_year, this_year + 6)}
-
     schedule = {
         "schemaVersion": 1,
         "line": {"id": "B", "name": "Linha B", "color": "#E31E24"},
@@ -424,19 +393,11 @@ def main():
         "trips": all_trips,
     }
 
-    APP_DATA.mkdir(parents=True, exist_ok=True)
+    SCHEDULES_DIR.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    (APP_DATA / "schedule.json").write_text(
+    (SCHEDULES_DIR / "line-b.json").write_text(
         json.dumps(schedule, ensure_ascii=False, indent=1), encoding="utf-8")
-    (APP_DATA / "holidays.json").write_text(
-        json.dumps(holidays, ensure_ascii=False, indent=1), encoding="utf-8")
-    (APP_DATA / "schedule.js").write_text(
-        "// Gerado por tools/extract.py — NÃO editar à mão. "
-        "Correções: data/overrides.json + reexecutar o extrator.\n"
-        f"window.METRO_DATA = {json.dumps(schedule, ensure_ascii=False)};\n"
-        f"window.METRO_HOLIDAYS = {json.dumps(holidays)};\n",
-        encoding="utf-8")
 
     log(f"\nTotal de viagens: {len(all_trips)}")
     log(f"Estações ({len(stations)}): {', '.join(s['name'] for s in stations)}")

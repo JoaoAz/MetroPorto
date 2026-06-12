@@ -1,48 +1,38 @@
-/* app.js — camada de interface. Toda a lógica de horários vive em engine.js. */
+/* app.js — camada de interface. A lógica vive em engine.js e router.js. */
 (function () {
   'use strict';
 
   var REFRESH_MS = 30000;
   var STALE_AFTER_DAYS = 300;
-  var PREFS_KEY = 'metro-linha-b-prefs';
+  var PREFS_KEY = 'metro-planner-prefs';
 
-  var resultEl = document.getElementById('result');
+  if (!window.METRO || !window.MetroEngine || !window.MetroRouter) return;
 
-  if (!window.METRO_DATA || !window.MetroEngine) {
-    // Mantém a mensagem estática do index.html (dados não processados).
-    return;
-  }
-
-  var data = window.METRO_DATA;
-  var holidays = window.METRO_HOLIDAYS || {};
+  var METRO = window.METRO;
   var engine = window.MetroEngine;
+  var router = window.MetroRouter.createRouter(METRO);
 
-  var originSel = document.getElementById('origin');
-  var destSel = document.getElementById('destination');
-  var overrideSel = document.getElementById('daytype-override');
-  var swapBtn = document.getElementById('swap');
+  document.getElementById('boot-error').remove();
+
+  // ---------------------------------------------------------- estado da UI
+  var state = {
+    mode: 'plan',            // 'plan' | 'line'
+    origin: null,            // id de estação (modo planear)
+    dest: null,
+    line: null,              // id de linha (modo por linha)
+    lineOrigin: null,
+    lineDest: null
+  };
 
   // ---------------------------------------------------------- utilidades
-
   function el(tag, cls, text) {
-    var node = document.createElement(tag);
-    if (cls) node.className = cls;
-    if (text !== undefined) node.textContent = text;
-    return node;
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
   }
 
-  function stationName(id) {
-    for (var i = 0; i < data.stations.length; i++) {
-      if (data.stations[i].id === id) return data.stations[i].name;
-    }
-    return id;
-  }
-
-  function shortName(id) {
-    // "VC Fashion Outlet | Modivas" -> nome tradicional para textos corridos
-    var n = stationName(id);
-    return n.indexOf('|') !== -1 ? n.split('|').pop().trim() : n;
-  }
+  function stationName(id) { return router.station(id).name; }
 
   function fmtDate(d) {
     var s = new Intl.DateTimeFormat('pt-PT',
@@ -50,106 +40,204 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
-  function waitShort(min) {
+  function fmtDur(min) {
     if (min < 60) return min + ' min';
-    return Math.floor(min / 60) + ' h ' + (min % 60) + ' min';
+    return Math.floor(min / 60) + ' h ' + (min % 60 ? (min % 60) + ' min' : '');
   }
 
-  function waitText(min) {
-    if (min <= 0) return 'a partir agora';
-    if (min === 1) return 'parte em 1 minuto';
-    return 'parte em ' + waitShort(min);
-  }
+  function fmtPrice(v) { return v.toFixed(2).replace('.', ',') + ' €'; }
+
+  var DAY_LABEL = {
+    weekday: 'dia útil', saturday: 'sábado', sunday_holiday: 'domingo/feriado'
+  };
 
   function loadPrefs() {
     try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; }
     catch (e) { return {}; }
   }
-
   function savePrefs() {
     try {
       localStorage.setItem(PREFS_KEY, JSON.stringify({
-        origin: originSel.value, destination: destSel.value
+        mode: state.mode, origin: state.origin, dest: state.dest,
+        line: state.line, lineOrigin: state.lineOrigin, lineDest: state.lineDest
       }));
-    } catch (e) { /* armazenamento indisponível: preferências não persistem */ }
+    } catch (e) { /* sem persistência */ }
   }
 
-  // ---------------------------------------------------------- arranque
-
-  function populateSelects() {
-    var order = data.directions.outbound.stationOrder;
-    order.forEach(function (id) {
-      originSel.appendChild(new Option(stationName(id), id));
-      destSel.appendChild(new Option(stationName(id), id));
-    });
-    var prefs = loadPrefs();
-    var ids = order.slice();
-    originSel.value = ids.indexOf(prefs.origin) !== -1 ? prefs.origin : 'estadio-do-dragao';
-    destSel.value = ids.indexOf(prefs.destination) !== -1 ? prefs.destination : 'povoa-de-varzim';
-  }
-
-  function renderStaticInfo() {
-    var src = document.getElementById('source-line');
-    var validity = data.validity.from
-      ? ' Em vigor desde ' + data.validity.from.split('-').reverse().join('/') + '.'
-      : '';
-    src.textContent = 'Fonte: PDF oficial ' + data.source.publisher +
-      ' (' + data.source.file + ').' + validity;
-    document.getElementById('notes-line').textContent = (data.notes || []).join(' ');
-
-    if (data.validity.from) {
-      var age = (Date.now() - new Date(data.validity.from).getTime()) / 86400000;
-      if (age > STALE_AFTER_DAYS) {
-        var banner = document.getElementById('stale-banner');
-        banner.textContent = 'Estes horários têm mais de ' + Math.floor(age / 30) +
-          ' meses. Verifique se o Metro do Porto publicou uma versão mais recente.';
-        banner.classList.remove('hidden');
-      }
-    }
-  }
-
-  // ---------------------------------------------------------- renderização
-
-  function badge(service) {
-    if (service !== 'Bx') return null;
-    var b = el('span', 'badge bx', 'Bx');
-    b.title = 'Serviço expresso — não para em todas as estações';
+  function lineBadge(lineId) {
+    var line = router.line(lineId);
+    var b = el('span', 'line-dot', line.id.toUpperCase());
+    b.style.background = line.color;
+    b.title = line.name;
     return b;
   }
 
-  function renderNextCard(next, destId) {
-    var card = el('div', 'card next-card');
-    card.appendChild(el('p', 'next-label', 'Próximo metro'));
-    var time = el('p', 'next-time', next.dep);
-    var b = badge(next.service);
-    if (b) time.appendChild(b);
-    card.appendChild(time);
-    if (typeof next.waitMin === 'number') {
-      var wait = el('p', 'next-wait', waitText(next.waitMin));
-      if (next.waitMin <= 1) wait.classList.add('now');
-      card.appendChild(wait);
+  // ---------------------------------------------------------- autocomplete
+  function attachAutocomplete(inputId, sugId, onPick) {
+    var input = document.getElementById(inputId);
+    var sug = document.getElementById(sugId);
+    var clearBtn = document.querySelector('.clear-btn[data-for="' + inputId + '"]');
+
+    function close() { sug.classList.add('hidden'); sug.textContent = ''; }
+
+    function render(list) {
+      sug.textContent = '';
+      if (!list.length) { close(); return; }
+      list.forEach(function (s) {
+        var item = el('div', 'suggestion');
+        var nameWrap = el('span', 'sug-name', s.name);
+        item.appendChild(nameWrap);
+        var dots = el('span', 'sug-lines');
+        s.lines.forEach(function (lid) { dots.appendChild(lineBadge(lid)); });
+        item.appendChild(dots);
+        item.addEventListener('mousedown', function (ev) {
+          ev.preventDefault(); // antes do blur
+          input.value = s.name;
+          clearBtn.classList.remove('hidden');
+          close();
+          onPick(s.id);
+        });
+        sug.appendChild(item);
+      });
+      sug.classList.remove('hidden');
     }
-    card.appendChild(el('p', 'next-arr',
-      'Chegada a ' + shortName(destId) + ' às ' + next.arr));
-    return card;
+
+    input.addEventListener('input', function () {
+      onPick(null); // texto alterado invalida a escolha anterior
+      clearBtn.classList.toggle('hidden', !input.value);
+      render(router.searchStations(input.value, 7));
+    });
+    input.addEventListener('focus', function () {
+      if (input.value && !state[inputId === 'origin-input' ? 'origin' : 'dest']) {
+        render(router.searchStations(input.value, 7));
+      }
+    });
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') {
+        var first = sug.querySelector('.suggestion');
+        if (first) first.dispatchEvent(new MouseEvent('mousedown'));
+      } else if (ev.key === 'Escape') close();
+    });
+    input.addEventListener('blur', function () { setTimeout(close, 150); });
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      clearBtn.classList.add('hidden');
+      onPick(null);
+      input.focus();
+    });
+
+    return {
+      set: function (id) {
+        input.value = id ? stationName(id) : '';
+        clearBtn.classList.toggle('hidden', !id);
+      }
+    };
   }
 
-  function renderFollowing(list, title, withWait) {
-    var card = el('div', 'card');
-    card.appendChild(el('p', 'list-title', title));
-    var ul = el('ul', 'dep-list');
-    list.forEach(function (d) {
-      var li = el('li');
-      li.appendChild(el('span', 'dep-time', d.dep));
-      var b = badge(d.service);
-      if (b) { b.classList.add('dep-badge'); li.appendChild(b); }
-      if (withWait && typeof d.waitMin === 'number') {
-        li.appendChild(el('span', 'dep-wait', 'em ' + waitShort(d.waitMin)));
-      }
-      li.appendChild(el('span', 'dep-arr', 'chegada ' + d.arr));
-      ul.appendChild(li);
+  // ---------------------------------------------------------- modo por linha
+  function buildLineChips() {
+    var wrap = document.getElementById('line-chips');
+    METRO.network.lines.forEach(function (line) {
+      var chip = el('button', 'line-chip', line.name);
+      chip.type = 'button';
+      chip.setAttribute('role', 'radio');
+      chip.dataset.line = line.id;
+      chip.style.setProperty('--line-color', line.color);
+      chip.addEventListener('click', function () { pickLine(line.id); });
+      wrap.appendChild(chip);
     });
-    card.appendChild(ul);
+  }
+
+  function pickLine(lineId) {
+    state.line = lineId;
+    document.querySelectorAll('.line-chip').forEach(function (c) {
+      c.classList.toggle('active', c.dataset.line === lineId);
+      c.setAttribute('aria-checked', c.dataset.line === lineId ? 'true' : 'false');
+    });
+    var line = router.line(lineId);
+    var selO = document.getElementById('line-origin');
+    var selD = document.getElementById('line-dest');
+    selO.textContent = ''; selD.textContent = '';
+    line.stations.forEach(function (sid) {
+      selO.appendChild(new Option(stationName(sid), sid));
+      selD.appendChild(new Option(stationName(sid), sid));
+    });
+    selO.value = state.lineOrigin && line.stations.indexOf(state.lineOrigin) !== -1
+      ? state.lineOrigin : line.stations[0];
+    selD.value = state.lineDest && line.stations.indexOf(state.lineDest) !== -1
+      ? state.lineDest : line.stations[line.stations.length - 1];
+    state.lineOrigin = selO.value;
+    state.lineDest = selD.value;
+    document.getElementById('line-selects').classList.remove('hidden');
+    savePrefs();
+    render();
+  }
+
+  // ---------------------------------------------------------- renderização
+  var resultEl = document.getElementById('result');
+
+  function badge(text, cls, title) {
+    var b = el('span', 'badge ' + (cls || ''), text);
+    if (title) b.title = title;
+    return b;
+  }
+
+  function renderLeg(leg) {
+    var row = el('div', 'leg');
+    row.appendChild(lineBadge(leg.lineId));
+    var txt = el('div', 'leg-text');
+    var names = el('p', 'leg-route',
+      stationName(leg.from) + ' → ' + stationName(leg.to));
+    if (leg.service === 'Bx') {
+      names.appendChild(badge('Bx', 'bx', 'Serviço expresso — não para em todas as estações'));
+    }
+    txt.appendChild(names);
+    if (leg.dep) txt.appendChild(el('p', 'leg-times', leg.dep + ' – ' + leg.arr));
+    row.appendChild(txt);
+    return row;
+  }
+
+  function renderPriceRow(price) {
+    var p = el('p', 'price-row');
+    if (price.available) {
+      p.textContent = 'Zonas: ' + price.zoneCount + ' (' + price.zones.join(', ') +
+        ') · Andante ' + price.title + ' — ' + fmtPrice(price.price);
+    } else {
+      p.classList.add('muted');
+      p.textContent = 'Preço não calculado: ' + price.reason + '.';
+    }
+    return p;
+  }
+
+  function renderJourneyCard(j, opts) {
+    opts = opts || {};
+    var card = el('div', 'card journey' + (opts.highlight ? ' next-card' : ''));
+    var head = el('div', 'journey-head');
+    var times = el('p', 'journey-times', j.dep + ' → ' + j.arr);
+    head.appendChild(times);
+    var meta = el('p', 'journey-meta', fmtDur(j.durationMin) +
+      (j.nTransfers ? ' · ' + j.nTransfers + ' transbordo' + (j.nTransfers > 1 ? 's' : '') : ' · direto'));
+    head.appendChild(meta);
+    card.appendChild(head);
+    if (opts.waitMin !== undefined && opts.waitMin !== null) {
+      var w = el('p', 'next-wait', opts.waitMin <= 0 ? 'a partir agora'
+        : 'parte em ' + fmtDur(opts.waitMin));
+      if (opts.waitMin <= 1) w.classList.add('now');
+      card.appendChild(w);
+    }
+    j.legs.forEach(function (leg, i) {
+      if (i > 0) {
+        var tr = j.transfers[i - 1];
+        card.appendChild(el('p', 'transfer-row',
+          '⇄ Transbordo em ' + stationName(tr.station) + ' · espera ' + tr.waitMin + ' min'));
+      }
+      card.appendChild(renderLeg(leg));
+    });
+    card.appendChild(renderPriceRow(j.price));
+    if (j.demo) {
+      card.appendChild(badge('horários de demonstração', 'demo',
+        'Parte deste percurso usa horários fictícios — ainda sem PDF oficial dessa linha'));
+    }
     return card;
   }
 
@@ -161,82 +249,185 @@
     return card;
   }
 
+  function currentQuery() {
+    if (state.mode === 'plan') {
+      return { origin: state.origin, dest: state.dest, lineFilter: null };
+    }
+    return { origin: state.lineOrigin, dest: state.lineDest, lineFilter: state.line };
+  }
+
   function render() {
     var now = new Date();
-    var override = overrideSel.value || null;
-    var r = engine.query(data, holidays, originSel.value, destSel.value, now,
-      { limit: 6, dayTypeOverride: override });
-
+    var override = document.getElementById('daytype-override').value || null;
     var ctx = engine.serviceContext(now);
-    var autoDayType = engine.dayTypeFor(ctx.serviceDate, holidays);
+    var autoDay = engine.dayTypeFor(ctx.serviceDate, METRO.holidays);
     document.getElementById('date-line').textContent =
-      fmtDate(now) + ' · ' + data.dayTypes[autoDayType];
+      fmtDate(now) + ' · ' + DAY_LABEL[autoDay];
 
     resultEl.textContent = '';
+    var q = currentQuery();
 
-    if (r.state === 'invalid') {
-      resultEl.appendChild(renderMessage(
-        'Escolha uma <strong>origem e um destino diferentes</strong> para consultar os horários.'));
+    if (!q.origin || !q.dest) {
+      resultEl.appendChild(renderMessage(state.mode === 'plan'
+        ? 'Escolha a <strong>origem</strong> e o <strong>destino</strong>. A app encontra a linha — e o transbordo, se for preciso.'
+        : 'Escolha a linha e depois a origem e o destino dentro dessa linha.'));
       return;
     }
+    if (q.origin === q.dest) {
+      resultEl.appendChild(renderMessage('A origem e o destino são a mesma estação.'));
+      return;
+    }
+
+    var r = router.plan(q.origin, q.dest, now, {
+      dayTypeOverride: override, lineFilter: q.lineFilter, alternatives: 4
+    });
 
     if (r.state === 'none') {
-      resultEl.appendChild(renderMessage(
-        'Não foram encontradas viagens para este par de estações. ' +
-        'Os dados podem estar incompletos — reprocesse o PDF.'));
+      resultEl.appendChild(renderMessage(state.mode === 'line'
+        ? 'Estas estações não estão ambas na ' + router.line(state.line).name +
+          '. Use o modo <strong>Planear viagem</strong> para percursos com transbordo.'
+        : 'Não foi encontrado percurso entre estas estações.'));
       return;
     }
 
-    if (r.state === 'override') {
-      var info = el('div', 'banner info',
-        'A ver o quadro completo de ' + data.dayTypes[r.dayType].toLowerCase() +
-        ' (escolhido manualmente).');
-      resultEl.appendChild(info);
-      resultEl.appendChild(renderFollowing(r.departures,
-        'Todas as partidas · ' + shortName(originSel.value) + ' → ' +
-        shortName(destSel.value), false));
+    if (r.state === 'untimed') {
+      resultEl.appendChild(renderMessage('Há percurso, mas <strong>ainda não há horários ' +
+        'carregados</strong> para a(s) linha(s) necessária(s).'));
+      r.untimedRoutes.forEach(function (u) {
+        var card = el('div', 'card journey');
+        u.legs.forEach(function (leg, i) {
+          if (i > 0) card.appendChild(el('p', 'transfer-row',
+            '⇄ Transbordo em ' + stationName(leg.from)));
+          card.appendChild(renderLeg(leg));
+        });
+        card.appendChild(renderPriceRow(u.price));
+        card.appendChild(el('p', 'muted',
+          'Sem horários para: ' + u.missingLines.map(function (l) {
+            return router.line(l).name;
+          }).join(', ')));
+        resultEl.appendChild(card);
+      });
       return;
     }
 
     if (r.state === 'tomorrow') {
-      resultEl.appendChild(renderMessage(
-        '<strong>Já não há viagens hoje</strong> neste sentido. ' +
-        'Primeiro metro de ' + fmtDate(r.nextServiceDate).toLowerCase() +
-        ' (' + data.dayTypes[r.nextDayType].toLowerCase() + '):'));
-      resultEl.appendChild(renderNextCard(r.next, destSel.value));
-      if (r.following.length) {
-        resultEl.appendChild(renderFollowing(r.following, 'Partidas seguintes', false));
-      }
+      resultEl.appendChild(renderMessage('<strong>Já não há viagens hoje</strong> para este percurso. ' +
+        'Primeira opção de ' + fmtDate(r.nextServiceDate).toLowerCase() +
+        ' (' + DAY_LABEL[r.dayType] + '):'));
+      resultEl.appendChild(renderJourneyCard(r.best, { highlight: true }));
       return;
     }
 
-    // state === 'ok'
-    resultEl.appendChild(renderNextCard(r.next, destSel.value));
+    // r.state === 'ok'
+    var waitMin = override ? null : r.best.depMin - r.nowMin;
+    resultEl.appendChild(renderJourneyCard(r.best, { highlight: true, waitMin: waitMin }));
     if (r.following.length) {
-      resultEl.appendChild(renderFollowing(r.following, 'Partidas seguintes', true));
+      var listCard = el('div', 'card');
+      listCard.appendChild(el('p', 'list-title', 'Opções seguintes'));
+      var ul = el('ul', 'dep-list');
+      r.following.forEach(function (j) {
+        var li = el('li');
+        li.appendChild(el('span', 'dep-time', j.dep + ' → ' + j.arr));
+        var lines = el('span', 'sug-lines');
+        j.legs.forEach(function (leg) { lines.appendChild(lineBadge(leg.lineId)); });
+        li.appendChild(lines);
+        li.appendChild(el('span', 'dep-arr', fmtDur(j.durationMin) +
+          (j.nTransfers ? ' · ' + j.nTransfers + '×⇄' : '')));
+        ul.appendChild(li);
+      });
+      listCard.appendChild(ul);
+      resultEl.appendChild(listCard);
     }
   }
 
-  // ---------------------------------------------------------- eventos
+  // ---------------------------------------------------------- rodapé fixo
+  function renderStaticInfo() {
+    var real = [], demo = [];
+    METRO.network.lines.forEach(function (l) {
+      var s = METRO.schedules[l.id];
+      if (s && !s.demo) real.push(l.name); else demo.push(l.name);
+    });
+    var src = 'Horários oficiais: ' + (real.join(', ') || 'nenhum');
+    var bSched = METRO.schedules.b;
+    if (bSched && bSched.validity && bSched.validity.from) {
+      src += ' (em vigor desde ' + bSched.validity.from.split('-').reverse().join('/') + ')';
+    }
+    if (demo.length) src += '. Demonstração (fictícios): ' + demo.join(', ') + '.';
+    document.getElementById('source-line').textContent = src;
 
-  function onChange() { savePrefs(); render(); }
+    var f = METRO.fares;
+    document.getElementById('fares-line').textContent =
+      'Tarifário Andante ocasional em vigor desde ' +
+      f.validFrom.split('-').reverse().join('/') + ' (' + f.source + ').';
+    document.getElementById('notes-line').textContent =
+      'Tolerância de ±2 min nos horários. Preços estimados — confirmar no operador.';
 
-  originSel.addEventListener('change', onChange);
-  destSel.addEventListener('change', onChange);
-  overrideSel.addEventListener('change', render);
-  swapBtn.addEventListener('click', function () {
-    var o = originSel.value;
-    originSel.value = destSel.value;
-    destSel.value = o;
-    onChange();
+    if (bSched && bSched.validity && bSched.validity.from) {
+      var age = (Date.now() - new Date(bSched.validity.from).getTime()) / 86400000;
+      if (age > STALE_AFTER_DAYS) {
+        var banner = document.getElementById('stale-banner');
+        banner.textContent = 'Os horários da Linha B têm mais de ' + Math.floor(age / 30) +
+          ' meses. Verifique se há versão mais recente do PDF.';
+        banner.classList.remove('hidden');
+      }
+    }
+  }
+
+  // ---------------------------------------------------------- modos / eventos
+  function setMode(mode) {
+    state.mode = mode;
+    document.getElementById('tab-plan').classList.toggle('active', mode === 'plan');
+    document.getElementById('tab-line').classList.toggle('active', mode === 'line');
+    document.getElementById('tab-plan').setAttribute('aria-selected', mode === 'plan');
+    document.getElementById('tab-line').setAttribute('aria-selected', mode === 'line');
+    document.getElementById('mode-plan').classList.toggle('hidden', mode !== 'plan');
+    document.getElementById('mode-line').classList.toggle('hidden', mode !== 'line');
+    savePrefs();
+    render();
+  }
+
+  var originAC = attachAutocomplete('origin-input', 'origin-suggestions', function (id) {
+    state.origin = id; savePrefs(); render();
+  });
+  var destAC = attachAutocomplete('dest-input', 'dest-suggestions', function (id) {
+    state.dest = id; savePrefs(); render();
   });
 
-  populateSelects();
+  document.getElementById('swap').addEventListener('click', function () {
+    var o = state.origin;
+    state.origin = state.dest;
+    state.dest = o;
+    originAC.set(state.origin);
+    destAC.set(state.dest);
+    savePrefs(); render();
+  });
+
+  document.getElementById('tab-plan').addEventListener('click', function () { setMode('plan'); });
+  document.getElementById('tab-line').addEventListener('click', function () { setMode('line'); });
+  document.getElementById('daytype-override').addEventListener('change', render);
+  document.getElementById('line-origin').addEventListener('change', function (e) {
+    state.lineOrigin = e.target.value; savePrefs(); render();
+  });
+  document.getElementById('line-dest').addEventListener('change', function (e) {
+    state.lineDest = e.target.value; savePrefs(); render();
+  });
+
+  // ---------------------------------------------------------- arranque
+  buildLineChips();
+  var prefs = loadPrefs();
+  if (prefs.origin && router.station(prefs.origin)) {
+    state.origin = prefs.origin; originAC.set(prefs.origin);
+  }
+  if (prefs.dest && router.station(prefs.dest)) {
+    state.dest = prefs.dest; destAC.set(prefs.dest);
+  }
+  state.lineOrigin = prefs.lineOrigin || null;
+  state.lineDest = prefs.lineDest || null;
+  if (prefs.line && router.line(prefs.line)) pickLine(prefs.line);
   renderStaticInfo();
-  render();
+  setMode(prefs.mode === 'line' ? 'line' : 'plan');
   setInterval(render, REFRESH_MS);
 
-  // PWA: só funciona em http(s); em file:// a app funciona na mesma, sem cache.
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
     navigator.serviceWorker.register('sw.js').catch(function () { /* opcional */ });
   }
