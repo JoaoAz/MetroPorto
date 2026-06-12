@@ -3,43 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#E31E24">
-<title>Metro do Porto · Linha B — Próximos horários</title>
+<meta name="theme-color" content="#1c1c1e">
+<title>Metro do Porto — Planeador de viagens</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="app-header">
-  <div class="line-badge">B</div>
+  <div class="logo-badge">M</div>
   <div>
-    <h1>Metro do Porto · Linha B</h1>
+    <h1>Metro do Porto</h1>
     <p id="date-line" class="date-line">A carregar…</p>
   </div>
 </header>
 
 <main>
-  <section class="selector card">
-    <div class="select-row">
-      <label for="origin">Origem</label>
-      <select id="origin"></select>
+  <nav class="mode-tabs" role="tablist" aria-label="Modo de consulta">
+    <button id="tab-plan" class="mode-tab active" role="tab" aria-selected="true">Planear viagem</button>
+    <button id="tab-line" class="mode-tab" role="tab" aria-selected="false">Por linha</button>
+  </nav>
+
+  <!-- Modo: planear viagem (pesquisa global, transbordos automáticos) -->
+  <section id="mode-plan" class="card">
+    <div class="search-row">
+      <label for="origin-input">Origem</label>
+      <div class="search-box">
+        <input id="origin-input" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Pesquisar estação…" aria-label="Estação de origem">
+        <button class="clear-btn hidden" data-for="origin-input" aria-label="Limpar origem">×</button>
+        <div class="suggestions hidden" id="origin-suggestions"></div>
+      </div>
     </div>
-    <button id="swap" class="swap-btn" type="button" title="Trocar sentido"
+    <button id="swap" class="swap-btn" type="button" title="Trocar origem e destino"
             aria-label="Trocar origem e destino">⇅</button>
-    <div class="select-row">
-      <label for="destination">Destino</label>
-      <select id="destination"></select>
+    <div class="search-row">
+      <label for="dest-input">Destino</label>
+      <div class="search-box">
+        <input id="dest-input" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Pesquisar estação…" aria-label="Estação de destino">
+        <button class="clear-btn hidden" data-for="dest-input" aria-label="Limpar destino">×</button>
+        <div class="suggestions hidden" id="dest-suggestions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modo: por linha (progressivo: linha -> origem -> destino) -->
+  <section id="mode-line" class="card hidden">
+    <p class="field-label">Linha</p>
+    <div id="line-chips" class="line-chips" role="radiogroup" aria-label="Escolher linha"></div>
+    <div id="line-selects" class="line-selects hidden">
+      <div class="select-row">
+        <label for="line-origin">Origem</label>
+        <select id="line-origin"></select>
+      </div>
+      <div class="select-row">
+        <label for="line-dest">Destino</label>
+        <select id="line-dest"></select>
+      </div>
     </div>
   </section>
 
   <div id="stale-banner" class="banner warn hidden"></div>
 
-  <section id="result">
-    <!-- Estado por omissão: visível apenas se o JavaScript ou os dados falharem -->
-    <div class="card state-msg">
+  <section id="result" aria-live="polite">
+    <div class="card state-msg" id="boot-error">
       <p><strong>Não foi possível iniciar a aplicação.</strong></p>
-      <p>Se é a primeira utilização, confirme que os horários foram gerados:
-      corra <code>python tools/extract.py</code> e recarregue a página.</p>
+      <p>Se é a primeira utilização, gere os dados: <code>python tools/build_data.py</code>
+      e recarregue a página.</p>
     </div>
   </section>
 </main>
@@ -55,11 +86,13 @@
     </select>
   </div>
   <p id="source-line"></p>
+  <p id="fares-line"></p>
   <p id="notes-line"></p>
 </footer>
 
-<script src="data/schedule.js"></script>
+<script src="data/data.js"></script>
 <script src="engine.js"></script>
+<script src="router.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

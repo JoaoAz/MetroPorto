@@ -3,14 +3,15 @@
  * e atualiza a cache em segundo plano quando há rede. */
 'use strict';
 
-var CACHE = 'metro-linha-b-v1';
+var CACHE = 'metro-planner-v2';
 var ASSETS = [
   './',
   './index.html',
   './style.css',
   './engine.js',
+  './router.js',
   './app.js',
-  './data/schedule.js',
+  './data/data.js',
   './manifest.json',
   './icon.svg'
 ];

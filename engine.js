@@ -1,12 +1,12 @@
 /*
- * engine.js — Motor de cálculo de horários (lógica pura, sem DOM).
- * Usado pelo browser (window.MetroEngine) e pelos testes em Node (module.exports).
+ * engine.js — Utilidades de tempo e calendário (lógica pura, sem DOM).
+ * Usado pelo browser (window.MetroEngine) e por Node (module.exports).
  *
  * Conceito central: "dia de serviço". As viagens que partem depois da meia-noite
  * (00:01, 00:32, ...) pertencem ao dia de serviço anterior; internamente todas as
  * horas são minutos desde as 00:00 do dia de serviço (00:27 da madrugada = 1467).
- * O corte é às 04:00: entre as 00:00 e as 03:59 a app consulta o quadro do dia
- * anterior (não há partidas entre as ~01:35 e as ~05:44).
+ * O corte é às 04:00. A mesma regra existe em tools/extract.py e
+ * tools/build_data.py (service_minutes) — alterar nos três sítios.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -28,7 +28,7 @@
     return pad(Math.floor(m / 60)) + ':' + pad(m % 60);
   }
 
-  // Horas de uma viagem -> minutos de serviço (mesma regra do extrator Python).
+  // Horas de uma viagem -> minutos de serviço (regra partilhada com o pipeline).
   function tripMinutes(times) {
     var first = null;
     for (var i = 0; i < times.length; i++) {
@@ -75,111 +75,12 @@
     return { serviceDate: serviceDate, nowMin: minutes };
   }
 
-  function directionFor(data, originId, destId) {
-    var order = data.directions.outbound.stationOrder;
-    var oi = order.indexOf(originId), di = order.indexOf(destId);
-    if (oi === -1 || di === -1 || oi === di) return null;
-    return oi < di ? 'outbound' : 'inbound';
-  }
-
-  // Todas as partidas origem->destino de um tipo de dia, ordenadas.
-  function departuresFor(data, dayType, direction, originId, destId) {
-    var order = data.directions[direction].stationOrder;
-    var oi = order.indexOf(originId), di = order.indexOf(destId);
-    var result = [];
-    for (var i = 0; i < data.trips.length; i++) {
-      var trip = data.trips[i];
-      if (trip.dayType !== dayType || trip.direction !== direction) continue;
-      if (trip.times[oi] === null || trip.times[di] === null) continue;
-      var mins = tripMinutes(trip.times);
-      result.push({
-        tripId: trip.id,
-        service: trip.service,
-        depMin: mins[oi],
-        arrMin: mins[di],
-        dep: fmtMin(mins[oi]),
-        arr: fmtMin(mins[di]),
-        afterMidnight: mins[oi] >= 1440
-      });
-    }
-    result.sort(function (a, b) { return a.depMin - b.depMin; });
-    return result;
-  }
-
-  /*
-   * Consulta principal.
-   * opts: { limit (default 6), dayTypeOverride ('weekday'|'saturday'|'sunday_holiday') }
-   * Estados devolvidos em .state:
-   *   'invalid'  — origem igual a destino / desconhecida
-   *   'ok'       — há partidas no dia de serviço atual (next + following, waitMin)
-   *   'tomorrow' — sem mais viagens hoje; partidas do dia de serviço seguinte
-   *   'override' — listagem completa de um tipo de dia escolhido manualmente
-   *   'none'     — sem qualquer viagem para o par pedido
-   */
-  function query(data, holidays, originId, destId, now, opts) {
-    opts = opts || {};
-    var limit = opts.limit || 6;
-    var direction = directionFor(data, originId, destId);
-    if (!direction) return { state: 'invalid' };
-
-    if (opts.dayTypeOverride) {
-      var all = departuresFor(data, opts.dayTypeOverride, direction, originId, destId);
-      return {
-        state: all.length ? 'override' : 'none',
-        direction: direction,
-        dayType: opts.dayTypeOverride,
-        departures: all
-      };
-    }
-
-    var ctx = serviceContext(now);
-    var dayType = dayTypeFor(ctx.serviceDate, holidays);
-    var todays = departuresFor(data, dayType, direction, originId, destId);
-    var upcoming = todays.filter(function (d) { return d.depMin >= ctx.nowMin; });
-
-    if (upcoming.length) {
-      upcoming = upcoming.slice(0, limit).map(function (d) {
-        d.waitMin = d.depMin - ctx.nowMin;
-        return d;
-      });
-      return {
-        state: 'ok',
-        direction: direction,
-        dayType: dayType,
-        serviceDate: ctx.serviceDate,
-        next: upcoming[0],
-        following: upcoming.slice(1)
-      };
-    }
-
-    // Sem mais viagens no dia de serviço atual -> primeiro(s) do dia seguinte.
-    var nextDate = new Date(ctx.serviceDate.getTime());
-    nextDate.setDate(nextDate.getDate() + 1);
-    var nextDayType = dayTypeFor(nextDate, holidays);
-    var tomorrows = departuresFor(data, nextDayType, direction, originId, destId)
-      .slice(0, limit);
-    if (!tomorrows.length) return { state: 'none', direction: direction };
-    return {
-      state: 'tomorrow',
-      direction: direction,
-      dayType: dayType,
-      nextDayType: nextDayType,
-      serviceDate: ctx.serviceDate,
-      nextServiceDate: nextDate,
-      next: tomorrows[0],
-      following: tomorrows.slice(1)
-    };
-  }
-
   return {
     toMin: toMin,
     fmtMin: fmtMin,
     tripMinutes: tripMinutes,
     dayTypeFor: dayTypeFor,
     serviceContext: serviceContext,
-    directionFor: directionFor,
-    departuresFor: departuresFor,
-    query: query,
     SERVICE_DAY_CUTOFF_MIN: SERVICE_DAY_CUTOFF_MIN
   };
 });
