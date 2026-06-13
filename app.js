@@ -200,8 +200,12 @@
   function renderPriceRow(price) {
     var p = el('p', 'price-row');
     if (price.available) {
-      p.textContent = 'Zonas: ' + price.zoneCount + ' (' + price.zones.join(', ') +
-        ') · Andante ' + price.title + ' — ' + fmtPrice(price.price);
+      p.textContent = 'Andante ' + price.title + ' — ' +
+        (price.estimated ? '≈ ' : '') + fmtPrice(price.price) +
+        ' (anéis a partir de ' + price.originZone + ')';
+      if (price.estimated) {
+        p.title = 'Estimativa: zonas atribuídas a partir do mapa Andante, por validar';
+      }
     } else {
       p.classList.add('muted');
       p.textContent = 'Preço não calculado: ' + price.reason + '.';
@@ -256,13 +260,51 @@
     return { origin: state.lineOrigin, dest: state.lineDest, lineFilter: state.line };
   }
 
+  function dateISO(d) {
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+
+  function selectedTravelDate(now) {
+    var input = document.getElementById('travel-date');
+    if (!input.value) return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var parts = input.value.split('-');
+    return new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  }
+
+  function queryContext(now) {
+    var selected = selectedTravelDate(now);
+    var live = dateISO(selected) === dateISO(now);
+    var queryNow = live ? now : new Date(
+      selected.getFullYear(),
+      selected.getMonth(),
+      selected.getDate(),
+      Math.floor(engine.SERVICE_DAY_CUTOFF_MIN / 60),
+      0
+    );
+    return {
+      selected: selected,
+      live: live,
+      queryNow: queryNow,
+      dayTypeOverride: live ? null : engine.dayTypeFor(selected, METRO.holidays)
+    };
+  }
+
+  function renderDateChip(qctx) {
+    var chip = document.getElementById('daytype-chip');
+    var dt = engine.dayTypeFor(qctx.selected, METRO.holidays);
+    chip.textContent = (qctx.live ? 'Hoje · ao vivo · ' : 'Desde o início do serviço · ') + DAY_LABEL[dt];
+    chip.className = 'daytype-chip' + (dt === 'sunday_holiday' ? ' holiday' : '');
+  }
+
   function render() {
     var now = new Date();
-    var override = document.getElementById('daytype-override').value || null;
-    var ctx = engine.serviceContext(now);
+    var qctx = queryContext(now);
+    var ctx = engine.serviceContext(qctx.queryNow);
     var autoDay = engine.dayTypeFor(ctx.serviceDate, METRO.holidays);
     document.getElementById('date-line').textContent =
-      fmtDate(now) + ' · ' + DAY_LABEL[autoDay];
+      fmtDate(qctx.selected) + ' · ' + DAY_LABEL[autoDay];
+    renderDateChip(qctx);
 
     resultEl.textContent = '';
     var q = currentQuery();
@@ -278,8 +320,8 @@
       return;
     }
 
-    var r = router.plan(q.origin, q.dest, now, {
-      dayTypeOverride: override, lineFilter: q.lineFilter, alternatives: 4
+    var r = router.plan(q.origin, q.dest, qctx.queryNow, {
+      dayTypeOverride: qctx.dayTypeOverride, lineFilter: q.lineFilter, alternatives: 4
     });
 
     if (r.state === 'none') {
@@ -319,7 +361,7 @@
     }
 
     // r.state === 'ok'
-    var waitMin = override ? null : r.best.depMin - r.nowMin;
+    var waitMin = qctx.live ? r.best.depMin - r.nowMin : null;
     resultEl.appendChild(renderJourneyCard(r.best, { highlight: true, waitMin: waitMin }));
     if (r.following.length) {
       var listCard = el('div', 'card');
@@ -404,7 +446,7 @@
 
   document.getElementById('tab-plan').addEventListener('click', function () { setMode('plan'); });
   document.getElementById('tab-line').addEventListener('click', function () { setMode('line'); });
-  document.getElementById('daytype-override').addEventListener('change', render);
+  document.getElementById('travel-date').addEventListener('change', render);
   document.getElementById('line-origin').addEventListener('change', function (e) {
     state.lineOrigin = e.target.value; savePrefs(); render();
   });
@@ -413,6 +455,9 @@
   });
 
   // ---------------------------------------------------------- arranque
+  var dateInput = document.getElementById('travel-date');
+  dateInput.value = dateISO(new Date());
+  dateInput.min = dateISO(new Date());
   buildLineChips();
   var prefs = loadPrefs();
   if (prefs.origin && router.station(prefs.origin)) {

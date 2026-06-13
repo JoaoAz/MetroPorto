@@ -220,57 +220,72 @@
       return ids;
     }
 
-    // Mínimo de zonas distintas ao longo do percurso, escolhendo a zona mais
-    // favorável nas estações de fronteira (pertencem a mais de uma zona).
-    function zoneCount(stationIds) {
+    /*
+     * Regra Andante (títulos ocasionais): um título Zn é válido na zona da
+     * primeira validação e em n-1 anéis de zonas à sua volta. O título
+     * necessário é portanto 1 + a maior distância (em anéis, no grafo de
+     * adjacência de zonas) entre a zona de origem e qualquer zona atravessada.
+     * Estações de fronteira (várias zonas) contam pela zona mais favorável.
+     */
+    var zoneGraph = net.zones || {};
+    var distCache = {};
+
+    function zoneDistances(fromZone) {
+      if (distCache[fromZone]) return distCache[fromZone];
+      var dist = {};
+      dist[fromZone] = 0;
+      var queue = [fromZone];
+      while (queue.length) {
+        var z = queue.shift();
+        ((zoneGraph[z] && zoneGraph[z].adjacent) || []).forEach(function (n) {
+          if (dist[n] === undefined) { dist[n] = dist[z] + 1; queue.push(n); }
+        });
+      }
+      distCache[fromZone] = dist;
+      return dist;
+    }
+
+    function ringTicket(stationIds) {
       var zonesSeq = stationIds.map(function (sid) {
         return stationById[sid].zones || [];
       });
       if (zonesSeq.some(function (z) { return z.length === 0; })) {
-        return { available: false };
-      }
-      var dp = {};
-      zonesSeq[0].forEach(function (z) { dp[z] = { count: 1, path: [z] }; });
-      for (var i = 1; i < zonesSeq.length; i++) {
-        var ndp = {};
-        zonesSeq[i].forEach(function (z2) {
-          Object.keys(dp).forEach(function (z1) {
-            var cost = dp[z1].count + (z1 === z2 ? 0 : 1);
-            var path = z1 === z2 ? dp[z1].path
-              : (dp[z1].path.indexOf(z2) !== -1 ? null : dp[z1].path.concat(z2));
-            if (path === null) { cost = dp[z1].count; path = dp[z1].path; }
-            if (!ndp[z2] || cost < ndp[z2].count) ndp[z2] = { count: cost, path: path };
-          });
-        });
-        dp = ndp;
+        return { available: false, reason: 'zonas por validar nos dados da rede' };
       }
       var best = null;
-      Object.keys(dp).forEach(function (z) {
-        if (!best || dp[z].count < best.count) best = dp[z];
+      zonesSeq[0].forEach(function (originZone) {   // 1.ª validação
+        var dist = zoneDistances(originZone);
+        var maxRing = 0, reachable = true;
+        for (var i = 0; i < zonesSeq.length && reachable; i++) {
+          var d = null;
+          zonesSeq[i].forEach(function (z) {        // fronteira: zona favorável
+            if (dist[z] !== undefined && (d === null || dist[z] < d)) d = dist[z];
+          });
+          if (d === null) reachable = false;
+          else if (d > maxRing) maxRing = d;
+        }
+        if (reachable && (best === null || maxRing + 1 < best.rings)) {
+          best = { rings: maxRing + 1, originZone: originZone };
+        }
       });
-      return { available: true, count: best.count, zones: best.path };
-    }
-
-    function fareFor(nZones) {
-      var n = Math.max(nZones, fares.minZones || 2);
-      var key = 'Z' + n;
-      var table = fares.occasional || {};
-      if (table[key] === undefined) return null;
-      return { title: key, price: table[key] };
+      if (!best) {
+        return { available: false, reason: 'zonas sem ligação no grafo de adjacência' };
+      }
+      return { available: true, rings: best.rings, originZone: best.originZone };
     }
 
     function priceInfo(legs) {
-      var zc = zoneCount(pathStations(legs));
-      if (!zc.available) {
-        return { available: false, reason: 'zonas por validar nos dados da rede' };
+      var rt = ringTicket(pathStations(legs));
+      if (!rt.available) return rt;
+      var n = Math.max(rt.rings, fares.minZones || 2);
+      var key = 'Z' + n;
+      var table = fares.occasional || {};
+      if (table[key] === undefined) {
+        return { available: false, zoneCount: n,
+                 reason: 'sem tarifa conhecida para ' + key };
       }
-      var fare = fareFor(zc.count);
-      if (!fare) {
-        return { available: false, zoneCount: zc.count, zones: zc.zones,
-                 reason: 'sem tarifa conhecida para ' + zc.count + ' zonas' };
-      }
-      return { available: true, zoneCount: zc.count, zones: zc.zones,
-               title: fare.title, price: fare.price };
+      return { available: true, zoneCount: n, originZone: rt.originZone,
+               estimated: !!net.zonesEstimated, title: key, price: table[key] };
     }
 
     // -------------------------------------------------------------- plano
@@ -377,7 +392,7 @@
       searchStations: searchStations,
       candidateRoutes: candidateRoutes,
       plan: plan,
-      zoneCount: zoneCount,
+      ringTicket: ringTicket,
       pathStations: pathStations,
       station: function (id) { return stationById[id]; },
       line: function (id) { return lineById[id]; }

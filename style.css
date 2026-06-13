@@ -53,6 +53,34 @@ main, .app-header, .app-footer {
 .app-header h1 { font-size: 17px; margin: 0; }
 .date-line { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
 
+/* Data da viagem */
+.date-card { padding: 12px 16px; }
+.date-card > label {
+  font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em;
+}
+.date-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.date-row input[type="date"] {
+  flex: 1;
+  min-height: 44px;
+  font-size: 17px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  padding: 8px 10px;
+  font-family: inherit;
+}
+.daytype-chip {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--line);
+  font-size: 13px;
+  font-weight: 700;
+}
+.daytype-chip.holiday { background: var(--warn-bg); color: var(--warn-ink); }
+
 /* Separador de modos */
 .mode-tabs {
   display: flex;
@@ -243,9 +271,6 @@ select {
 
 /* Rodapé */
 .app-footer { padding-top: 6px; padding-bottom: 32px; color: var(--muted); font-size: 13px; }
-.override-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.override-row label { flex: none; }
-.override-row select { min-height: 38px; font-size: 14px; width: auto; flex: 1; }
 .app-footer p { margin: 4px 0; overflow-wrap: anywhere; }
 
 code { background: var(--line); padding: 1px 5px; border-radius: 5px; font-size: .9em; }
