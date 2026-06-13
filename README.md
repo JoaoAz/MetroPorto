@@ -1,7 +1,7 @@
 # Metro do Porto - Planeador de Viagens
 
 Web app estatica (HTML/CSS/JS puro, sem build nem backend) para planear viagens
-na rede do Metro do Porto: proximos horarios, percursos diretos ou com
+nas linhas A, B, C, E e F do Metro do Porto: proximos horarios, percursos diretos ou com
 transbordo, duracao, zonas Andante e preco estimado. Funciona offline (PWA) e
 sem servicos externos.
 
@@ -12,8 +12,8 @@ App publicada: <https://joaoaz.github.io/MetroPorto/>
 | Dados | Estado | Onde |
 |---|---|---|
 | Horarios A, B, C, E, F | Reais, extraidos do PDF oficial `horarios_06_04_2026.pdf` | `data/schedules/line-*.json` |
-| Horarios Linha D | Demo/ficticios, marcados na app | `data/schedules/line-d.demo.json` |
-| Topologia das 6 linhas | 85 estacoes, aliases e linhas servidas | `data/network.json` |
+| Linha D | Excluida: nao consta do PDF carregado | n/a |
+| Topologia publicada | 5 linhas, 67 estacoes, aliases e linhas servidas | `data/network.json` |
 | Zonas Andante | Estimadas a partir do mapa e calibradas com exemplos | `data/network.json` |
 | Tarifario Andante ocasional | Real, em vigor desde 01/01/2026 | `data/fares.json` |
 
@@ -84,7 +84,7 @@ caso. Relatorios:
 5. Commit + push. O GitHub Pages publica a pasta `app/` automaticamente.
 
 O extrator atual suporta o PDF completo de 31 paginas com horarios das linhas
-A, B, C, E e F. A linha D continua demo porque nao aparece nesse PDF.
+A, B, C, E e F. A Linha D foi removida da app porque nao aparece nesse PDF.
 
 ## Atualizar Zonas E Tarifas
 
@@ -104,11 +104,12 @@ Tarifas:
 
 ## Regras De Calculo
 
-- Hoje: modo ao vivo, com "parte em X min".
+- Hoje: modo ao vivo por dia civil. Mesmo depois da meia-noite, 13/06 e tratado
+  como sabado, nao como prolongamento de sexta.
 - Outra data: consulta desde o inicio do servico desse dia, sem contagem
   regressiva artificial.
-- Dia de servico: partidas depois da meia-noite pertencem ao dia anterior; o
-  corte e as 04:00.
+- Horarios depois da meia-noite no PDF continuam ordenados no fim do respetivo
+  quadro diario, para suportar viagens que terminam no dia seguinte.
 - Transbordo minimo: 4 minutos.
 - Percursos: enumera sequencias de linhas ate 2 transbordos, escolhe candidatos
   com menos paragens e valida-os contra horarios reais.
@@ -118,7 +119,7 @@ Tarifas:
 ## Limitacoes Conhecidas
 
 - Horarios planeados, nao tempo real; ha tolerancia oficial de +/- 2 min.
-- Linha D ainda usa horarios de demonstracao.
+- Linha D nao esta incluida enquanto nao houver PDF oficial de horarios para ela.
 - Zonas ainda marcadas como estimadas; confirmar/refinar com mapa oficial.
 - Feriados: apenas nacionais; feriados municipais nao sao distinguidos.
 - Linha Rosa/G e futuras extensoes nao incluidas.

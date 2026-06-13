@@ -15,8 +15,8 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
 
 // ================================================== pesquisa de estações
 {
-  const r1 = router.searchStations('sao bento');
-  check('P1 pesquisa sem acentos', r1[0] && r1[0].id === 'sao-bento', r1[0]);
+  const r1 = router.searchStations('sao bras');
+  check('P1 pesquisa sem acentos', r1[0] && r1[0].id === 'sao-bras', r1[0]);
   const r2 = router.searchStations('norteshopping');
   check('P2 pesquisa por alias', r2[0] && r2[0].id === 'sete-bicas', r2[0]);
   const r3 = router.searchStations('cust').map(s => s.id);
@@ -51,33 +51,31 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
   check('S3 linha errada não dá percurso', bad.state === 'none', bad.state);
 }
 
-// ================================================== transbordos (com demos)
+// ================================================== transbordos reais
 {
-  // Póvoa (só B) -> Vila d'Este (só D): transbordo obrigatório na Trindade
-  const r = router.plan('povoa-de-varzim', 'vila-deste', THU);
+  // Fânzeres (F) -> Aeroporto (E): transbordo obrigatório no tronco comum
+  const r = router.plan('fanzeres', 'aeroporto', THU);
   check('T1 estado ok', r.state === 'ok', r.state);
   check('T2 exatamente 1 transbordo', r.best.nTransfers === 1, r.best.legs);
-  check('T3 transbordo na Trindade', r.best.transfers[0].station === 'trindade',
+  check('T3 transbordo no Estádio do Dragão', r.best.transfers[0].station === 'estadio-do-dragao',
     r.best.transfers);
   check('T4 espera >= tempo mínimo', r.best.transfers[0].waitMin >= 4,
     r.best.transfers);
-  check('T5 marcado como demo (linha D fictícia)', r.best.demo === true);
+  check('T5 dados reais (sem demo)', r.best.demo === false);
   const arrOk = r.best.legs[1].depMin >= r.best.legs[0].arrMin + 4;
   check('T6 ligação respeitada (partida 2 >= chegada 1 + 4 min)', arrOk, r.best.legs);
 
-  // Fânzeres (F) -> Aeroporto (E)
-  const r2 = router.plan('fanzeres', 'aeroporto', THU);
-  check('T7 F->E com 1 transbordo', r2.state === 'ok' && r2.best.nTransfers === 1,
-    r2.best && r2.best.legs.map(l => l.lineId));
+  check('T7 F->E com 1 transbordo', r.best.legs.map(l => l.lineId).join('>') === 'f>e',
+    r.best && r.best.legs.map(l => l.lineId));
 }
 
 // ================================================== fim de serviço / madrugada
 {
-  const r = router.plan('estadio-do-dragao', 'povoa-de-varzim',
-    new Date(2026, 5, 13, 2, 30)); // 02:30 de sábado = serviço de sexta esgotado
-  check('M1 sem serviço -> dia seguinte', r.state === 'tomorrow', r.state);
+  const r = router.plan('trindade', 'mindelo',
+    new Date(2026, 5, 13, 1, 38)); // sábado, 01:38 = consultar quadro civil de sábado
+  check('M1 madrugada usa o próprio sábado', r.state === 'ok', r.state);
   check('M2 quadro de sábado', r.dayType === 'saturday', r.dayType);
-  check('M3 primeira partida 05:54', r.best.dep === '05:54', r.best.dep);
+  check('M3 próxima partida de sábado', r.best.dep === '06:03', r.best.dep);
 
   const late = router.plan('estadio-do-dragao', 'povoa-de-varzim',
     new Date(2026, 5, 11, 23, 55));

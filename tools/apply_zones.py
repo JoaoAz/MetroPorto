@@ -39,10 +39,7 @@ ADJACENCY = {
 ASSIGN = {
     "PRT": ["estadio-do-dragao", "campanha", "heroismo", "campo-24-de-agosto",
             "bolhao", "trindade", "lapa", "carolina-michaelis", "casa-da-musica",
-            "francos", "ramalde", "viso",
-            "hospital-sao-joao", "ipo", "polo-universitario", "salgueiros",
-            "combatentes", "marques", "faria-guimaraes", "aliados", "sao-bento",
-            "contumil", "nasoni", "nau-vitoria"],
+            "francos", "ramalde", "viso", "contumil", "nasoni", "nau-vitoria"],
     "MTS1": ["sete-bicas", "senhora-da-hora", "fonte-do-cuco", "custoias"],
     "MTS2": ["vasco-da-gama", "estadio-do-mar", "pedro-hispano", "parque-real",
              "camara-de-matosinhos", "matosinhos-sul", "brito-capelo",
@@ -57,9 +54,6 @@ ASSIGN = {
     "VCD9": ["espaco-natureza", "varziela", "arvore", "azurara"],
     "PV_VC": ["santa-clara", "vila-do-conde", "alto-de-pega", "portas-fronhas",
               "sao-bras", "povoa-de-varzim"],
-    "VNG1": ["jardim-do-morro", "general-torres", "camara-de-gaia",
-             "joao-de-deus", "d-joao-ii", "santo-ovidio"],
-    "VNG2": ["manuel-leao", "hospital-santos-silva", "vila-deste"],
     "GDM1": ["levada", "rio-tinto", "campainha", "baguim"],
     "GDM2": ["carreira", "venda-nova", "fanzeres"],
 }

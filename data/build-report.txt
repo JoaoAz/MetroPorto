@@ -1,10 +1,9 @@
-rede: 85 estações, 6 linhas
+rede: 67 estações, 5 linhas
 estações servidas por mais de uma linha: 19
 zonas: 14 (estimadas)
 linha A: 522 viagens
 linha B: 332 viagens
 linha C: 362 viagens
-linha D: 688 viagens (DEMO)
 linha E: 399 viagens
 linha F: 331 viagens
 

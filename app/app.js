@@ -247,8 +247,8 @@
     });
     card.appendChild(renderPriceRow(j.price));
     if (j.demo) {
-      card.appendChild(badge('Linha D: horários temporários', 'demo',
-        'Este percurso usa a Linha D, que não aparece no PDF de horários carregado.'));
+      card.appendChild(badge('horários temporários', 'demo',
+        'Este percurso usa uma linha sem horários reais no PDF carregado.'));
     }
     return card;
   }
@@ -308,8 +308,7 @@
   function render() {
     var now = new Date();
     var qctx = queryContext(now);
-    var ctx = engine.serviceContext(qctx.queryNow);
-    var autoDay = engine.dayTypeFor(ctx.serviceDate, METRO.holidays);
+    var autoDay = engine.dayTypeFor(qctx.selected, METRO.holidays);
     document.getElementById('date-line').textContent =
       fmtDate(qctx.selected) + ' · ' + DAY_LABEL[autoDay];
     renderDateChip(qctx);
