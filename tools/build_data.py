@@ -5,9 +5,10 @@ build_data.py — Valida e funde os dados da app num único artefacto.
 Entradas (em data\):
     network.json            rede canónica EDITÁVEL (estações, aliases, zonas, linhas)
     fares.json              tarifário Andante EDITÁVEL
-    schedules\line-<id>.json        horários reais (extract.py)
-    schedules\line-<id>.demo.json   horários fictícios (gen_demo_schedules.py);
-                                    usados apenas se não existir o ficheiro real
+    schedules\line-<id>.json            horários reais (extract.py)
+    schedules\line-<id>.estimated.json  horários estimados por frequência
+    schedules\line-<id>.demo.json       horários fictícios (gen_demo_schedules.py);
+                                        usados apenas se não existir real/estimado
 
 Saídas:
     app\data\data.js        window.METRO = {...} (usado pela app, funciona em file://)
@@ -145,7 +146,12 @@ def validate_schedule(sched, line_def):
         if t["dayType"] not in ("weekday", "saturday", "sunday_holiday"):
             err(f"{label}: dayType inválido {t['dayType']!r}")
         count += 1
-    log(f"{label}: {count} viagens{' (DEMO)' if sched.get('demo') else ''}")
+    suffix = ""
+    if sched.get("demo"):
+        suffix = " (DEMO)"
+    elif sched.get("estimated"):
+        suffix = " (ESTIMADO)"
+    log(f"{label}: {count} viagens{suffix}")
 
 
 def main():
@@ -211,11 +217,12 @@ def main():
         if not re.match(r"^Z\d+$", k) or not isinstance(v, (int, float)) or v <= 0:
             err(f"tarifa inválida: {k}={v}")
 
-    # --- horários: real > demo > nenhum ---
+    # --- horários: real > estimated > demo > nenhum ---
     schedules = {}
     for line in network["lines"]:
         lid = line["id"]
         real = DATA / "schedules" / f"line-{lid}.json"
+        estimated = DATA / "schedules" / f"line-{lid}.estimated.json"
         demo = DATA / "schedules" / f"line-{lid}.demo.json"
         if real.exists():
             raw = json.loads(real.read_text(encoding="utf-8"))
@@ -223,6 +230,8 @@ def main():
                 sched = convert_legacy_b(raw, name_to_id, line)
             else:
                 sched = raw
+        elif estimated.exists():
+            sched = json.loads(estimated.read_text(encoding="utf-8"))
         elif demo.exists():
             sched = json.loads(demo.read_text(encoding="utf-8"))
         else:

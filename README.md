@@ -1,19 +1,22 @@
 # Metro do Porto - Planeador de Viagens
 
 Web app estatica (HTML/CSS/JS puro, sem build nem backend) para planear viagens
-nas linhas A, B, C, E e F do Metro do Porto: proximos horarios, percursos diretos ou com
+na rede publicada do Metro do Porto: proximos horarios, percursos diretos ou com
 transbordo, duracao, zonas Andante e preco estimado. Funciona offline (PWA) e
 sem servicos externos.
 
 App publicada: <https://joaoaz.github.io/MetroPorto/>
+
+Aplicacao independente, sem relacao oficial com a Metro do Porto. Informacoes
+ou sugestoes: <info@horarios-metro.pt>.
 
 ## Estado Dos Dados
 
 | Dados | Estado | Onde |
 |---|---|---|
 | Horarios A, B, C, E, F | Reais, extraidos do PDF oficial `horarios_06_04_2026.pdf` | `data/schedules/line-*.json` |
-| Linha D | Excluida: nao consta do PDF carregado | n/a |
-| Topologia publicada | 5 linhas, 67 estacoes, aliases e linhas servidas | `data/network.json` |
+| Horarios Linha D | Estimados por frequencia a partir das imagens fornecidas | `data/schedules/line-d.estimated.json` |
+| Topologia publicada | 6 linhas, 85 estacoes, aliases e linhas servidas | `data/network.json` |
 | Zonas Andante | Estimadas a partir do mapa e calibradas com exemplos | `data/network.json` |
 | Tarifario Andante ocasional | Real, em vigor desde 01/01/2026 | `data/fares.json` |
 
@@ -39,6 +42,7 @@ data/schedules/             horarios por linha (reais e .demo)
 data/overrides.json         correcoes manuais da extracao (opcional)
 tools/extract.py            PDF completo -> data/schedules/line-*.json
 tools/apply_zones.py        aplica zonas estimadas no network.json
+tools/gen_estimated_line_d.py gera a Linha D estimada por frequencia
 tools/gen_demo_schedules.py horarios ficticios para linhas sem PDF
 tools/build_data.py         valida tudo e gera app/data/data.js e data.json
 tools/test_engine.js        testes das utilidades de tempo
@@ -62,6 +66,7 @@ Abrir: <http://localhost:8742>
 ```powershell
 python -X utf8 tools\extract.py pdfs\horarios_06_04_2026.pdf
 python -X utf8 tools\apply_zones.py
+python -X utf8 tools\gen_estimated_line_d.py
 python -X utf8 tools\gen_demo_schedules.py
 python -X utf8 tools\build_data.py
 node tools\test_engine.js
@@ -80,11 +85,13 @@ caso. Relatorios:
 2. Correr `tools\extract.py` com o caminho do PDF.
 3. Se o extrator acusar nomes desconhecidos, adicionar aliases em
    `data/network.json`.
-4. Correr `apply_zones.py`, `gen_demo_schedules.py`, `build_data.py` e os testes.
+4. Correr `apply_zones.py`, `gen_estimated_line_d.py`, `gen_demo_schedules.py`,
+   `build_data.py` e os testes.
 5. Commit + push. O GitHub Pages publica a pasta `app/` automaticamente.
 
 O extrator atual suporta o PDF completo de 31 paginas com horarios das linhas
-A, B, C, E e F. A Linha D foi removida da app porque nao aparece nesse PDF.
+A, B, C, E e F. A Linha D nao aparece nesse PDF; por isso e gerada como
+estimativa por frequencia a partir das capturas fornecidas.
 
 ## Atualizar Zonas E Tarifas
 
@@ -119,7 +126,7 @@ Tarifas:
 ## Limitacoes Conhecidas
 
 - Horarios planeados, nao tempo real; ha tolerancia oficial de +/- 2 min.
-- Linha D nao esta incluida enquanto nao houver PDF oficial de horarios para ela.
+- Linha D usa horarios estimados por frequencia; confirmar sempre no operador.
 - Zonas ainda marcadas como estimadas; confirmar/refinar com mapa oficial.
 - Feriados: apenas nacionais; feriados municipais nao sao distinguidos.
 - Linha Rosa/G e futuras extensoes nao incluidas.

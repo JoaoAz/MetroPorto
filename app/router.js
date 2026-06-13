@@ -175,7 +175,13 @@
         var dep = mins[pF], arr = mins[pT];
         if (dep === null || arr === null || dep < earliestMin) continue;
         if (!best || dep < best.depMin) {
-          best = { depMin: dep, arrMin: arr, service: trip.service, demo: !!sched.demo };
+          best = {
+            depMin: dep,
+            arrMin: arr,
+            service: trip.service,
+            demo: !!sched.demo,
+            estimated: !!sched.estimated
+          };
         }
       }
       return best || { none: true };
@@ -183,7 +189,7 @@
 
     function evalRoute(legs, dayType, startMin) {
       var t = startMin, out = [], transfers = [];
-      var demo = false, missing = [];
+      var demo = false, estimated = false, missing = [];
       for (var i = 0; i < legs.length; i++) {
         var g = legs[i];
         var r = nextLeg(g.line, g.from, g.to, dayType, t);
@@ -193,16 +199,17 @@
           transfers.push({ station: g.from, waitMin: r.depMin - out[out.length - 1].arrMin });
         }
         demo = demo || r.demo;
+        estimated = estimated || r.estimated;
         out.push({
           lineId: g.line, from: g.from, to: g.to,
           depMin: r.depMin, arrMin: r.arrMin,
           dep: engine.fmtMin(r.depMin), arr: engine.fmtMin(r.arrMin),
-          service: r.service, demo: r.demo
+          service: r.service, demo: r.demo, estimated: r.estimated
         });
         t = r.arrMin + TRANSFER_MIN;
       }
       if (missing.length) return { untimed: true, missingLines: missing };
-      return { legs: out, transfers: transfers, demo: demo };
+      return { legs: out, transfers: transfers, demo: demo, estimated: estimated };
     }
 
     // ------------------------------------------------------ zonas e preço
@@ -299,6 +306,7 @@
         durationMin: last.arrMin - first.depMin,
         nTransfers: ev.legs.length - 1,
         demo: ev.demo,
+        estimated: ev.estimated,
         price: priceInfo(candidate)
       };
     }

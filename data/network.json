@@ -416,6 +416,141 @@
       ]
     },
     {
+      "id": "hospital-sao-joao",
+      "name": "Hospital de São João",
+      "aliases": [
+        "Hospital São João"
+      ],
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "ipo",
+      "name": "IPO",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "polo-universitario",
+      "name": "Pólo Universitário",
+      "aliases": [
+        "Polo Universitário"
+      ],
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "salgueiros",
+      "name": "Salgueiros",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "combatentes",
+      "name": "Combatentes",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "marques",
+      "name": "Marquês",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "faria-guimaraes",
+      "name": "Faria Guimarães",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "aliados",
+      "name": "Aliados",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "sao-bento",
+      "name": "São Bento",
+      "zones": [
+        "PRT"
+      ]
+    },
+    {
+      "id": "jardim-do-morro",
+      "name": "Jardim do Morro",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "general-torres",
+      "name": "General Torres",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "camara-de-gaia",
+      "name": "Câmara de Gaia",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "joao-de-deus",
+      "name": "João de Deus",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "d-joao-ii",
+      "name": "D. João II",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "santo-ovidio",
+      "name": "Santo Ovídio",
+      "zones": [
+        "VNG1"
+      ]
+    },
+    {
+      "id": "manuel-leao",
+      "name": "Manuel Leão",
+      "zones": [
+        "VNG2"
+      ]
+    },
+    {
+      "id": "hospital-santos-silva",
+      "name": "Hospital Santos Silva",
+      "zones": [
+        "VNG2"
+      ]
+    },
+    {
+      "id": "vila-deste",
+      "name": "Vila d'Este",
+      "aliases": [
+        "Vila d'Este (Gaia)"
+      ],
+      "zones": [
+        "VNG2"
+      ]
+    },
+    {
       "id": "aeroporto",
       "name": "Aeroporto",
       "aliases": [
@@ -612,6 +747,33 @@
         "mandim",
         "castelo-da-maia",
         "ismai"
+      ]
+    },
+    {
+      "id": "d",
+      "name": "Linha D",
+      "color": "#FDB813",
+      "dataStatus": "fontes-publicas",
+      "stations": [
+        "hospital-sao-joao",
+        "ipo",
+        "polo-universitario",
+        "salgueiros",
+        "combatentes",
+        "marques",
+        "faria-guimaraes",
+        "trindade",
+        "aliados",
+        "sao-bento",
+        "jardim-do-morro",
+        "general-torres",
+        "camara-de-gaia",
+        "joao-de-deus",
+        "d-joao-ii",
+        "santo-ovidio",
+        "manuel-leao",
+        "hospital-santos-silva",
+        "vila-deste"
       ]
     },
     {

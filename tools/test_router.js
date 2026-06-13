@@ -67,6 +67,13 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
 
   check('T7 F->E com 1 transbordo', r.best.legs.map(l => l.lineId).join('>') === 'f>e',
     r.best && r.best.legs.map(l => l.lineId));
+
+  // Póvoa (B) -> Vila d'Este (D estimada): a D volta a existir, mas marcada como estimada.
+  const d = router.plan('povoa-de-varzim', 'vila-deste', THU);
+  check('T8 B->D com Linha D estimada', d.state === 'ok' &&
+    d.best.legs.map(l => l.lineId).join('>') === 'b>d', d.best && d.best.legs);
+  check('T9 Linha D estimada não é demo', d.best.estimated === true && d.best.demo === false,
+    d.best && { estimated: d.best.estimated, demo: d.best.demo });
 }
 
 // ================================================== fim de serviço / madrugada
