@@ -143,6 +143,10 @@
       chip.setAttribute('role', 'radio');
       chip.dataset.line = line.id;
       chip.style.setProperty('--line-color', line.color);
+      if (METRO.schedules[line.id] && METRO.schedules[line.id].demo) {
+        chip.classList.add('demo-line');
+        chip.title = 'Linha sem horários reais neste PDF; usa horários temporários.';
+      }
       chip.addEventListener('click', function () { pickLine(line.id); });
       wrap.appendChild(chip);
     });
@@ -198,13 +202,17 @@
   }
 
   function renderPriceRow(price) {
-    var p = el('p', 'price-row');
+    var p = el('div', 'price-row');
     if (price.available) {
-      p.textContent = 'Andante ' + price.title + ' — ' +
-        (price.estimated ? '≈ ' : '') + fmtPrice(price.price) +
-        ' (anéis a partir de ' + price.originZone + ')';
+      var main = el('p', 'price-main');
+      main.textContent = 'Andante ' + price.title + ' — ' +
+        (price.estimated ? '≈ ' : '') + fmtPrice(price.price);
+      p.appendChild(main);
+      p.appendChild(el('p', 'price-note',
+        'Zonas estimadas a partir de ' + price.originZone +
+        '. Confirmar preço e zonas no operador.'));
       if (price.estimated) {
-        p.title = 'Estimativa: zonas atribuídas a partir do mapa Andante, por validar';
+        p.title = 'Estimativa: zonas atribuídas a partir do mapa Andante, por validar.';
       }
     } else {
       p.classList.add('muted');
@@ -239,8 +247,8 @@
     });
     card.appendChild(renderPriceRow(j.price));
     if (j.demo) {
-      card.appendChild(badge('horários de demonstração', 'demo',
-        'Parte deste percurso usa horários fictícios — ainda sem PDF oficial dessa linha'));
+      card.appendChild(badge('Linha D: horários temporários', 'demo',
+        'Este percurso usa a Linha D, que não aparece no PDF de horários carregado.'));
     }
     return card;
   }
@@ -389,12 +397,14 @@
       var s = METRO.schedules[l.id];
       if (s && !s.demo) real.push(l.name); else demo.push(l.name);
     });
-    var src = 'Horários oficiais: ' + (real.join(', ') || 'nenhum');
+    var src = 'Horários oficiais do PDF: ' + (real.join(', ') || 'nenhum');
     var bSched = METRO.schedules.b;
     if (bSched && bSched.validity && bSched.validity.from) {
       src += ' (em vigor desde ' + bSched.validity.from.split('-').reverse().join('/') + ')';
     }
-    if (demo.length) src += '. Demonstração (fictícios): ' + demo.join(', ') + '.';
+    if (demo.length) {
+      src += '. Sem horários reais neste PDF: ' + demo.join(', ') + ' (usa horários temporários).';
+    }
     document.getElementById('source-line').textContent = src;
 
     var f = METRO.fares;
@@ -402,7 +412,7 @@
       'Tarifário Andante ocasional em vigor desde ' +
       f.validFrom.split('-').reverse().join('/') + ' (' + f.source + ').';
     document.getElementById('notes-line').textContent =
-      'Tolerância de ±2 min nos horários. Preços estimados — confirmar no operador.';
+      'Tolerância de ±2 min nos horários. Preços e zonas estimados — confirmar sempre no operador.';
 
     if (bSched && bSched.validity && bSched.validity.from) {
       var age = (Date.now() - new Date(bSched.validity.from).getTime()) / 86400000;

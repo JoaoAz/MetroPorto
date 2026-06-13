@@ -3,7 +3,7 @@
  * e atualiza a cache em segundo plano quando há rede. */
 'use strict';
 
-var CACHE = 'metro-planner-v3';
+var CACHE = 'metro-planner-v4';
 var ASSETS = [
   './',
   './index.html',
