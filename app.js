@@ -146,6 +146,9 @@
       if (METRO.schedules[line.id] && METRO.schedules[line.id].demo) {
         chip.classList.add('demo-line');
         chip.title = 'Linha sem horários reais neste PDF; usa horários temporários.';
+      } else if (METRO.schedules[line.id] && METRO.schedules[line.id].estimated) {
+        chip.classList.add('estimated-line');
+        chip.title = 'Horários estimados por frequência; confirmar no operador.';
       }
       chip.addEventListener('click', function () { pickLine(line.id); });
       wrap.appendChild(chip);
@@ -249,6 +252,9 @@
     if (j.demo) {
       card.appendChild(badge('horários temporários', 'demo',
         'Este percurso usa uma linha sem horários reais no PDF carregado.'));
+    } else if (j.estimated) {
+      card.appendChild(badge('Linha D: horário estimado', 'estimated',
+        'Horário gerado por frequência a partir das imagens fornecidas; confirmar no operador.'));
     }
     return card;
   }
@@ -391,10 +397,12 @@
 
   // ---------------------------------------------------------- rodapé fixo
   function renderStaticInfo() {
-    var real = [], demo = [];
+    var real = [], estimated = [], demo = [];
     METRO.network.lines.forEach(function (l) {
       var s = METRO.schedules[l.id];
-      if (s && !s.demo) real.push(l.name); else demo.push(l.name);
+      if (s && s.estimated) estimated.push(l.name);
+      else if (s && !s.demo) real.push(l.name);
+      else demo.push(l.name);
     });
     var src = 'Horários oficiais do PDF: ' + (real.join(', ') || 'nenhum');
     var bSched = METRO.schedules.b;
@@ -403,6 +411,9 @@
     }
     if (demo.length) {
       src += '. Sem horários reais neste PDF: ' + demo.join(', ') + ' (usa horários temporários).';
+    }
+    if (estimated.length) {
+      src += '. Estimados por frequência: ' + estimated.join(', ') + '.';
     }
     document.getElementById('source-line').textContent = src;
 

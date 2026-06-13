@@ -199,6 +199,14 @@ main, .app-header, .app-footer {
   letter-spacing: .03em;
   opacity: .82;
 }
+.line-chip.estimated-line::after {
+  content: "est.";
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  opacity: .82;
+}
 .line-selects { display: grid; gap: 10px; }
 .select-row { display: flex; flex-direction: column; gap: 4px; }
 select {
@@ -272,6 +280,7 @@ select {
 }
 .badge.bx { background: #b3161b; }
 .badge.demo { background: var(--warn-bg); color: var(--warn-ink); margin: 10px 0 0; }
+.badge.estimated { background: var(--warn-bg); color: var(--warn-ink); margin: 10px 0 0; }
 
 /* Lista de opções seguintes */
 .list-title { font-size: 13px; color: var(--muted); margin: 0 0 6px; text-transform: uppercase; letter-spacing: .04em; }
@@ -321,6 +330,12 @@ select {
 /* Rodapé */
 .app-footer { padding-top: 6px; padding-bottom: 32px; color: var(--muted); font-size: 13px; }
 .app-footer p { margin: 4px 0; overflow-wrap: anywhere; }
+.app-footer a { color: var(--ink); font-weight: 700; }
+.independent-line {
+  margin-top: 10px !important;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
 
 code { background: var(--line); padding: 1px 5px; border-radius: 5px; font-size: .9em; }
 
