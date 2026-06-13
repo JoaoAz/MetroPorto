@@ -189,6 +189,20 @@ def main():
         log(f"AVISO: {sem_zona} estações sem zona Andante atribuída — o preço "
             "não será calculado em percursos que as atravessem (preencher em "
             "data/network.json, ver zonesNote)")
+    zones = network.get("zones", {})
+    # adjacência simétrica (preencher o recíproco se faltar)
+    for z, info in zones.items():
+        for adj in info.get("adjacent", []):
+            if adj not in zones:
+                err(f"zona {z}: adjacente desconhecida {adj!r}")
+            elif z not in zones[adj].get("adjacent", []):
+                zones[adj].setdefault("adjacent", []).append(z)
+    for s in stations:
+        for z in s.get("zones", []):
+            if z not in zones:
+                err(f"estação {s['id']}: zona desconhecida {z!r}")
+    if zones:
+        log(f"zonas: {len(zones)} ({'estimadas' if network.get('zonesEstimated') else 'validadas'})")
 
     # --- tarifário ---
     if not fares.get("occasional"):
@@ -228,6 +242,8 @@ def main():
             .strftime("%Y-%m-%dT%H:%M:%SZ"),
         "network": {
             "transferMinMinutes": network.get("transferMinMinutes", 4),
+            "zones": network.get("zones", {}),
+            "zonesEstimated": bool(network.get("zonesEstimated")),
             "stations": [{
                 "id": s["id"],
                 "name": s["name"],

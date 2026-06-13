@@ -1,111 +1,125 @@
-# Metro do Porto — Planeador de viagens
+# Metro do Porto - Planeador de Viagens
 
-Web app estática (HTML/CSS/JS puro, sem build nem backend) para planear viagens
-na rede do Metro do Porto: próximos horários, percursos diretos ou com
-transbordo, duração, zonas Andante e preço estimado. Funciona offline (PWA) e
-sem serviços externos. Publicada em <https://joaoaz.github.io/MetroPorto/>.
+Web app estatica (HTML/CSS/JS puro, sem build nem backend) para planear viagens
+na rede do Metro do Porto: proximos horarios, percursos diretos ou com
+transbordo, duracao, zonas Andante e preco estimado. Funciona offline (PWA) e
+sem servicos externos.
 
-## Estado dos dados
+App publicada: <https://joaoaz.github.io/MetroPorto/>
+
+## Estado Dos Dados
 
 | Dados | Estado | Onde |
 |---|---|---|
-| Horários Linha B | **Reais** (PDF oficial 06/04/2026) | `data/schedules/line-b.json` |
-| Horários A, C, D, E, F | **Fictícios** (demonstração, marcados na app) | `data/schedules/line-*.demo.json` |
-| Topologia das 6 linhas (85 estações) | Triangulada de fontes públicas | `data/network.json` |
-| Tarifário Andante ocasional | Real (01/01/2026, metrodoporto.pt) | `data/fares.json` |
-| Zonas Andante por estação | **Por preencher** — a app não calcula preço até validar | `data/network.json` |
+| Horarios A, B, C, E, F | Reais, extraidos do PDF oficial `horarios_06_04_2026.pdf` | `data/schedules/line-*.json` |
+| Horarios Linha D | Demo/ficticios, marcados na app | `data/schedules/line-d.demo.json` |
+| Topologia das 6 linhas | 85 estacoes, aliases e linhas servidas | `data/network.json` |
+| Zonas Andante | Estimadas a partir do mapa e calibradas com exemplos | `data/network.json` |
+| Tarifario Andante ocasional | Real, em vigor desde 01/01/2026 | `data/fares.json` |
+
+Calibracao de zonas atualmente testada:
+
+- Trindade -> Senhora da Hora = Z2
+- Trindade -> Pedras Rubras = Z4
+- Trindade -> Mindelo = Z5
+- Trindade -> Aeroporto = Z4
+- Trindade -> Povoa de Varzim = Z7
+
+Os precos aparecem como estimativa porque as zonas foram atribuidas ao nivel do
+corredor do metro. O algoritmo ja suporta estacoes em mais do que uma zona e
+escolhe a origem tarifaria mais favoravel quando existir essa informacao.
 
 ## Estrutura
 
-```
+```text
 pdfs/                       PDFs oficiais (entrada)
-data/network.json           EDITÁVEL: estações, aliases, zonas, linhas
-data/fares.json             EDITÁVEL: tarifário Andante
-data/schedules/             horários por linha (reais e .demo)
-data/overrides.json         correções manuais à extração (opcional)
-tools/extract.py            PDF -> data/schedules/line-b.json (pdfplumber)
-tools/gen_demo_schedules.py horários fictícios para linhas sem PDF
-tools/build_data.py         valida tudo e gera app/data/data.js
-tools/test_engine.js        testes das utilidades de tempo (Node)
-tools/test_router.js        testes do planeador, zonas e preço (Node)
-app/engine.js               utilidades de tempo/dia de serviço (lógica pura)
-app/router.js               pesquisa, percursos, transbordos, zonas, preço
-app/app.js + index.html     interface (2 modos: Planear viagem / Por linha)
-app/data/data.js            artefacto gerado — única dependência da app
+data/network.json           EDITAVEL: estacoes, aliases, zonas, linhas
+data/fares.json             EDITAVEL: tarifario Andante
+data/schedules/             horarios por linha (reais e .demo)
+data/overrides.json         correcoes manuais da extracao (opcional)
+tools/extract.py            PDF completo -> data/schedules/line-*.json
+tools/apply_zones.py        aplica zonas estimadas no network.json
+tools/gen_demo_schedules.py horarios ficticios para linhas sem PDF
+tools/build_data.py         valida tudo e gera app/data/data.js e data.json
+tools/test_engine.js        testes das utilidades de tempo
+tools/test_router.js        testes do planeador, transbordos, zonas e preco
+app/engine.js               utilidades de tempo/dia de servico
+app/router.js               pesquisa, percursos, transbordos, zonas, preco
+app/app.js + index.html     interface
+app/data/data.js            artefacto gerado, usado pela app
 ```
 
-## Como executar
+## Como Executar Localmente
 
 ```powershell
-python -m http.server 8742 --directory app   # http://localhost:8742
+python -m http.server 8742 --directory app
 ```
 
-## Pipeline de dados
+Abrir: <http://localhost:8742>
+
+## Pipeline De Dados
 
 ```powershell
-python -X utf8 tools\extract.py            # 1. extrai o PDF da linha B
-python -X utf8 tools\gen_demo_schedules.py # 2. demos p/ linhas sem PDF (idempotente)
-python -X utf8 tools\build_data.py         # 3. valida e gera app/data/data.js
-node tools\test_engine.js                  # 4. testes
+python -X utf8 tools\extract.py pdfs\horarios_06_04_2026.pdf
+python -X utf8 tools\apply_zones.py
+python -X utf8 tools\gen_demo_schedules.py
+python -X utf8 tools\build_data.py
+node tools\test_engine.js
 node tools\test_router.js
 ```
 
-`build_data.py` falha (exit 1) com erros de coerência — não publicar nesse caso.
-Relatórios: `data/extraction-report.txt` e `data/build-report.txt`.
+`build_data.py` falha com exit 1 se encontrar incoerencias. Nao publicar nesse
+caso. Relatorios:
 
-### Atualizar horários (novo PDF da Linha B)
+- `data/extraction-report.txt`
+- `data/build-report.txt`
 
-Colocar o PDF em `pdfs/` (com a data no nome: `horarios_DD_MM_AAAA*.pdf`) e
-correr o pipeline acima. Correções pontuais: `data/overrides.json`.
+## Atualizar Horarios
 
-### Adicionar horários reais de outra linha
+1. Colocar o novo PDF em `pdfs/`.
+2. Correr `tools\extract.py` com o caminho do PDF.
+3. Se o extrator acusar nomes desconhecidos, adicionar aliases em
+   `data/network.json`.
+4. Correr `apply_zones.py`, `gen_demo_schedules.py`, `build_data.py` e os testes.
+5. Commit + push. O GitHub Pages publica a pasta `app/` automaticamente.
 
-1. Adaptar `tools/extract.py` ao PDF dessa linha (nº de colunas, nomes) e
-   gravar como `data/schedules/line-<id>.json` no formato unificado
-   (`trips[{dayType, dir: fwd|rev, service, times[]}]`, `demo: false`).
-2. Os nomes das estações do PDF são mapeados pelos `aliases` de
-   `data/network.json` — acrescentar aliases se o PDF usar nomes diferentes.
-3. Correr `build_data.py` — o ficheiro real substitui automaticamente o demo.
+O extrator atual suporta o PDF completo de 31 paginas com horarios das linhas
+A, B, C, E e F. A linha D continua demo porque nao aparece nesse PDF.
 
-### Preencher zonas (ativa o cálculo de preço)
+## Atualizar Zonas E Tarifas
 
-No `data/network.json`, preencher `zones` de cada estação com os códigos do
-diagrama oficial Andante (<https://andante.pt>): ex. `["C1"]`, ou
-`["C1","C2"]` se a estação estiver na fronteira de duas zonas (a app escolhe a
-que minimiza o preço). Enquanto um percurso atravessar estações sem zona, a
-app diz «preço não calculado» em vez de inventar.
+Zonas:
 
-### Atualizar tarifário
+- Editar `data/network.json` diretamente, ou alterar `tools/apply_zones.py` e
+  voltar a corrê-lo.
+- Usar codigos Andante reais quando confirmados no mapa oficial.
+- Se uma estacao estiver numa fronteira, usar varias zonas no array, por
+  exemplo `["PRT1", "MTS1"]`.
 
-Editar `data/fares.json` (preços, `validFrom`, `source`) e correr
-`build_data.py`.
+Tarifas:
 
-## Decisões de engenharia
+- Editar `data/fares.json`.
+- Manter `validFrom`, `source`, moeda e tabela `occasional`.
+- Correr `build_data.py` e os testes.
 
-- **Frontend estático + pipeline offline**: os dados mudam poucas vezes por
-  ano; um backend seria custo permanente sem benefício.
-- **Percursos por enumeração validada por horários** (não Dijkstra/RAPTOR):
-  a rede tem 6 linhas em árvore com tronco comum — todos os pares atuais se
-  resolvem com ≤1 transbordo. Enumeramos sequências de linhas (com fallback a
-  2 transbordos), escolhemos as correspondências com menos paragens e
-  validamos cada candidato contra os horários reais (próxima partida, tempo
-  mínimo de transbordo de 4 min, madrugada). BFS sem horários daria resultados
-  errados (ignora esperas); um motor time-expanded seria complexidade inútil.
-- **Dia de serviço**: partidas 00:00–01:35 pertencem ao dia anterior; corte às
-  04:00. Regra partilhada por `extract.py`, `build_data.py` e `engine.js` —
-  alterar nos três sítios.
-- **Zonas**: mínimo de zonas distintas ao longo do percurso, com programação
-  dinâmica para estações multi-zona. Mecanismo testado com dados fictícios;
-  dados reais por preencher (ver acima).
+## Regras De Calculo
 
-## Limitações conhecidas
+- Hoje: modo ao vivo, com "parte em X min".
+- Outra data: consulta desde o inicio do servico desse dia, sem contagem
+  regressiva artificial.
+- Dia de servico: partidas depois da meia-noite pertencem ao dia anterior; o
+  corte e as 04:00.
+- Transbordo minimo: 4 minutos.
+- Percursos: enumera sequencias de linhas ate 2 transbordos, escolhe candidatos
+  com menos paragens e valida-os contra horarios reais.
+- Preco: calcula o titulo Andante pela distancia em aneis de zonas a partir da
+  zona da primeira validacao. Z2 e o minimo tarifario.
 
-- Horários planeados, não tempo real (tolerância oficial ±2 min).
-- A, C, D, E, F: horários fictícios até haver PDFs oficiais (badge na app).
-- Sequências de estações de A, C, D, E, F trianguladas de fontes públicas
-  (`dataStatus: fontes-publicas` em `network.json`) — validar com PDFs oficiais.
-- Zonas por estação não preenchidas → preço não calculado (mensagem clara).
-- Feriados: apenas os 13 nacionais; feriados municipais (ex.: S. João) não
-  são distinguidos — usar «Ver horário de» manualmente nesses dias.
-- Linha Rosa (G) e extensões em construção não incluídas.
-- Tempo de transbordo fixo (4 min) — não modela distâncias reais entre cais.
+## Limitacoes Conhecidas
+
+- Horarios planeados, nao tempo real; ha tolerancia oficial de +/- 2 min.
+- Linha D ainda usa horarios de demonstracao.
+- Zonas ainda marcadas como estimadas; confirmar/refinar com mapa oficial.
+- Feriados: apenas nacionais; feriados municipais nao sao distinguidos.
+- Linha Rosa/G e futuras extensoes nao incluidas.
+- Tempo de transbordo fixo; nao modela distancia real entre cais.

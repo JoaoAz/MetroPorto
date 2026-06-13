@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 r"""
-extract.py — Pipeline de extração dos horários do Metro do Porto (Linha B)
-a partir do PDF oficial, gerando os dados estruturados usados pela web app.
+extract.py — Extrai horários do(s) PDF(s) oficiais do Metro do Porto.
+
+Suporta o livro completo da rede (múltiplas linhas, páginas em retrato e
+paisagem) e PDFs de uma só linha. Cada página é classificada por linha,
+tipo de dia e sentido fazendo corresponder os cabeçalhos rodados (nomes de
+estações reconstruídos por coordenadas) às linhas de data\network.json.
 
 Uso:
     python extract.py [caminho\para\horarios.pdf]
-
 Sem argumento, usa o PDF mais recente em ..\pdfs\.
 
 Saídas:
-    data\schedules\line-b.json — horários estruturados da Linha B
-    data\extraction-report.txt — relatório de validação da extração
-
-Depois de extrair, correr tools\build_data.py para gerar os dados da app.
+    data\schedules\line-<id>.json — uma por linha encontrada (formato unificado)
+    data\extraction-report.txt    — relatório de validação
 
 Correções manuais (opcional): data\overrides.json
-    {
-      "removeTrips": ["weekday-outbound-003"],
-      "editTrips":   { "weekday-outbound-005": { "times": ["06:01", ...] } },
-      "addTrips":    [ { "dayType": "...", "direction": "...", "service": "B",
-                         "times": [...] } ]
-    }
+    { "removeTrips": ["b-weekday-fwd-003"],
+      "editTrips":   { "b-weekday-fwd-005": { "times": [...] } } }
+
+Depois de extrair, correr tools\build_data.py.
 """
 import datetime
 import hashlib
@@ -37,17 +36,13 @@ ROOT = Path(__file__).resolve().parent.parent
 SCHEDULES_DIR = ROOT / "data" / "schedules"
 REPORT_PATH = ROOT / "data" / "extraction-report.txt"
 OVERRIDES_PATH = ROOT / "data" / "overrides.json"
+NETWORK = json.loads((ROOT / "data" / "network.json").read_text(encoding="utf-8"))
 
 TIME_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
-N_STATIONS_EXPECTED = 36
-
-# Tempo máximo plausível (min) entre duas passagens consecutivas registadas
-# numa viagem (um expresso pode saltar várias estações de ~2 min cada).
 MAX_GAP_MIN = 20
 MIN_GAP_MIN = 1
 
-report_lines = []
-errors = []
+report_lines, errors = [], []
 
 
 def log(msg):
@@ -60,15 +55,44 @@ def err(msg):
     log(f"ERRO: {msg}")
 
 
-def slugify(name):
-    base = name.split("|")[-1].strip() if "|" in name else name
-    norm = unicodedata.normalize("NFKD", base)
-    norm = "".join(c for c in norm if not unicodedata.combining(c))
-    return re.sub(r"[^a-z0-9]+", "-", norm.lower()).strip("-")
+def norm(s):
+    s = unicodedata.normalize("NFKD", s.lower())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]+", " ", s).strip()
+
+
+NAME_TO_ID = {}
+for _s in NETWORK["stations"]:
+    for _label in [_s["name"]] + _s.get("aliases", []):
+        NAME_TO_ID[norm(_label)] = _s["id"]
+
+LINE_DEFS = {l["id"]: l for l in NETWORK["lines"]}
+
+
+def to_minutes(hhmm):
+    return int(hhmm[:2]) * 60 + int(hhmm[3:5])
+
+
+def service_minutes(times):
+    """Madrugada (antes das 04:00) pertence ao dia de serviço anterior.
+    Mesma regra de build_data.py e app/engine.js."""
+    first = next((t for t in times if t is not None), None)
+    offset = 1440 if first is not None and to_minutes(first) < 240 else 0
+    out, prev = [], None
+    for t in times:
+        if t is None:
+            out.append(None)
+            continue
+        m = to_minutes(t) + offset
+        if prev is not None and m < prev:
+            offset += 1440
+            m += 1440
+        out.append(m)
+        prev = m
+    return out
 
 
 def cluster_1d(values, tol):
-    """Agrupa valores 1D em clusters separados por mais de `tol`; devolve centros."""
     groups = []
     for v in sorted(values):
         if groups and v - groups[-1][-1] <= tol:
@@ -87,91 +111,81 @@ def nearest(centers, x, tol):
     return best if dist is not None and dist <= tol else None
 
 
-def to_minutes(hhmm):
-    h, m = hhmm.split(":")
-    return int(h) * 60 + int(m)
-
-
-def service_minutes(times):
-    """Converte a lista de horas de uma viagem em minutos de serviço,
-    somando 24h depois de cruzar a meia-noite. Uma viagem cuja primeira hora
-    é antes das 04:00 pertence por inteiro à madrugada do dia de serviço
-    (offset inicial de 24h). Devolve lista alinhada (None onde não para)."""
-    first = next((t for t in times if t is not None), None)
-    offset = 1440 if first is not None and to_minutes(first) < 240 else 0
-    out, prev = [], None
-    for t in times:
-        if t is None:
-            out.append(None)
-            continue
-        m = to_minutes(t) + offset
-        if prev is not None and m < prev:
-            offset += 1440
-            m += 1440
-        out.append(m)
-        prev = m
-    return out
-
-
-def classify_page(rotated_lines):
-    """Determina o tipo de dia a partir dos rótulos rodados da página."""
-    blob = " ".join(rotated_lines)
-    if "Mondays to Fridays" in blob or "Dias Úteis" in blob or "Dias úteis" in blob:
+def classify_day(texts):
+    blob = " ".join(texts)
+    if "Dias Úteis" in blob or "Mondays" in blob:
         return "weekday"
-    if "Saturdays" in blob or "Sábados" in blob:
+    if "Sábados" in blob or "Saturdays" in blob:
         return "saturday"
-    if "Sundays" in blob or "Domingos" in blob:
+    if "Domingos" in blob or "Sundays" in blob:
         return "sunday_holiday"
     return None
 
 
 def extract_page(page, page_no):
-    """Extrai de uma página: tipo de dia, ordem de estações, paragens Bx e viagens."""
-    # --- 1. Colunas: centros x dos tokens HH:MM (texto normal) ---
+    """Devolve {line, dayType, dir, trips} ou None (página sem tabela)."""
     words = page.extract_words()
     time_words = [w for w in words if TIME_RE.match(w["text"])]
-    col_centers = cluster_1d([(w["x0"] + w["x1"]) / 2 for w in time_words], tol=6)
-    if len(col_centers) != N_STATIONS_EXPECTED:
-        err(f"pág. {page_no}: esperava {N_STATIONS_EXPECTED} colunas, encontrei {len(col_centers)}")
-        return None
-    col_tol = (col_centers[1] - col_centers[0]) / 2  # ~8.4 pt
+    if len(time_words) < 50:
+        return None  # capa ou página informativa
 
-    # --- 2. Cabeçalhos: caracteres rodados agrupados por x ---
-    rot_chars = [c for c in page.chars if not c.get("upright", True)]
+    col_centers = cluster_1d([(w["x0"] + w["x1"]) / 2 for w in time_words], tol=5)
+    n_cols = len(col_centers)
+    col_tol = min(b - a for a, b in zip(col_centers, col_centers[1:])) / 2
+
+    # cabeçalhos rodados -> nomes de estações por coluna
+    rot = [c for c in page.chars if not c.get("upright", True)]
     vlines = defaultdict(list)
-    for c in rot_chars:
+    for c in rot:
         xc = (c["x0"] + c["x1"]) / 2
         key = next((k for k in vlines if abs(k - xc) <= 2.5), None)
         vlines[key if key is not None else xc].append(c)
 
-    headers = {}           # índice de coluna -> nome da estação
-    bx_stops = set()       # índices de coluna com marcador Bx
-    label_lines = []       # rótulos fora da tabela (tipo de dia, notas)
+    headers, labels = {}, []
     for xc, chars in vlines.items():
-        # leitura correta do texto vertical: de baixo para cima
         text = "".join(ch["text"] for ch in sorted(chars, key=lambda c: -c["top"])).strip()
         ci = nearest(col_centers, xc, tol=4)
         if ci is None:
-            label_lines.append(text)
+            labels.append(text)
             continue
         if text.endswith("BX"):
-            bx_stops.add(ci)
             text = text[:-2].strip()
-        # separador "|" extraído como "I" isolado
         text = re.sub(r"\s+I\s+", " | ", text)
         headers[ci] = text
 
-    if len(headers) != N_STATIONS_EXPECTED:
-        err(f"pág. {page_no}: {len(headers)} cabeçalhos de estação (esperava {N_STATIONS_EXPECTED})")
+    if len(headers) != n_cols:
+        err(f"pág. {page_no}: {len(headers)} cabeçalhos para {n_cols} colunas")
         return None
 
-    station_order = [headers[i] for i in range(N_STATIONS_EXPECTED)]
-    day_type = classify_page(label_lines)
-    if day_type is None:
-        err(f"pág. {page_no}: não consegui identificar o tipo de dia; rótulos: {label_lines}")
+    station_ids = []
+    for i in range(n_cols):
+        sid = NAME_TO_ID.get(norm(headers[i]))
+        if sid is None:
+            err(f"pág. {page_no}: estação desconhecida no PDF: {headers[i]!r} "
+                "(acrescentar alias em data/network.json)")
+            return None
+        station_ids.append(sid)
+
+    # identificar linha e sentido pela sequência de estações
+    line_id = direction = None
+    for lid, ldef in LINE_DEFS.items():
+        if station_ids == ldef["stations"]:
+            line_id, direction = lid, "fwd"
+            break
+        if station_ids == list(reversed(ldef["stations"])):
+            line_id, direction = lid, "rev"
+            break
+    if line_id is None:
+        err(f"pág. {page_no}: sequência de {n_cols} estações não corresponde a "
+            f"nenhuma linha da network.json (começa em {headers.get(0)!r})")
         return None
 
-    # --- 3. Viagens: tokens de hora e '-' agrupados por linha (y) ---
+    day = classify_day([page.extract_text() or ""] + labels)
+    if day is None:
+        err(f"pág. {page_no}: tipo de dia não identificado")
+        return None
+
+    # linhas de horas
     cell_words = [w for w in words if TIME_RE.match(w["text"]) or w["text"] == "-"]
     rows = defaultdict(list)
     for w in cell_words:
@@ -181,35 +195,43 @@ def extract_page(page, page_no):
 
     trips = []
     for yc in sorted(rows):
-        cells = [None] * N_STATIONS_EXPECTED
+        cells = [None] * n_cols
         n_assigned = 0
         for w in rows[yc]:
             ci = nearest(col_centers, (w["x0"] + w["x1"]) / 2, tol=col_tol)
             if ci is None:
-                continue  # token fora da grelha (ex.: notas)
+                continue
             if cells[ci] is not None:
                 err(f"pág. {page_no} y={yc:.0f}: célula duplicada na coluna {ci}")
             cells[ci] = w["text"]
             n_assigned += 1
         if n_assigned == 0:
             continue
-        if n_assigned != N_STATIONS_EXPECTED:
-            err(f"pág. {page_no} y={yc:.0f}: linha com {n_assigned}/{N_STATIONS_EXPECTED} células")
+        if n_assigned < n_cols / 2:
+            # artefacto (rodapé/nota com token tipo hora), não uma viagem
+            log(f"aviso: pág. {page_no} y={yc:.0f}: {n_assigned} célula(s) "
+                f"isolada(s) ignorada(s): {[w['text'] for w in rows[yc]]}")
             continue
-        times = [None if c == "-" else c for c in cells]
-        trips.append(times)
+        if n_assigned != n_cols:
+            err(f"pág. {page_no} y={yc:.0f} ({line_id}/{day}): linha com "
+                f"{n_assigned}/{n_cols} células")
+            continue
+        trips.append([None if c == "-" else c for c in cells])
 
-    return {
-        "dayType": day_type,
-        "stationOrder": station_order,
-        "bxStopIdx": bx_stops,
-        "trips": trips,
-        "page": page_no,
-    }
+    return {"line": line_id, "dayType": day, "dir": direction,
+            "trips": trips, "page": page_no}
+
+
+def service_label(line_id, times):
+    """Vazios no meio do percurso = expresso (Bx); vazios só nas pontas =
+    viagem parcial (curta), que mantém o serviço normal da linha."""
+    served = [i for i, t in enumerate(times) if t is not None]
+    if served and any(times[i] is None for i in range(served[0], served[-1] + 1)):
+        return "Bx"
+    return line_id.upper()
 
 
 def validate_trip(times, label):
-    """Monotonia e plausibilidade dos intervalos dentro de uma viagem."""
     mins = service_minutes(times)
     served = [(i, m) for i, m in enumerate(mins) if m is not None]
     if len(served) < 2:
@@ -219,13 +241,10 @@ def validate_trip(times, label):
     for (i1, m1), (i2, m2) in zip(served, served[1:]):
         gap = m2 - m1
         if gap < MIN_GAP_MIN or gap > MAX_GAP_MIN:
-            err(f"{label}: intervalo implausível {times[i1]}->{times[i2]} "
-                f"({gap} min, colunas {i1}->{i2})")
+            err(f"{label}: intervalo implausível {times[i1]}->{times[i2]} ({gap} min)")
             ok = False
     return ok
 
-
-# ---------------------------------------------------------------- principal
 
 def main():
     if len(sys.argv) > 1:
@@ -241,170 +260,84 @@ def main():
     log(f"PDF: {pdf_path}")
     sha = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
     log(f"SHA-256: {sha}")
-
-    # validade a partir do nome do ficheiro (ex.: horarios_06_04_2026...)
     m = re.search(r"(\d{2})_(\d{2})_(\d{4})", pdf_path.name)
     valid_from = f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else None
     log(f"Validade (do nome do ficheiro): {valid_from}")
 
-    pages = []
+    by_line = defaultdict(list)
     with pdfplumber.open(pdf_path) as pdf:
         log(f"Páginas: {len(pdf.pages)}")
-        for i, page in enumerate(pdf.pages, start=1):
+        for i, page in enumerate(pdf.pages, 1):
             data = extract_page(page, i)
             if data:
-                pages.append(data)
+                by_line[data["line"]].append(data)
 
-    if len(pages) != 6:
-        err(f"esperava 6 páginas extraídas, obtive {len(pages)}")
-
-    # --- direção por página + coerência das listas de estações ---
-    outbound_order = inbound_order = None
-    for p in pages:
-        first = p["stationOrder"][0]
-        if "Estádio do Dragão" in first:
-            p["direction"] = "outbound"
-            if outbound_order is None:
-                outbound_order = p["stationOrder"]
-            elif p["stationOrder"] != outbound_order:
-                err(f"pág. {p['page']}: ordem de estações outbound difere da pág. anterior")
-        elif "Póvoa de Varzim" in first:
-            p["direction"] = "inbound"
-            if inbound_order is None:
-                inbound_order = p["stationOrder"]
-            elif p["stationOrder"] != inbound_order:
-                err(f"pág. {p['page']}: ordem de estações inbound difere da pág. anterior")
-        else:
-            err(f"pág. {p['page']}: primeira estação inesperada: {first}")
-
-    if outbound_order and inbound_order:
-        if list(reversed(outbound_order)) != inbound_order:
-            err("lista inbound não é o espelho da lista outbound")
-        else:
-            log("OK: lista de estações inbound = espelho da outbound")
-
-    combos = {(p["dayType"], p["direction"]) for p in pages}
-    expected = {(d, s) for d in ("weekday", "saturday", "sunday_holiday")
-                for s in ("outbound", "inbound")}
-    if combos != expected:
-        err(f"combinações dia/sentido em falta: {expected - combos}")
-
-    # --- estações e ids ---
-    station_ids = [slugify(n) for n in outbound_order]
-    if len(set(station_ids)) != len(station_ids):
-        err(f"ids de estação duplicados: {station_ids}")
-    stations = [{"id": sid, "name": name}
-                for sid, name in zip(station_ids, outbound_order)]
-    id_by_name = {name: sid for sid, name in zip(station_ids, outbound_order)}
-
-    # --- viagens: validar, classificar, ordenar ---
-    all_trips = []
-    for p in pages:
-        day, direction = p["dayType"], p["direction"]
-        valid_trips = []
-        for times in p["trips"]:
-            label = f"pág. {p['page']} ({day}/{direction}) partida {next(t for t in times if t)}"
-            if validate_trip(times, label):
-                valid_trips.append(times)
-        valid_trips.sort(key=lambda t: service_minutes(t)[
-            next(i for i, v in enumerate(t) if v is not None)])
-        # validar paragens Bx: nulls só em colunas sem marcador Bx
-        for times in valid_trips:
-            if any(t is None for t in times):
-                bad = [i for i, t in enumerate(times) if t is None and i in p["bxStopIdx"]]
-                if bad:
-                    err(f"{day}/{direction}: expresso salta estação marcada como paragem Bx: "
-                        f"{[p['stationOrder'][i] for i in bad]}")
-        for n, times in enumerate(valid_trips):
-            all_trips.append({
-                "id": f"{day}-{direction}-{n:03d}",
-                "dayType": day,
-                "direction": direction,
-                "service": "Bx" if any(t is None for t in times) else "B",
-                "times": times,
-            })
-        n_bx = sum(1 for t in valid_trips if any(x is None for x in t))
-        log(f"pág. {p['page']}: {day}/{direction}: {len(valid_trips)} viagens "
-            f"({n_bx} Bx), primeira {valid_trips[0][0] or '-'} / última "
-            f"{[t for t in valid_trips[-1] if t][0]}")
-
-    # partidas ordenadas e sem duplicados por quadro
-    for day, direction in expected:
-        deps = []
-        for t in all_trips:
-            if t["dayType"] == day and t["direction"] == direction:
-                idx = next(i for i, v in enumerate(t["times"]) if v is not None)
-                deps.append(service_minutes(t["times"])[idx])
-        if deps != sorted(deps):
-            err(f"{day}/{direction}: partidas não ordenadas após ordenação (?)")
-        if len(deps) != len(set(deps)):
-            err(f"{day}/{direction}: viagens duplicadas com a mesma hora de partida")
-
-    # --- overrides manuais ---
-    overrides_applied = []
+    overrides = {}
     if OVERRIDES_PATH.exists():
-        ov = json.loads(OVERRIDES_PATH.read_text(encoding="utf-8"))
-        for tid in ov.get("removeTrips", []):
+        overrides = json.loads(OVERRIDES_PATH.read_text(encoding="utf-8"))
+
+    SCHEDULES_DIR.mkdir(parents=True, exist_ok=True)
+    expected_combos = {(d, s) for d in ("weekday", "saturday", "sunday_holiday")
+                       for s in ("fwd", "rev")}
+
+    for line_id, pages in sorted(by_line.items()):
+        combos = {(p["dayType"], p["dir"]) for p in pages}
+        if combos != expected_combos:
+            err(f"linha {line_id.upper()}: combinações em falta: "
+                f"{expected_combos - combos}")
+        all_trips = []
+        for p in pages:
+            valid = [t for t in p["trips"] if validate_trip(
+                t, f"pág. {p['page']} ({line_id}/{p['dayType']}/{p['dir']})")]
+            valid.sort(key=lambda t: service_minutes(t)[
+                next(i for i, v in enumerate(t) if v is not None)])
+            for n, times in enumerate(valid):
+                all_trips.append({
+                    "id": f"{line_id}-{p['dayType']}-{p['dir']}-{n:03d}",
+                    "dayType": p["dayType"],
+                    "dir": p["dir"],
+                    "service": service_label(line_id, times),
+                    "times": times,
+                })
+            n_bx = sum(1 for t in valid if any(x is None for x in t))
+            log(f"pág. {p['page']}: {line_id.upper()}/{p['dayType']}/{p['dir']}: "
+                f"{len(valid)} viagens" + (f" ({n_bx} Bx)" if n_bx else ""))
+
+        applied = []
+        for tid in overrides.get("removeTrips", []):
             before = len(all_trips)
             all_trips = [t for t in all_trips if t["id"] != tid]
-            overrides_applied.append(f"removida {tid} ({before - len(all_trips)} ocorrências)")
-        for tid, patch in ov.get("editTrips", {}).items():
+            if len(all_trips) < before:
+                applied.append(f"removida {tid}")
+        for tid, patch in overrides.get("editTrips", {}).items():
             for t in all_trips:
                 if t["id"] == tid:
                     t.update(patch)
-                    overrides_applied.append(f"editada {tid}")
-        for trip in ov.get("addTrips", []):
-            trip.setdefault("id", f"manual-{len(all_trips):03d}")
-            all_trips.append(trip)
-            overrides_applied.append(f"adicionada {trip['id']}")
-        for line in overrides_applied:
-            log(f"override: {line}")
+                    applied.append(f"editada {tid}")
+        for a in applied:
+            log(f"override: {a}")
 
-    schedule = {
-        "schemaVersion": 1,
-        "line": {"id": "B", "name": "Linha B", "color": "#E31E24"},
-        "source": {
-            "file": pdf_path.name,
-            "sha256": sha,
-            "extractedAt": datetime.datetime.now(datetime.timezone.utc)
-                .strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "publisher": "Metro do Porto",
-            "overridesApplied": overrides_applied,
-        },
-        "validity": {"from": valid_from, "to": None},
-        "notes": ["Tolerância de +/- 2 minutos para os tempos apresentados.",
-                  "Bx: serviço expresso — não para em todas as estações."],
-        "stations": stations,
-        "directions": {
-            "outbound": {
-                "label": f"{outbound_order[0]} → {outbound_order[-1]}",
-                "stationOrder": [id_by_name[n] for n in outbound_order],
-            },
-            "inbound": {
-                "label": f"{inbound_order[0]} → {inbound_order[-1]}",
-                "stationOrder": [id_by_name[n] for n in inbound_order],
-            },
-        },
-        "dayTypes": {
-            "weekday": "Dias úteis",
-            "saturday": "Sábados",
-            "sunday_holiday": "Domingos e feriados",
-        },
-        "trips": all_trips,
-    }
+        out = {
+            "line": line_id,
+            "demo": False,
+            "source": {"file": pdf_path.name, "sha256": sha,
+                       "extractedAt": datetime.datetime.now(datetime.timezone.utc)
+                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
+                       "publisher": "Metro do Porto",
+                       "overridesApplied": applied},
+            "validity": {"from": valid_from, "to": None},
+            "notes": ["Tolerância de +/- 2 minutos para os tempos apresentados."],
+            "trips": all_trips,
+        }
+        (SCHEDULES_DIR / f"line-{line_id}.json").write_text(
+            json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+        log(f"linha {line_id.upper()}: {len(all_trips)} viagens -> "
+            f"line-{line_id}.json")
 
-    SCHEDULES_DIR.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    (SCHEDULES_DIR / "line-b.json").write_text(
-        json.dumps(schedule, ensure_ascii=False, indent=1), encoding="utf-8")
-
-    log(f"\nTotal de viagens: {len(all_trips)}")
-    log(f"Estações ({len(stations)}): {', '.join(s['name'] for s in stations)}")
     status = "FALHOU" if errors else "OK"
-    log(f"\nVALIDAÇÃO: {status} ({len(errors)} erro(s))")
+    log(f"\nLinhas extraídas: {', '.join(sorted(by_line)) or 'nenhuma'}")
+    log(f"VALIDAÇÃO: {status} ({len(errors)} erro(s))")
     REPORT_PATH.write_text("\n".join(report_lines) + "\n", encoding="utf-8")
-    print(f"\nRelatório: {REPORT_PATH}")
     sys.exit(1 if errors else 0)
 
 

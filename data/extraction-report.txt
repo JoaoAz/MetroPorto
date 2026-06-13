@@ -1,16 +1,48 @@
-PDF: D:\MetroHorario\pdfs\horarios_06_04_2026_organized.pdf
-SHA-256: eea1bc8e0e19b33acbb52f8223a654df4f6a3a1ed312e1164014965870415eaa
+PDF: D:\MetroHorario\pdfs\horarios_06_04_2026.pdf
+SHA-256: 11863abbe998785924b769f5939b266cc33d6079a528ce50b5fd4525eaaf8585
 Validade (do nome do ficheiro): 2026-04-06
-Páginas: 6
-OK: lista de estações inbound = espelho da outbound
-pág. 1: weekday/outbound: 65 viagens (27 Bx), primeira 06:01 / última 00:32
-pág. 2: weekday/inbound: 67 viagens (27 Bx), primeira 05:44 / última 00:27
-pág. 3: saturday/outbound: 51 viagens (0 Bx), primeira 05:54 / última 00:32
-pág. 4: saturday/inbound: 51 viagens (0 Bx), primeira 05:44 / última 00:27
-pág. 5: sunday_holiday/outbound: 49 viagens (0 Bx), primeira 05:54 / última 00:32
-pág. 6: sunday_holiday/inbound: 49 viagens (0 Bx), primeira 05:44 / última 00:27
+Páginas: 31
+aviso: pág. 14 y=813: 1 célula(s) isolada(s) ignorada(s): ['-']
+aviso: pág. 15 y=813: 1 célula(s) isolada(s) ignorada(s): ['-']
+aviso: pág. 16 y=812: 1 célula(s) isolada(s) ignorada(s): ['-']
+aviso: pág. 17 y=812: 1 célula(s) isolada(s) ignorada(s): ['-']
+aviso: pág. 18 y=808: 1 célula(s) isolada(s) ignorada(s): ['-']
+aviso: pág. 19 y=808: 1 célula(s) isolada(s) ignorada(s): ['-']
+pág. 2: A/weekday/fwd: 84 viagens
+pág. 3: A/weekday/rev: 84 viagens
+pág. 4: A/saturday/fwd: 89 viagens
+pág. 5: A/saturday/rev: 90 viagens
+pág. 6: A/sunday_holiday/fwd: 87 viagens
+pág. 7: A/sunday_holiday/rev: 88 viagens
+linha A: 522 viagens -> line-a.json
+pág. 8: B/weekday/fwd: 65 viagens (27 Bx)
+pág. 9: B/weekday/rev: 67 viagens (27 Bx)
+pág. 10: B/saturday/fwd: 51 viagens
+pág. 11: B/saturday/rev: 51 viagens
+pág. 12: B/sunday_holiday/fwd: 49 viagens
+pág. 13: B/sunday_holiday/rev: 49 viagens
+linha B: 332 viagens -> line-b.json
+pág. 14: C/weekday/fwd: 74 viagens (24 Bx)
+pág. 15: C/weekday/rev: 74 viagens (23 Bx)
+pág. 16: C/saturday/fwd: 62 viagens (24 Bx)
+pág. 17: C/saturday/rev: 62 viagens (24 Bx)
+pág. 18: C/sunday_holiday/fwd: 45 viagens (7 Bx)
+pág. 19: C/sunday_holiday/rev: 45 viagens (7 Bx)
+linha C: 362 viagens -> line-c.json
+pág. 20: E/weekday/rev: 67 viagens (29 Bx)
+pág. 21: E/weekday/fwd: 66 viagens (25 Bx)
+pág. 22: E/saturday/rev: 66 viagens (28 Bx)
+pág. 23: E/saturday/fwd: 67 viagens (27 Bx)
+pág. 24: E/sunday_holiday/rev: 66 viagens (28 Bx)
+pág. 25: E/sunday_holiday/fwd: 67 viagens (27 Bx)
+linha E: 399 viagens -> line-e.json
+pág. 26: F/weekday/fwd: 78 viagens
+pág. 27: F/weekday/rev: 77 viagens
+pág. 28: F/saturday/fwd: 45 viagens
+pág. 29: F/saturday/rev: 44 viagens
+pág. 30: F/sunday_holiday/fwd: 44 viagens
+pág. 31: F/sunday_holiday/rev: 43 viagens
+linha F: 331 viagens -> line-f.json
 
-Total de viagens: 332
-Estações (36): Estádio do Dragão, Campanhã, Heroísmo, 24 de Agosto, Bolhão, Trindade, Lapa, Carolina Michaelis, Casa da Música, Francos, Ramalde, Viso, NorteShopping | Sete Bicas, Senhora da Hora, Fonte do Cuco, Custóias, Esposade, Crestins, Verdes, Pedras Rubras, Lidador, Vilar do Pinheiro, Modivas Sul, Modivas Centro, VC Fashion Outlet | Modivas, Mindelo, Espaço Natureza, Varziela, Árvore, Azurara, Santa Clara, Vila do Conde, Alto de Pega, Portas Fronhas, São Brás, Póvoa de Varzim
-
+Linhas extraídas: a, b, c, e, f
 VALIDAÇÃO: OK (0 erro(s))

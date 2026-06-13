@@ -1,14 +1,10 @@
 {
- "schemaVersion": 1,
- "line": {
-  "id": "B",
-  "name": "Linha B",
-  "color": "#E31E24"
- },
+ "line": "b",
+ "demo": false,
  "source": {
-  "file": "horarios_06_04_2026_organized.pdf",
-  "sha256": "eea1bc8e0e19b33acbb52f8223a654df4f6a3a1ed312e1164014965870415eaa",
-  "extractedAt": "2026-06-12T23:07:47Z",
+  "file": "horarios_06_04_2026.pdf",
+  "sha256": "11863abbe998785924b769f5939b266cc33d6079a528ce50b5fd4525eaaf8585",
+  "extractedAt": "2026-06-12T23:39:20Z",
   "publisher": "Metro do Porto",
   "overridesApplied": []
  },
@@ -17,249 +13,13 @@
   "to": null
  },
  "notes": [
-  "Tolerância de +/- 2 minutos para os tempos apresentados.",
-  "Bx: serviço expresso — não para em todas as estações."
+  "Tolerância de +/- 2 minutos para os tempos apresentados."
  ],
- "stations": [
-  {
-   "id": "estadio-do-dragao",
-   "name": "Estádio do Dragão"
-  },
-  {
-   "id": "campanha",
-   "name": "Campanhã"
-  },
-  {
-   "id": "heroismo",
-   "name": "Heroísmo"
-  },
-  {
-   "id": "24-de-agosto",
-   "name": "24 de Agosto"
-  },
-  {
-   "id": "bolhao",
-   "name": "Bolhão"
-  },
-  {
-   "id": "trindade",
-   "name": "Trindade"
-  },
-  {
-   "id": "lapa",
-   "name": "Lapa"
-  },
-  {
-   "id": "carolina-michaelis",
-   "name": "Carolina Michaelis"
-  },
-  {
-   "id": "casa-da-musica",
-   "name": "Casa da Música"
-  },
-  {
-   "id": "francos",
-   "name": "Francos"
-  },
-  {
-   "id": "ramalde",
-   "name": "Ramalde"
-  },
-  {
-   "id": "viso",
-   "name": "Viso"
-  },
-  {
-   "id": "sete-bicas",
-   "name": "NorteShopping | Sete Bicas"
-  },
-  {
-   "id": "senhora-da-hora",
-   "name": "Senhora da Hora"
-  },
-  {
-   "id": "fonte-do-cuco",
-   "name": "Fonte do Cuco"
-  },
-  {
-   "id": "custoias",
-   "name": "Custóias"
-  },
-  {
-   "id": "esposade",
-   "name": "Esposade"
-  },
-  {
-   "id": "crestins",
-   "name": "Crestins"
-  },
-  {
-   "id": "verdes",
-   "name": "Verdes"
-  },
-  {
-   "id": "pedras-rubras",
-   "name": "Pedras Rubras"
-  },
-  {
-   "id": "lidador",
-   "name": "Lidador"
-  },
-  {
-   "id": "vilar-do-pinheiro",
-   "name": "Vilar do Pinheiro"
-  },
-  {
-   "id": "modivas-sul",
-   "name": "Modivas Sul"
-  },
-  {
-   "id": "modivas-centro",
-   "name": "Modivas Centro"
-  },
-  {
-   "id": "modivas",
-   "name": "VC Fashion Outlet | Modivas"
-  },
-  {
-   "id": "mindelo",
-   "name": "Mindelo"
-  },
-  {
-   "id": "espaco-natureza",
-   "name": "Espaço Natureza"
-  },
-  {
-   "id": "varziela",
-   "name": "Varziela"
-  },
-  {
-   "id": "arvore",
-   "name": "Árvore"
-  },
-  {
-   "id": "azurara",
-   "name": "Azurara"
-  },
-  {
-   "id": "santa-clara",
-   "name": "Santa Clara"
-  },
-  {
-   "id": "vila-do-conde",
-   "name": "Vila do Conde"
-  },
-  {
-   "id": "alto-de-pega",
-   "name": "Alto de Pega"
-  },
-  {
-   "id": "portas-fronhas",
-   "name": "Portas Fronhas"
-  },
-  {
-   "id": "sao-bras",
-   "name": "São Brás"
-  },
-  {
-   "id": "povoa-de-varzim",
-   "name": "Póvoa de Varzim"
-  }
- ],
- "directions": {
-  "outbound": {
-   "label": "Estádio do Dragão → Póvoa de Varzim",
-   "stationOrder": [
-    "estadio-do-dragao",
-    "campanha",
-    "heroismo",
-    "24-de-agosto",
-    "bolhao",
-    "trindade",
-    "lapa",
-    "carolina-michaelis",
-    "casa-da-musica",
-    "francos",
-    "ramalde",
-    "viso",
-    "sete-bicas",
-    "senhora-da-hora",
-    "fonte-do-cuco",
-    "custoias",
-    "esposade",
-    "crestins",
-    "verdes",
-    "pedras-rubras",
-    "lidador",
-    "vilar-do-pinheiro",
-    "modivas-sul",
-    "modivas-centro",
-    "modivas",
-    "mindelo",
-    "espaco-natureza",
-    "varziela",
-    "arvore",
-    "azurara",
-    "santa-clara",
-    "vila-do-conde",
-    "alto-de-pega",
-    "portas-fronhas",
-    "sao-bras",
-    "povoa-de-varzim"
-   ]
-  },
-  "inbound": {
-   "label": "Póvoa de Varzim → Estádio do Dragão",
-   "stationOrder": [
-    "povoa-de-varzim",
-    "sao-bras",
-    "portas-fronhas",
-    "alto-de-pega",
-    "vila-do-conde",
-    "santa-clara",
-    "azurara",
-    "arvore",
-    "varziela",
-    "espaco-natureza",
-    "mindelo",
-    "modivas",
-    "modivas-centro",
-    "modivas-sul",
-    "vilar-do-pinheiro",
-    "lidador",
-    "pedras-rubras",
-    "verdes",
-    "crestins",
-    "esposade",
-    "custoias",
-    "fonte-do-cuco",
-    "senhora-da-hora",
-    "sete-bicas",
-    "viso",
-    "ramalde",
-    "francos",
-    "casa-da-musica",
-    "carolina-michaelis",
-    "lapa",
-    "trindade",
-    "bolhao",
-    "24-de-agosto",
-    "heroismo",
-    "campanha",
-    "estadio-do-dragao"
-   ]
-  }
- },
- "dayTypes": {
-  "weekday": "Dias úteis",
-  "saturday": "Sábados",
-  "sunday_holiday": "Domingos e feriados"
- },
  "trips": [
   {
-   "id": "weekday-outbound-000",
+   "id": "b-weekday-fwd-000",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "06:01",
@@ -301,9 +61,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-001",
+   "id": "b-weekday-fwd-001",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "06:29",
@@ -345,9 +105,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-002",
+   "id": "b-weekday-fwd-002",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "06:41",
@@ -389,9 +149,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-003",
+   "id": "b-weekday-fwd-003",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "06:59",
@@ -433,9 +193,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-004",
+   "id": "b-weekday-fwd-004",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "07:11",
@@ -477,9 +237,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-005",
+   "id": "b-weekday-fwd-005",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:30",
@@ -521,9 +281,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-006",
+   "id": "b-weekday-fwd-006",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "07:44",
@@ -565,9 +325,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-007",
+   "id": "b-weekday-fwd-007",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:00",
@@ -609,9 +369,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-008",
+   "id": "b-weekday-fwd-008",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "08:17",
@@ -653,9 +413,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-009",
+   "id": "b-weekday-fwd-009",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:30",
@@ -697,9 +457,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-010",
+   "id": "b-weekday-fwd-010",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "08:48",
@@ -741,9 +501,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-011",
+   "id": "b-weekday-fwd-011",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:00",
@@ -785,9 +545,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-012",
+   "id": "b-weekday-fwd-012",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "09:19",
@@ -829,9 +589,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-013",
+   "id": "b-weekday-fwd-013",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:30",
@@ -873,9 +633,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-014",
+   "id": "b-weekday-fwd-014",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "09:44",
@@ -917,9 +677,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-015",
+   "id": "b-weekday-fwd-015",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:01",
@@ -961,9 +721,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-016",
+   "id": "b-weekday-fwd-016",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "10:16",
@@ -1005,9 +765,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-017",
+   "id": "b-weekday-fwd-017",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:33",
@@ -1049,9 +809,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-018",
+   "id": "b-weekday-fwd-018",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "10:46",
@@ -1093,9 +853,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-019",
+   "id": "b-weekday-fwd-019",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:00",
@@ -1137,9 +897,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-020",
+   "id": "b-weekday-fwd-020",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "11:16",
@@ -1181,9 +941,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-021",
+   "id": "b-weekday-fwd-021",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:31",
@@ -1225,9 +985,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-022",
+   "id": "b-weekday-fwd-022",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "11:46",
@@ -1269,9 +1029,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-023",
+   "id": "b-weekday-fwd-023",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:00",
@@ -1313,9 +1073,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-024",
+   "id": "b-weekday-fwd-024",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "12:16",
@@ -1357,9 +1117,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-025",
+   "id": "b-weekday-fwd-025",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:31",
@@ -1401,9 +1161,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-026",
+   "id": "b-weekday-fwd-026",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "12:46",
@@ -1445,9 +1205,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-027",
+   "id": "b-weekday-fwd-027",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:00",
@@ -1489,9 +1249,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-028",
+   "id": "b-weekday-fwd-028",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "13:16",
@@ -1533,9 +1293,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-029",
+   "id": "b-weekday-fwd-029",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:31",
@@ -1577,9 +1337,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-030",
+   "id": "b-weekday-fwd-030",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "13:46",
@@ -1621,9 +1381,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-031",
+   "id": "b-weekday-fwd-031",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:00",
@@ -1665,9 +1425,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-032",
+   "id": "b-weekday-fwd-032",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "14:16",
@@ -1709,9 +1469,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-033",
+   "id": "b-weekday-fwd-033",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:31",
@@ -1753,9 +1513,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-034",
+   "id": "b-weekday-fwd-034",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "14:46",
@@ -1797,9 +1557,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-035",
+   "id": "b-weekday-fwd-035",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:00",
@@ -1841,9 +1601,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-036",
+   "id": "b-weekday-fwd-036",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "15:15",
@@ -1885,9 +1645,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-037",
+   "id": "b-weekday-fwd-037",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:31",
@@ -1929,9 +1689,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-038",
+   "id": "b-weekday-fwd-038",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "15:46",
@@ -1973,9 +1733,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-039",
+   "id": "b-weekday-fwd-039",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:01",
@@ -2017,9 +1777,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-040",
+   "id": "b-weekday-fwd-040",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "16:15",
@@ -2061,9 +1821,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-041",
+   "id": "b-weekday-fwd-041",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:30",
@@ -2105,9 +1865,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-042",
+   "id": "b-weekday-fwd-042",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "16:45",
@@ -2149,9 +1909,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-043",
+   "id": "b-weekday-fwd-043",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:00",
@@ -2193,9 +1953,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-044",
+   "id": "b-weekday-fwd-044",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "17:12",
@@ -2237,9 +1997,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-045",
+   "id": "b-weekday-fwd-045",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:32",
@@ -2281,9 +2041,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-046",
+   "id": "b-weekday-fwd-046",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "17:45",
@@ -2325,9 +2085,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-047",
+   "id": "b-weekday-fwd-047",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:00",
@@ -2369,9 +2129,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-048",
+   "id": "b-weekday-fwd-048",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "18:12",
@@ -2413,9 +2173,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-049",
+   "id": "b-weekday-fwd-049",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:32",
@@ -2457,9 +2217,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-050",
+   "id": "b-weekday-fwd-050",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "18:45",
@@ -2501,9 +2261,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-051",
+   "id": "b-weekday-fwd-051",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:00",
@@ -2545,9 +2305,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-052",
+   "id": "b-weekday-fwd-052",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "19:12",
@@ -2589,9 +2349,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-053",
+   "id": "b-weekday-fwd-053",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:32",
@@ -2633,9 +2393,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-054",
+   "id": "b-weekday-fwd-054",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "Bx",
    "times": [
     "19:46",
@@ -2677,9 +2437,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-055",
+   "id": "b-weekday-fwd-055",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:02",
@@ -2721,9 +2481,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-056",
+   "id": "b-weekday-fwd-056",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:31",
@@ -2765,9 +2525,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-057",
+   "id": "b-weekday-fwd-057",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:01",
@@ -2809,9 +2569,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-058",
+   "id": "b-weekday-fwd-058",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:31",
@@ -2853,9 +2613,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-059",
+   "id": "b-weekday-fwd-059",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:01",
@@ -2897,9 +2657,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-060",
+   "id": "b-weekday-fwd-060",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:31",
@@ -2941,9 +2701,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-061",
+   "id": "b-weekday-fwd-061",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:01",
@@ -2985,9 +2745,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-062",
+   "id": "b-weekday-fwd-062",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:31",
@@ -3029,9 +2789,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-063",
+   "id": "b-weekday-fwd-063",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:01",
@@ -3073,9 +2833,9 @@
    ]
   },
   {
-   "id": "weekday-outbound-064",
+   "id": "b-weekday-fwd-064",
    "dayType": "weekday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:32",
@@ -3117,9 +2877,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-000",
+   "id": "b-weekday-rev-000",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "05:44",
@@ -3161,9 +2921,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-001",
+   "id": "b-weekday-rev-001",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:19",
@@ -3205,9 +2965,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-002",
+   "id": "b-weekday-rev-002",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "06:40",
@@ -3249,9 +3009,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-003",
+   "id": "b-weekday-rev-003",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:50",
@@ -3293,9 +3053,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-004",
+   "id": "b-weekday-rev-004",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "07:10",
@@ -3337,9 +3097,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-005",
+   "id": "b-weekday-rev-005",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:19",
@@ -3381,9 +3141,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-006",
+   "id": "b-weekday-rev-006",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "07:33",
@@ -3425,9 +3185,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-007",
+   "id": "b-weekday-rev-007",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:38",
@@ -3469,9 +3229,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-008",
+   "id": "b-weekday-rev-008",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:50",
@@ -3513,9 +3273,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-009",
+   "id": "b-weekday-rev-009",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "08:03",
@@ -3557,9 +3317,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-010",
+   "id": "b-weekday-rev-010",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:08",
@@ -3601,9 +3361,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-011",
+   "id": "b-weekday-rev-011",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:20",
@@ -3645,9 +3405,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-012",
+   "id": "b-weekday-rev-012",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "08:40",
@@ -3689,9 +3449,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-013",
+   "id": "b-weekday-rev-013",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:50",
@@ -3733,9 +3493,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-014",
+   "id": "b-weekday-rev-014",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "09:12",
@@ -3777,9 +3537,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-015",
+   "id": "b-weekday-rev-015",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:20",
@@ -3821,9 +3581,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-016",
+   "id": "b-weekday-rev-016",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "09:44",
@@ -3865,9 +3625,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-017",
+   "id": "b-weekday-rev-017",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:50",
@@ -3909,9 +3669,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-018",
+   "id": "b-weekday-rev-018",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "10:14",
@@ -3953,9 +3713,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-019",
+   "id": "b-weekday-rev-019",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:20",
@@ -3997,9 +3757,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-020",
+   "id": "b-weekday-rev-020",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "10:44",
@@ -4041,9 +3801,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-021",
+   "id": "b-weekday-rev-021",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:50",
@@ -4085,9 +3845,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-022",
+   "id": "b-weekday-rev-022",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "11:14",
@@ -4129,9 +3889,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-023",
+   "id": "b-weekday-rev-023",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:21",
@@ -4173,9 +3933,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-024",
+   "id": "b-weekday-rev-024",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "11:44",
@@ -4217,9 +3977,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-025",
+   "id": "b-weekday-rev-025",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:50",
@@ -4261,9 +4021,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-026",
+   "id": "b-weekday-rev-026",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "12:14",
@@ -4305,9 +4065,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-027",
+   "id": "b-weekday-rev-027",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:21",
@@ -4349,9 +4109,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-028",
+   "id": "b-weekday-rev-028",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "12:44",
@@ -4393,9 +4153,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-029",
+   "id": "b-weekday-rev-029",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:50",
@@ -4437,9 +4197,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-030",
+   "id": "b-weekday-rev-030",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "13:14",
@@ -4481,9 +4241,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-031",
+   "id": "b-weekday-rev-031",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:21",
@@ -4525,9 +4285,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-032",
+   "id": "b-weekday-rev-032",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "13:44",
@@ -4569,9 +4329,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-033",
+   "id": "b-weekday-rev-033",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:50",
@@ -4613,9 +4373,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-034",
+   "id": "b-weekday-rev-034",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "14:14",
@@ -4657,9 +4417,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-035",
+   "id": "b-weekday-rev-035",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:21",
@@ -4701,9 +4461,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-036",
+   "id": "b-weekday-rev-036",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "14:44",
@@ -4745,9 +4505,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-037",
+   "id": "b-weekday-rev-037",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:51",
@@ -4789,9 +4549,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-038",
+   "id": "b-weekday-rev-038",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "15:08",
@@ -4833,9 +4593,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-039",
+   "id": "b-weekday-rev-039",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:19",
@@ -4877,9 +4637,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-040",
+   "id": "b-weekday-rev-040",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "15:40",
@@ -4921,9 +4681,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-041",
+   "id": "b-weekday-rev-041",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:50",
@@ -4965,9 +4725,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-042",
+   "id": "b-weekday-rev-042",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "16:11",
@@ -5009,9 +4769,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-043",
+   "id": "b-weekday-rev-043",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:19",
@@ -5053,9 +4813,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-044",
+   "id": "b-weekday-rev-044",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "16:43",
@@ -5097,9 +4857,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-045",
+   "id": "b-weekday-rev-045",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:50",
@@ -5141,9 +4901,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-046",
+   "id": "b-weekday-rev-046",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "17:11",
@@ -5185,9 +4945,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-047",
+   "id": "b-weekday-rev-047",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:19",
@@ -5229,9 +4989,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-048",
+   "id": "b-weekday-rev-048",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "17:43",
@@ -5273,9 +5033,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-049",
+   "id": "b-weekday-rev-049",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:50",
@@ -5317,9 +5077,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-050",
+   "id": "b-weekday-rev-050",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "18:10",
@@ -5361,9 +5121,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-051",
+   "id": "b-weekday-rev-051",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:19",
@@ -5405,9 +5165,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-052",
+   "id": "b-weekday-rev-052",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "18:43",
@@ -5449,9 +5209,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-053",
+   "id": "b-weekday-rev-053",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:50",
@@ -5493,9 +5253,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-054",
+   "id": "b-weekday-rev-054",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "19:15",
@@ -5537,9 +5297,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-055",
+   "id": "b-weekday-rev-055",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:20",
@@ -5581,9 +5341,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-056",
+   "id": "b-weekday-rev-056",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "Bx",
    "times": [
     "19:46",
@@ -5625,9 +5385,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-057",
+   "id": "b-weekday-rev-057",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:51",
@@ -5669,9 +5429,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-058",
+   "id": "b-weekday-rev-058",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:18",
@@ -5713,9 +5473,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-059",
+   "id": "b-weekday-rev-059",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:47",
@@ -5757,9 +5517,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-060",
+   "id": "b-weekday-rev-060",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:17",
@@ -5801,9 +5561,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-061",
+   "id": "b-weekday-rev-061",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:46",
@@ -5845,9 +5605,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-062",
+   "id": "b-weekday-rev-062",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:17",
@@ -5889,9 +5649,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-063",
+   "id": "b-weekday-rev-063",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:49",
@@ -5933,9 +5693,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-064",
+   "id": "b-weekday-rev-064",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:17",
@@ -5977,9 +5737,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-065",
+   "id": "b-weekday-rev-065",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:49",
@@ -6021,9 +5781,9 @@
    ]
   },
   {
-   "id": "weekday-inbound-066",
+   "id": "b-weekday-rev-066",
    "dayType": "weekday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "00:27",
@@ -6065,9 +5825,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-000",
+   "id": "b-saturday-fwd-000",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "05:54",
@@ -6109,9 +5869,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-001",
+   "id": "b-saturday-fwd-001",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "06:33",
@@ -6153,9 +5913,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-002",
+   "id": "b-saturday-fwd-002",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:01",
@@ -6197,9 +5957,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-003",
+   "id": "b-saturday-fwd-003",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:22",
@@ -6241,9 +6001,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-004",
+   "id": "b-saturday-fwd-004",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:40",
@@ -6285,9 +6045,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-005",
+   "id": "b-saturday-fwd-005",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:02",
@@ -6329,9 +6089,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-006",
+   "id": "b-saturday-fwd-006",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:21",
@@ -6373,9 +6133,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-007",
+   "id": "b-saturday-fwd-007",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:43",
@@ -6417,9 +6177,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-008",
+   "id": "b-saturday-fwd-008",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:02",
@@ -6461,9 +6221,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-009",
+   "id": "b-saturday-fwd-009",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:21",
@@ -6505,9 +6265,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-010",
+   "id": "b-saturday-fwd-010",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:43",
@@ -6549,9 +6309,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-011",
+   "id": "b-saturday-fwd-011",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:02",
@@ -6593,9 +6353,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-012",
+   "id": "b-saturday-fwd-012",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:21",
@@ -6637,9 +6397,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-013",
+   "id": "b-saturday-fwd-013",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:43",
@@ -6681,9 +6441,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-014",
+   "id": "b-saturday-fwd-014",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:02",
@@ -6725,9 +6485,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-015",
+   "id": "b-saturday-fwd-015",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:21",
@@ -6769,9 +6529,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-016",
+   "id": "b-saturday-fwd-016",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:43",
@@ -6813,9 +6573,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-017",
+   "id": "b-saturday-fwd-017",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:02",
@@ -6857,9 +6617,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-018",
+   "id": "b-saturday-fwd-018",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:21",
@@ -6901,9 +6661,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-019",
+   "id": "b-saturday-fwd-019",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:43",
@@ -6945,9 +6705,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-020",
+   "id": "b-saturday-fwd-020",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:02",
@@ -6989,9 +6749,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-021",
+   "id": "b-saturday-fwd-021",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:21",
@@ -7033,9 +6793,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-022",
+   "id": "b-saturday-fwd-022",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:43",
@@ -7077,9 +6837,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-023",
+   "id": "b-saturday-fwd-023",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:02",
@@ -7121,9 +6881,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-024",
+   "id": "b-saturday-fwd-024",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:21",
@@ -7165,9 +6925,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-025",
+   "id": "b-saturday-fwd-025",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:43",
@@ -7209,9 +6969,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-026",
+   "id": "b-saturday-fwd-026",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:02",
@@ -7253,9 +7013,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-027",
+   "id": "b-saturday-fwd-027",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:21",
@@ -7297,9 +7057,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-028",
+   "id": "b-saturday-fwd-028",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:43",
@@ -7341,9 +7101,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-029",
+   "id": "b-saturday-fwd-029",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:02",
@@ -7385,9 +7145,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-030",
+   "id": "b-saturday-fwd-030",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:21",
@@ -7429,9 +7189,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-031",
+   "id": "b-saturday-fwd-031",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:43",
@@ -7473,9 +7233,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-032",
+   "id": "b-saturday-fwd-032",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:02",
@@ -7517,9 +7277,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-033",
+   "id": "b-saturday-fwd-033",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:21",
@@ -7561,9 +7321,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-034",
+   "id": "b-saturday-fwd-034",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:43",
@@ -7605,9 +7365,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-035",
+   "id": "b-saturday-fwd-035",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:02",
@@ -7649,9 +7409,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-036",
+   "id": "b-saturday-fwd-036",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:21",
@@ -7693,9 +7453,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-037",
+   "id": "b-saturday-fwd-037",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:43",
@@ -7737,9 +7497,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-038",
+   "id": "b-saturday-fwd-038",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:02",
@@ -7781,9 +7541,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-039",
+   "id": "b-saturday-fwd-039",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:21",
@@ -7825,9 +7585,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-040",
+   "id": "b-saturday-fwd-040",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:43",
@@ -7869,9 +7629,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-041",
+   "id": "b-saturday-fwd-041",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:02",
@@ -7913,9 +7673,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-042",
+   "id": "b-saturday-fwd-042",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:31",
@@ -7957,9 +7717,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-043",
+   "id": "b-saturday-fwd-043",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:02",
@@ -8001,9 +7761,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-044",
+   "id": "b-saturday-fwd-044",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:31",
@@ -8045,9 +7805,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-045",
+   "id": "b-saturday-fwd-045",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:01",
@@ -8089,9 +7849,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-046",
+   "id": "b-saturday-fwd-046",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:31",
@@ -8133,9 +7893,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-047",
+   "id": "b-saturday-fwd-047",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:01",
@@ -8177,9 +7937,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-048",
+   "id": "b-saturday-fwd-048",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:31",
@@ -8221,9 +7981,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-049",
+   "id": "b-saturday-fwd-049",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:01",
@@ -8265,9 +8025,9 @@
    ]
   },
   {
-   "id": "saturday-outbound-050",
+   "id": "b-saturday-fwd-050",
    "dayType": "saturday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:32",
@@ -8309,9 +8069,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-000",
+   "id": "b-saturday-rev-000",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "05:44",
@@ -8353,9 +8113,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-001",
+   "id": "b-saturday-rev-001",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:22",
@@ -8397,9 +8157,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-002",
+   "id": "b-saturday-rev-002",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:49",
@@ -8441,9 +8201,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-003",
+   "id": "b-saturday-rev-003",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:10",
@@ -8485,9 +8245,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-004",
+   "id": "b-saturday-rev-004",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:31",
@@ -8529,9 +8289,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-005",
+   "id": "b-saturday-rev-005",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:50",
@@ -8573,9 +8333,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-006",
+   "id": "b-saturday-rev-006",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:09",
@@ -8617,9 +8377,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-007",
+   "id": "b-saturday-rev-007",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:31",
@@ -8661,9 +8421,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-008",
+   "id": "b-saturday-rev-008",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:50",
@@ -8705,9 +8465,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-009",
+   "id": "b-saturday-rev-009",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:09",
@@ -8749,9 +8509,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-010",
+   "id": "b-saturday-rev-010",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:31",
@@ -8793,9 +8553,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-011",
+   "id": "b-saturday-rev-011",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:50",
@@ -8837,9 +8597,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-012",
+   "id": "b-saturday-rev-012",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:09",
@@ -8881,9 +8641,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-013",
+   "id": "b-saturday-rev-013",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:31",
@@ -8925,9 +8685,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-014",
+   "id": "b-saturday-rev-014",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:50",
@@ -8969,9 +8729,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-015",
+   "id": "b-saturday-rev-015",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:09",
@@ -9013,9 +8773,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-016",
+   "id": "b-saturday-rev-016",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:31",
@@ -9057,9 +8817,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-017",
+   "id": "b-saturday-rev-017",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:50",
@@ -9101,9 +8861,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-018",
+   "id": "b-saturday-rev-018",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:09",
@@ -9145,9 +8905,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-019",
+   "id": "b-saturday-rev-019",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:31",
@@ -9189,9 +8949,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-020",
+   "id": "b-saturday-rev-020",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:50",
@@ -9233,9 +8993,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-021",
+   "id": "b-saturday-rev-021",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:09",
@@ -9277,9 +9037,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-022",
+   "id": "b-saturday-rev-022",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:31",
@@ -9321,9 +9081,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-023",
+   "id": "b-saturday-rev-023",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:50",
@@ -9365,9 +9125,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-024",
+   "id": "b-saturday-rev-024",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:09",
@@ -9409,9 +9169,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-025",
+   "id": "b-saturday-rev-025",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:31",
@@ -9453,9 +9213,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-026",
+   "id": "b-saturday-rev-026",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:50",
@@ -9497,9 +9257,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-027",
+   "id": "b-saturday-rev-027",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:09",
@@ -9541,9 +9301,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-028",
+   "id": "b-saturday-rev-028",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:31",
@@ -9585,9 +9345,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-029",
+   "id": "b-saturday-rev-029",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:50",
@@ -9629,9 +9389,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-030",
+   "id": "b-saturday-rev-030",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:09",
@@ -9673,9 +9433,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-031",
+   "id": "b-saturday-rev-031",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:31",
@@ -9717,9 +9477,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-032",
+   "id": "b-saturday-rev-032",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:50",
@@ -9761,9 +9521,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-033",
+   "id": "b-saturday-rev-033",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:09",
@@ -9805,9 +9565,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-034",
+   "id": "b-saturday-rev-034",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:31",
@@ -9849,9 +9609,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-035",
+   "id": "b-saturday-rev-035",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:50",
@@ -9893,9 +9653,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-036",
+   "id": "b-saturday-rev-036",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:09",
@@ -9937,9 +9697,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-037",
+   "id": "b-saturday-rev-037",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:31",
@@ -9981,9 +9741,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-038",
+   "id": "b-saturday-rev-038",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:50",
@@ -10025,9 +9785,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-039",
+   "id": "b-saturday-rev-039",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:09",
@@ -10069,9 +9829,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-040",
+   "id": "b-saturday-rev-040",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:31",
@@ -10113,9 +9873,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-041",
+   "id": "b-saturday-rev-041",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:49",
@@ -10157,9 +9917,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-042",
+   "id": "b-saturday-rev-042",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:17",
@@ -10201,9 +9961,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-043",
+   "id": "b-saturday-rev-043",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:47",
@@ -10245,9 +10005,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-044",
+   "id": "b-saturday-rev-044",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:17",
@@ -10289,9 +10049,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-045",
+   "id": "b-saturday-rev-045",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:47",
@@ -10333,9 +10093,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-046",
+   "id": "b-saturday-rev-046",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:17",
@@ -10377,9 +10137,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-047",
+   "id": "b-saturday-rev-047",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:49",
@@ -10421,9 +10181,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-048",
+   "id": "b-saturday-rev-048",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:17",
@@ -10465,9 +10225,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-049",
+   "id": "b-saturday-rev-049",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:49",
@@ -10509,9 +10269,9 @@
    ]
   },
   {
-   "id": "saturday-inbound-050",
+   "id": "b-saturday-rev-050",
    "dayType": "saturday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "00:27",
@@ -10553,9 +10313,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-000",
+   "id": "b-sunday_holiday-fwd-000",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "05:54",
@@ -10597,9 +10357,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-001",
+   "id": "b-sunday_holiday-fwd-001",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "06:33",
@@ -10641,9 +10401,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-002",
+   "id": "b-sunday_holiday-fwd-002",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:10",
@@ -10685,9 +10445,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-003",
+   "id": "b-sunday_holiday-fwd-003",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "07:31",
@@ -10729,9 +10489,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-004",
+   "id": "b-sunday_holiday-fwd-004",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:01",
@@ -10773,9 +10533,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-005",
+   "id": "b-sunday_holiday-fwd-005",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "08:31",
@@ -10817,9 +10577,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-006",
+   "id": "b-sunday_holiday-fwd-006",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:00",
@@ -10861,9 +10621,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-007",
+   "id": "b-sunday_holiday-fwd-007",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:21",
@@ -10905,9 +10665,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-008",
+   "id": "b-sunday_holiday-fwd-008",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "09:46",
@@ -10949,9 +10709,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-009",
+   "id": "b-sunday_holiday-fwd-009",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:02",
@@ -10993,9 +10753,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-010",
+   "id": "b-sunday_holiday-fwd-010",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:22",
@@ -11037,9 +10797,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-011",
+   "id": "b-sunday_holiday-fwd-011",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "10:43",
@@ -11081,9 +10841,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-012",
+   "id": "b-sunday_holiday-fwd-012",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:02",
@@ -11125,9 +10885,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-013",
+   "id": "b-sunday_holiday-fwd-013",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:21",
@@ -11169,9 +10929,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-014",
+   "id": "b-sunday_holiday-fwd-014",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "11:43",
@@ -11213,9 +10973,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-015",
+   "id": "b-sunday_holiday-fwd-015",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:02",
@@ -11257,9 +11017,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-016",
+   "id": "b-sunday_holiday-fwd-016",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:21",
@@ -11301,9 +11061,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-017",
+   "id": "b-sunday_holiday-fwd-017",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "12:43",
@@ -11345,9 +11105,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-018",
+   "id": "b-sunday_holiday-fwd-018",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:02",
@@ -11389,9 +11149,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-019",
+   "id": "b-sunday_holiday-fwd-019",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:21",
@@ -11433,9 +11193,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-020",
+   "id": "b-sunday_holiday-fwd-020",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "13:43",
@@ -11477,9 +11237,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-021",
+   "id": "b-sunday_holiday-fwd-021",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:02",
@@ -11521,9 +11281,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-022",
+   "id": "b-sunday_holiday-fwd-022",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:22",
@@ -11565,9 +11325,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-023",
+   "id": "b-sunday_holiday-fwd-023",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "14:43",
@@ -11609,9 +11369,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-024",
+   "id": "b-sunday_holiday-fwd-024",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:02",
@@ -11653,9 +11413,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-025",
+   "id": "b-sunday_holiday-fwd-025",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:21",
@@ -11697,9 +11457,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-026",
+   "id": "b-sunday_holiday-fwd-026",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "15:43",
@@ -11741,9 +11501,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-027",
+   "id": "b-sunday_holiday-fwd-027",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:02",
@@ -11785,9 +11545,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-028",
+   "id": "b-sunday_holiday-fwd-028",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:21",
@@ -11829,9 +11589,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-029",
+   "id": "b-sunday_holiday-fwd-029",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "16:43",
@@ -11873,9 +11633,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-030",
+   "id": "b-sunday_holiday-fwd-030",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:02",
@@ -11917,9 +11677,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-031",
+   "id": "b-sunday_holiday-fwd-031",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:21",
@@ -11961,9 +11721,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-032",
+   "id": "b-sunday_holiday-fwd-032",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "17:43",
@@ -12005,9 +11765,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-033",
+   "id": "b-sunday_holiday-fwd-033",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:02",
@@ -12049,9 +11809,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-034",
+   "id": "b-sunday_holiday-fwd-034",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:21",
@@ -12093,9 +11853,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-035",
+   "id": "b-sunday_holiday-fwd-035",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "18:43",
@@ -12137,9 +11897,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-036",
+   "id": "b-sunday_holiday-fwd-036",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:02",
@@ -12181,9 +11941,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-037",
+   "id": "b-sunday_holiday-fwd-037",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:21",
@@ -12225,9 +11985,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-038",
+   "id": "b-sunday_holiday-fwd-038",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "19:43",
@@ -12269,9 +12029,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-039",
+   "id": "b-sunday_holiday-fwd-039",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:02",
@@ -12313,9 +12073,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-040",
+   "id": "b-sunday_holiday-fwd-040",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "20:31",
@@ -12357,9 +12117,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-041",
+   "id": "b-sunday_holiday-fwd-041",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:02",
@@ -12401,9 +12161,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-042",
+   "id": "b-sunday_holiday-fwd-042",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "21:31",
@@ -12445,9 +12205,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-043",
+   "id": "b-sunday_holiday-fwd-043",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:01",
@@ -12489,9 +12249,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-044",
+   "id": "b-sunday_holiday-fwd-044",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "22:31",
@@ -12533,9 +12293,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-045",
+   "id": "b-sunday_holiday-fwd-045",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:01",
@@ -12577,9 +12337,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-046",
+   "id": "b-sunday_holiday-fwd-046",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "23:31",
@@ -12621,9 +12381,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-047",
+   "id": "b-sunday_holiday-fwd-047",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:01",
@@ -12665,9 +12425,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-outbound-048",
+   "id": "b-sunday_holiday-fwd-048",
    "dayType": "sunday_holiday",
-   "direction": "outbound",
+   "dir": "fwd",
    "service": "B",
    "times": [
     "00:32",
@@ -12709,9 +12469,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-000",
+   "id": "b-sunday_holiday-rev-000",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "05:44",
@@ -12753,9 +12513,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-001",
+   "id": "b-sunday_holiday-rev-001",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:21",
@@ -12797,9 +12557,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-002",
+   "id": "b-sunday_holiday-rev-002",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "06:48",
@@ -12841,9 +12601,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-003",
+   "id": "b-sunday_holiday-rev-003",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:19",
@@ -12885,9 +12645,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-004",
+   "id": "b-sunday_holiday-rev-004",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "07:48",
@@ -12929,9 +12689,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-005",
+   "id": "b-sunday_holiday-rev-005",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:19",
@@ -12973,9 +12733,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-006",
+   "id": "b-sunday_holiday-rev-006",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "08:47",
@@ -13017,9 +12777,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-007",
+   "id": "b-sunday_holiday-rev-007",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:12",
@@ -13061,9 +12821,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-008",
+   "id": "b-sunday_holiday-rev-008",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:32",
@@ -13105,9 +12865,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-009",
+   "id": "b-sunday_holiday-rev-009",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "09:50",
@@ -13149,9 +12909,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-010",
+   "id": "b-sunday_holiday-rev-010",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:09",
@@ -13193,9 +12953,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-011",
+   "id": "b-sunday_holiday-rev-011",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:31",
@@ -13237,9 +12997,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-012",
+   "id": "b-sunday_holiday-rev-012",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "10:50",
@@ -13281,9 +13041,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-013",
+   "id": "b-sunday_holiday-rev-013",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:09",
@@ -13325,9 +13085,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-014",
+   "id": "b-sunday_holiday-rev-014",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:31",
@@ -13369,9 +13129,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-015",
+   "id": "b-sunday_holiday-rev-015",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "11:50",
@@ -13413,9 +13173,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-016",
+   "id": "b-sunday_holiday-rev-016",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:09",
@@ -13457,9 +13217,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-017",
+   "id": "b-sunday_holiday-rev-017",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:31",
@@ -13501,9 +13261,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-018",
+   "id": "b-sunday_holiday-rev-018",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "12:50",
@@ -13545,9 +13305,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-019",
+   "id": "b-sunday_holiday-rev-019",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:09",
@@ -13589,9 +13349,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-020",
+   "id": "b-sunday_holiday-rev-020",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:32",
@@ -13633,9 +13393,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-021",
+   "id": "b-sunday_holiday-rev-021",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "13:50",
@@ -13677,9 +13437,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-022",
+   "id": "b-sunday_holiday-rev-022",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:09",
@@ -13721,9 +13481,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-023",
+   "id": "b-sunday_holiday-rev-023",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:31",
@@ -13765,9 +13525,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-024",
+   "id": "b-sunday_holiday-rev-024",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "14:50",
@@ -13809,9 +13569,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-025",
+   "id": "b-sunday_holiday-rev-025",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:09",
@@ -13853,9 +13613,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-026",
+   "id": "b-sunday_holiday-rev-026",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:31",
@@ -13897,9 +13657,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-027",
+   "id": "b-sunday_holiday-rev-027",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "15:50",
@@ -13941,9 +13701,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-028",
+   "id": "b-sunday_holiday-rev-028",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:09",
@@ -13985,9 +13745,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-029",
+   "id": "b-sunday_holiday-rev-029",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:31",
@@ -14029,9 +13789,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-030",
+   "id": "b-sunday_holiday-rev-030",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "16:50",
@@ -14073,9 +13833,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-031",
+   "id": "b-sunday_holiday-rev-031",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:09",
@@ -14117,9 +13877,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-032",
+   "id": "b-sunday_holiday-rev-032",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:31",
@@ -14161,9 +13921,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-033",
+   "id": "b-sunday_holiday-rev-033",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "17:50",
@@ -14205,9 +13965,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-034",
+   "id": "b-sunday_holiday-rev-034",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:09",
@@ -14249,9 +14009,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-035",
+   "id": "b-sunday_holiday-rev-035",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:31",
@@ -14293,9 +14053,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-036",
+   "id": "b-sunday_holiday-rev-036",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "18:50",
@@ -14337,9 +14097,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-037",
+   "id": "b-sunday_holiday-rev-037",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:09",
@@ -14381,9 +14141,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-038",
+   "id": "b-sunday_holiday-rev-038",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:31",
@@ -14425,9 +14185,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-039",
+   "id": "b-sunday_holiday-rev-039",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "19:49",
@@ -14469,9 +14229,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-040",
+   "id": "b-sunday_holiday-rev-040",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:17",
@@ -14513,9 +14273,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-041",
+   "id": "b-sunday_holiday-rev-041",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "20:47",
@@ -14557,9 +14317,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-042",
+   "id": "b-sunday_holiday-rev-042",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:17",
@@ -14601,9 +14361,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-043",
+   "id": "b-sunday_holiday-rev-043",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "21:47",
@@ -14645,9 +14405,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-044",
+   "id": "b-sunday_holiday-rev-044",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:17",
@@ -14689,9 +14449,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-045",
+   "id": "b-sunday_holiday-rev-045",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "22:49",
@@ -14733,9 +14493,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-046",
+   "id": "b-sunday_holiday-rev-046",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:17",
@@ -14777,9 +14537,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-047",
+   "id": "b-sunday_holiday-rev-047",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "23:49",
@@ -14821,9 +14581,9 @@
    ]
   },
   {
-   "id": "sunday_holiday-inbound-048",
+   "id": "b-sunday_holiday-rev-048",
    "dayType": "sunday_holiday",
-   "direction": "inbound",
+   "dir": "rev",
    "service": "B",
    "times": [
     "00:27",

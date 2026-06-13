@@ -1,11 +1,11 @@
 rede: 85 estações, 6 linhas
 estações servidas por mais de uma linha: 19
-AVISO: 85 estações sem zona Andante atribuída — o preço não será calculado em percursos que as atravessem (preencher em data/network.json, ver zonesNote)
-linha A: 688 viagens (DEMO)
+zonas: 14 (estimadas)
+linha A: 522 viagens
 linha B: 332 viagens
-linha C: 560 viagens (DEMO)
+linha C: 362 viagens
 linha D: 688 viagens (DEMO)
-linha E: 448 viagens (DEMO)
-linha F: 560 viagens (DEMO)
+linha E: 399 viagens
+linha F: 331 viagens
 
 VALIDAÇÃO: OK (0 erro(s))

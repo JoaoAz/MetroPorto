@@ -37,8 +37,8 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
   check('D5 dados reais (não demo)', r.best.demo === false);
   check('D6 alternativas seguintes ordenadas',
     r.following.every((o, i, a) => i === 0 || a[i - 1].depMin <= o.depMin));
-  check('D7 preço indisponível com razão clara (zonas por validar)',
-    r.best.price.available === false && /zonas/.test(r.best.price.reason), r.best.price);
+  check('D7 preço estimado disponível', r.best.price.available === true &&
+    r.best.price.estimated === true && /^Z\d+$/.test(r.best.price.title), r.best.price);
 }
 
 // ================================================== sentido e filtro de linha
@@ -97,6 +97,12 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
   const fixture = {
     network: {
       transferMinMinutes: 4,
+      zonesEstimated: false,
+      zones: {
+        A: { adjacent: ['B'] },
+        B: { adjacent: ['A', 'C'] },
+        C: { adjacent: ['B'] }
+      },
       stations: [
         { id: 's1', name: 'Um', aliases: [], zones: ['A'], lines: ['x'] },
         { id: 's2', name: 'Dois', aliases: [], zones: ['A', 'B'], lines: ['x'] },
@@ -126,17 +132,17 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
   const rt = createRouter(fixture);
   const NOW = new Date(2026, 5, 11, 9, 0);
 
-  // zona em fronteira conta uma vez: s1(A) s2(A|B) s3(B) -> 2 zonas
-  const zc = rt.zoneCount(['s1', 's2', 's3']);
-  check('Z1 estação multi-zona minimiza contagem', zc.count === 2, zc);
-  const zc2 = rt.zoneCount(['s2', 's3']);
-  check('Z2 mínimo de zonas do percurso é 1, título Z2', zc2.count === 1, zc2);
-  const zc3 = rt.zoneCount(['s3', 's5', 's6']);
+  // anéis: s1(A) -> s3(B) = 1 anel a partir de A -> título de 2
+  const zc = rt.ringTicket(['s1', 's2', 's3']);
+  check('Z1 fronteira favorável: A->B = 2 anéis', zc.rings === 2, zc);
+  const zc2 = rt.ringTicket(['s2', 's3']);
+  check('Z2 origem em fronteira escolhe a melhor zona (1 anel)', zc2.rings === 1, zc2);
+  const zc3 = rt.ringTicket(['s3', 's5', 's6']);
   check('Z3 estação sem zona -> indisponível', zc3.available === false, zc3);
 
   const p = rt.plan('s1', 's4', NOW);
-  check('Z4 preço calculado: 3 zonas = 1.5', p.best.price.available &&
-    p.best.price.zoneCount === 3 && p.best.price.price === 1.5, p.best.price);
+  check('Z4 A->C: 2 anéis de distância = Z3 = 1.5', p.best.price.available &&
+    p.best.price.title === 'Z3' && p.best.price.price === 1.5, p.best.price);
 
   // transbordo demasiado justo: X chega a s3 às 10:10, Y das 10:12 perde-se
   // (10:10 + 4 > 10:12) -> tem de apanhar o Y das 10:30
@@ -150,6 +156,27 @@ const THU = new Date(2026, 5, 11, 8, 0); // quinta-feira, 08:00
   const u = rt.plan('s1', 's6', NOW);
   check('Z7 percurso ok, preço indisponível', u.state === 'ok' &&
     u.best.price.available === false, u.best.price);
+}
+
+// ====================== calibração com exemplos oficiais Andante (dados reais)
+{
+  const cases = [
+    ['trindade', 'senhora-da-hora', 'Z2'],   // FAQ Andante: Z2
+    ['trindade', 'pedras-rubras', 'Z4'],     // FAQ Andante: Z4
+    ['trindade', 'mindelo', 'Z5'],            // validação manual do mapa Andante
+    ['trindade', 'aeroporto', 'Z4'],
+    ['trindade', 'povoa-de-varzim', 'Z7'],
+    ['povoa-de-varzim', 'fanzeres', 'Z9']
+  ];
+  cases.forEach(([o, d, expected], i) => {
+    const r = router.plan(o, d, THU);
+    const got = r.best && r.best.price && r.best.price.title;
+    check(`A${i + 1} ${o} -> ${d} = ${expected}`, got === expected,
+      r.best && r.best.price);
+  });
+  const r = router.plan('trindade', 'aeroporto', THU);
+  check('A6 preço marcado como estimativa', r.best.price.estimated === true);
+  check('A7 dados reais da linha E (não demo)', r.best.demo === false, r.best.legs);
 }
 
 console.log(failures ? `\n${failures} teste(s) falharam` : '\nTodos os testes passaram');
