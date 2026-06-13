@@ -316,10 +316,11 @@
       var candidates = candidateRoutes(originId, destId, opts.lineFilter || null);
       if (!candidates.length) return { state: 'none' };
 
-      var ctx = engine.serviceContext(now);
+      var calendarDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var nowMin = now.getHours() * 60 + now.getMinutes();
       var dayType = opts.dayTypeOverride ||
-        engine.dayTypeFor(ctx.serviceDate, holidays);
-      var startMin = opts.dayTypeOverride ? 0 : ctx.nowMin;
+        engine.dayTypeFor(calendarDate, holidays);
+      var startMin = opts.dayTypeOverride ? 0 : nowMin;
 
       function evaluateAll(dt, t0) {
         var timed = [], untimed = [];
@@ -340,8 +341,8 @@
       var state = 'ok', usedDayType = dayType, nextServiceDate = null;
 
       if (!res.timed.length && !opts.dayTypeOverride) {
-        // sem mais viagens no dia de serviço atual -> dia seguinte
-        nextServiceDate = new Date(ctx.serviceDate.getTime());
+        // sem mais viagens no dia civil atual -> dia seguinte
+        nextServiceDate = new Date(calendarDate.getTime());
         nextServiceDate.setDate(nextServiceDate.getDate() + 1);
         usedDayType = engine.dayTypeFor(nextServiceDate, holidays);
         res = evaluateAll(usedDayType, 0);
@@ -379,12 +380,12 @@
       return {
         state: res.timed.length ? state : 'untimed',
         dayType: usedDayType,
-        serviceDate: ctx.serviceDate,
+        serviceDate: calendarDate,
         nextServiceDate: nextServiceDate,
         best: res.timed[0] || null,
         following: following,
         untimedRoutes: untimedRoutes,
-        nowMin: ctx.nowMin
+        nowMin: nowMin
       };
     }
 
