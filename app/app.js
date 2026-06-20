@@ -255,6 +255,7 @@
       card.appendChild(badge('Linha D: horário estimado', 'estimated',
         'Horário gerado por frequência a partir das imagens fornecidas; confirmar no operador.'));
     }
+    if (opts.highlight) card.appendChild(renderShareButton());
     return card;
   }
 
@@ -271,6 +272,88 @@
       return { origin: state.origin, dest: state.dest, lineFilter: null };
     }
     return { origin: state.lineOrigin, dest: state.lineDest, lineFilter: state.line };
+  }
+
+  // ---------------------------------------------------------- URL partilhável
+  function buildShareUrl() {
+    var p = new URLSearchParams();
+    if (state.mode === 'line') {
+      p.set('modo', 'linha');
+      if (state.line) p.set('linha', state.line);
+      if (state.lineOrigin) p.set('de', state.lineOrigin);
+      if (state.lineDest) p.set('para', state.lineDest);
+    } else {
+      if (state.origin) p.set('de', state.origin);
+      if (state.dest) p.set('para', state.dest);
+    }
+    var di = document.getElementById('travel-date');
+    if (di.value && di.value !== dateISO(new Date())) p.set('data', di.value);
+    var qs = p.toString();
+    return location.origin + location.pathname + (qs ? '?' + qs : '');
+  }
+
+  function syncUrl() {
+    try {
+      var url = buildShareUrl();
+      if (url !== location.href) history.replaceState(null, '', url);
+    } catch (e) { /* file:// ou indisponível */ }
+  }
+
+  // Lê o estado a partir do URL; devolve true se havia algo para aplicar.
+  function readUrlState() {
+    var p = new URLSearchParams(location.search);
+    if (!['de', 'para', 'linha', 'modo', 'data'].some(function (k) { return p.has(k); })) {
+      return false;
+    }
+    var de = p.get('de'), para = p.get('para');
+    if (p.get('modo') === 'linha' || p.has('linha')) {
+      state.mode = 'line';
+      if (de && router.station(de)) state.lineOrigin = de;
+      if (para && router.station(para)) state.lineDest = para;
+      var ln = p.get('linha');
+      if (ln && router.line(ln)) state.line = ln;
+    } else {
+      state.mode = 'plan';
+      if (de && router.station(de)) state.origin = de;
+      if (para && router.station(para)) state.dest = para;
+    }
+    var data = p.get('data');
+    if (data && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
+      document.getElementById('travel-date').value = data;
+    }
+    return true;
+  }
+
+  function shareCurrent(btn) {
+    var url = buildShareUrl();
+    var oId = state.mode === 'line' ? state.lineOrigin : state.origin;
+    var dId = state.mode === 'line' ? state.lineDest : state.dest;
+    var text = 'Metro do Porto: ' + stationName(oId) + ' → ' + stationName(dId);
+    if (navigator.share) {
+      navigator.share({ title: 'Horários Metro do Porto', text: text, url: url })
+        .catch(function () { /* cancelado */ });
+      return;
+    }
+    var done = function () {
+      var original = btn.textContent;
+      btn.textContent = '✓ Link copiado';
+      btn.classList.add('copied');
+      setTimeout(function () { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copie o link:', url); });
+    } else {
+      window.prompt('Copie o link:', url);
+    }
+  }
+
+  function renderShareButton() {
+    var row = el('div', 'share-row');
+    var btn = el('button', 'share-btn', '⤴ Partilhar viagem');
+    btn.type = 'button';
+    btn.addEventListener('click', function () { shareCurrent(btn); });
+    row.appendChild(btn);
+    return row;
   }
 
   function dateISO(d) {
@@ -318,6 +401,7 @@
       fmtDate(qctx.selected) + ' · ' + DAY_LABEL[autoDay];
     renderDateChip(qctx);
 
+    syncUrl();
     resultEl.textContent = '';
     var q = currentQuery();
 
@@ -478,18 +562,23 @@
   dateInput.value = dateISO(new Date());
   dateInput.min = dateISO(new Date());
   buildLineChips();
-  var prefs = loadPrefs();
-  if (prefs.origin && router.station(prefs.origin)) {
-    state.origin = prefs.origin; originAC.set(prefs.origin);
+
+  // O URL (link partilhado) tem prioridade sobre as preferências guardadas.
+  var fromUrl = readUrlState();
+  if (!fromUrl) {
+    var prefs = loadPrefs();
+    state.mode = prefs.mode === 'line' ? 'line' : 'plan';
+    if (prefs.origin && router.station(prefs.origin)) state.origin = prefs.origin;
+    if (prefs.dest && router.station(prefs.dest)) state.dest = prefs.dest;
+    state.lineOrigin = prefs.lineOrigin || null;
+    state.lineDest = prefs.lineDest || null;
+    if (prefs.line && router.line(prefs.line)) state.line = prefs.line;
   }
-  if (prefs.dest && router.station(prefs.dest)) {
-    state.dest = prefs.dest; destAC.set(prefs.dest);
-  }
-  state.lineOrigin = prefs.lineOrigin || null;
-  state.lineDest = prefs.lineDest || null;
-  if (prefs.line && router.line(prefs.line)) pickLine(prefs.line);
+  originAC.set(state.origin);
+  destAC.set(state.dest);
+  if (state.line) pickLine(state.line);
   renderStaticInfo();
-  setMode(prefs.mode === 'line' ? 'line' : 'plan');
+  setMode(state.mode);
   setInterval(render, REFRESH_MS);
 
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {

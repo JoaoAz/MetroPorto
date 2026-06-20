@@ -2,8 +2,9 @@
 
 Web app estatica (HTML/CSS/JS puro, sem build nem backend) para planear viagens
 na rede publicada do Metro do Porto: proximos horarios, percursos diretos ou com
-transbordo, duracao, zonas Andante e preco estimado. Funciona offline (PWA) e
-sem servicos externos.
+transbordo, duracao, zonas Andante e preco estimado. Cada viagem tem um URL
+proprio (`?de=...&para=...&data=...`) para guardar nos favoritos ou partilhar.
+Funciona offline (PWA) e sem servicos externos.
 
 App publicada: <https://horarios-metro.pt/> (tambem em
 <https://joaoaz.github.io/MetroPorto/>). O dominio proprio e servido pelo

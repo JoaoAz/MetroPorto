@@ -104,6 +104,66 @@
     } catch (e) { /* sem persistência */ }
   }
 
+  function buildShareUrl() {
+    var p = new URLSearchParams();
+    if (state.origin) p.set('de', state.origin);
+    if (state.dest) p.set('para', state.dest);
+    var di = document.getElementById('bus-date');
+    if (di.value && di.value !== dateISO(new Date())) p.set('data', di.value);
+    var qs = p.toString();
+    return location.origin + location.pathname + (qs ? '?' + qs : '');
+  }
+
+  function syncUrl() {
+    try {
+      var url = buildShareUrl();
+      if (url !== location.href) history.replaceState(null, '', url);
+    } catch (e) { /* indisponível */ }
+  }
+
+  function readUrlState() {
+    var p = new URLSearchParams(location.search);
+    if (!p.has('de') && !p.has('para') && !p.has('data')) return false;
+    var de = p.get('de'), para = p.get('para');
+    if (de && stopsById[de]) state.origin = de;
+    if (para && stopsById[para]) state.dest = para;
+    var data = p.get('data');
+    if (data && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
+      document.getElementById('bus-date').value = data;
+    }
+    return true;
+  }
+
+  function shareCurrent(btn) {
+    var url = buildShareUrl();
+    var text = 'Autocarros UNIR: ' + stationName(state.origin) + ' → ' + stationName(state.dest);
+    if (navigator.share) {
+      navigator.share({ title: 'Horários de autocarros UNIR', text: text, url: url })
+        .catch(function () { /* cancelado */ });
+      return;
+    }
+    var done = function () {
+      var original = btn.textContent;
+      btn.textContent = '✓ Link copiado';
+      btn.classList.add('copied');
+      setTimeout(function () { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copie o link:', url); });
+    } else {
+      window.prompt('Copie o link:', url);
+    }
+  }
+
+  function renderShareButton() {
+    var row = el('div', 'share-row');
+    var btn = el('button', 'share-btn', '⤴ Partilhar viagem');
+    btn.type = 'button';
+    btn.addEventListener('click', function () { shareCurrent(btn); });
+    row.appendChild(btn);
+    return row;
+  }
+
   function searchStops(query, limit) {
     var q = normalize(query);
     if (!q) return [];
@@ -318,6 +378,7 @@
     line.appendChild(text);
     card.appendChild(line);
     card.appendChild(el('p', 'bus-route-note', stationName(journey.from) + ' -> ' + stationName(journey.to)));
+    if (opts.highlight) card.appendChild(renderShareButton());
     return card;
   }
 
@@ -336,6 +397,7 @@
     var now = new Date();
     var qctx = queryContext(now);
     renderDateChip(qctx);
+    syncUrl();
     resultEl.textContent = '';
 
     if (!state.origin || !state.dest) {
@@ -405,15 +467,14 @@
   dateInput.value = dateISO(new Date());
   dateInput.min = dateISO(new Date());
 
-  var prefs = loadPrefs();
-  if (prefs.origin && stopsById[prefs.origin]) {
-    state.origin = prefs.origin;
-    originAC.set(prefs.origin);
+  // O URL (link partilhado) tem prioridade sobre as preferências guardadas.
+  if (!readUrlState()) {
+    var prefs = loadPrefs();
+    if (prefs.origin && stopsById[prefs.origin]) state.origin = prefs.origin;
+    if (prefs.dest && stopsById[prefs.dest]) state.dest = prefs.dest;
   }
-  if (prefs.dest && stopsById[prefs.dest]) {
-    state.dest = prefs.dest;
-    destAC.set(prefs.dest);
-  }
+  originAC.set(state.origin);
+  destAC.set(state.dest);
 
   document.getElementById('bus-summary').textContent =
     allLines.length + ' linhas, ' + DATA.stops.length +
