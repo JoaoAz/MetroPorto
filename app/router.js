@@ -1,17 +1,3 @@
-/*
- * router.js — Planeador de percursos (lógica pura, sem DOM).
- * Constrói índices sobre os dados (window.METRO), pesquisa estações,
- * enumera percursos candidatos (direto, 1 ou 2 transbordos) e valida-os
- * contra os horários reais, devolvendo opções ordenadas por hora de chegada.
- *
- * Algoritmo: a rede é pequena (~85 estações, 6 linhas, topologia em árvore com
- * tronco comum), por isso não se justifica Dijkstra/RAPTOR. Enumeramos
- * sequências de linhas possíveis (poucas dezenas), escolhemos as melhores
- * estações de transbordo pela contagem de paragens e validamos cada candidato
- * com os horários (próxima partida >= instante, tempo mínimo de transbordo,
- * madrugada com minutos de serviço > 1440). Errado seria BFS sem horários
- * (ignora esperas reais); excessivo seria um motor time-expanded completo.
- */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     module.exports = factory(require('./engine.js'));

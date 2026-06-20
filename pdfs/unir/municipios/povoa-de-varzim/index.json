@@ -1,0 +1,92 @@
+﻿{
+    "generatedAt":  "2026-06-15T22:42:30.1018804Z",
+    "sourceIndex":  "pdfs/unir/UT3/index.json",
+    "municipality":  "Póvoa de Varzim",
+    "lineCount":  12,
+    "files":  [
+                  {
+                      "codamp":  3001,
+                      "designa":  "Paranho - Portas Fronhas (Metro) (via Travassos)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3001.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3001.pdf"
+                  },
+                  {
+                      "codamp":  3002,
+                      "designa":  "Agra - Portas Fronhas (Metro) (via Giesteira)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3002.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3002.pdf"
+                  },
+                  {
+                      "codamp":  3003,
+                      "designa":  "Balazar - Portas Fronhas (Metro) (via Guardães)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3003.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3003.pdf"
+                  },
+                  {
+                      "codamp":  3004,
+                      "designa":  "Balazar - Portas Fronhas (Metro) (via Águas Férreas)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3004.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3004.pdf"
+                  },
+                  {
+                      "codamp":  3005,
+                      "designa":  "Águas Férreas - Portas Fronhas (Metro) (via Barranha)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3005.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3005.pdf"
+                  },
+                  {
+                      "codamp":  3006,
+                      "designa":  "Esposende (CCT) - Portas Fronhas (Metro) (via Aguçadora)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3006.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3006.pdf"
+                  },
+                  {
+                      "codamp":  3301,
+                      "designa":  "Aguçadoura - Vila do Conde (Metro)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3301.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3301.pdf"
+                  },
+                  {
+                      "codamp":  3302,
+                      "designa":  "Amorim (Zona Industrial) - Areia / Varziela (Metro)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3302.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3302.pdf"
+                  },
+                  {
+                      "codamp":  3304,
+                      "designa":  "Circular | Póvoa de Varzim",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3304.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3304.pdf"
+                  },
+                  {
+                      "codamp":  3305,
+                      "designa":  "Circular | Póvoa de Varzim",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3305.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3305.pdf"
+                  },
+                  {
+                      "codamp":  3308,
+                      "designa":  "Póvoa de Varzim (CCT) - Vila do Conde (Centro)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3308.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3308.pdf"
+                  },
+                  {
+                      "codamp":  3309,
+                      "designa":  "Póvoa de Varzim (CCT) - Vila do Conde (Centro) (via Escolas)",
+                      "mun":  "PÓVOA DE VARZIM",
+                      "pdfFile":  "3309.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3309.pdf"
+                  }
+              ]
+}

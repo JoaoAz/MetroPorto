@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1c1c1e">
+<title>Horários de autocarros | Póvoa de Varzim e Vila do Conde</title>
+<meta name="description" content="Consulte os horários em PDF dos autocarros UNIR dos municípios da Póvoa de Varzim e Vila do Conde.">
+<meta name="robots" content="index, follow">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bus-page">
+<header class="app-header">
+  <div class="logo-badge">B</div>
+  <div>
+    <h1>Autocarros UNIR <span class="beta-tag">beta</span></h1>
+    <p class="date-line">Póvoa de Varzim e Vila do Conde</p>
+  </div>
+  <a class="header-link" href="index.html">Metro</a>
+</header>
+
+<main>
+  <nav class="mode-tabs page-tabs" aria-label="Tipo de transporte">
+    <a class="mode-tab" href="index.html">Metro</a>
+    <a class="mode-tab active" href="autocarros.html" aria-current="page">Autocarros</a>
+  </nav>
+
+  <section class="bus-hero">
+    <p class="bus-kicker">Paragens principais UNIR</p>
+    <h2>Linhas municipais</h2>
+    <p class="bus-beta-note">
+      <span class="beta-tag">beta</span>
+      Funcionalidade em testes, disponível apenas para <strong>Vila do Conde</strong>
+      e <strong>Póvoa de Varzim</strong>. Confirme sempre os horários no operador.
+    </p>
+    <p id="bus-summary">A carregar horários...</p>
+  </section>
+
+  <div id="bus-app" hidden>
+    <section class="card date-card">
+      <label for="bus-date">Data da viagem</label>
+      <div class="date-row">
+        <input type="date" id="bus-date">
+        <span id="bus-daytype-chip" class="daytype-chip"></span>
+      </div>
+    </section>
+
+    <section class="card bus-plan-card" aria-label="Pesquisar horários de autocarro">
+      <div class="search-row">
+        <label for="bus-origin-input">Origem</label>
+        <div class="search-box">
+          <input id="bus-origin-input" type="text" autocomplete="off" spellcheck="false"
+                 placeholder="Pesquisar paragem..." aria-label="Paragem de origem">
+          <button class="clear-btn hidden" data-for="bus-origin-input" type="button" aria-label="Limpar origem">×</button>
+          <div class="suggestions hidden" id="bus-origin-suggestions"></div>
+        </div>
+      </div>
+      <button id="bus-swap" class="swap-btn" type="button" title="Trocar origem e destino"
+              aria-label="Trocar origem e destino">⇅</button>
+      <div class="search-row">
+        <label for="bus-dest-input">Destino</label>
+        <div class="search-box">
+          <input id="bus-dest-input" type="text" autocomplete="off" spellcheck="false"
+                 placeholder="Pesquisar paragem..." aria-label="Paragem de destino">
+          <button class="clear-btn hidden" data-for="bus-dest-input" type="button" aria-label="Limpar destino">×</button>
+          <div class="suggestions hidden" id="bus-dest-suggestions"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fare-warning" aria-label="Aviso sobre horários dos autocarros">
+      <strong>Horários planeados.</strong>
+      A pesquisa usa as paragens principais publicadas nos PDFs oficiais. Podem existir outras paragens intermédias.
+    </section>
+
+    <section id="bus-results" aria-live="polite"></section>
+  </div>
+
+  <section id="bus-error" class="card state-msg hidden">
+    <p><strong>Não foi possível carregar os horários dos autocarros.</strong></p>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <p>Horários publicados pela AMP/UNIR para o lote UT3. Aplicação independente, sem relação oficial com a Metro do Porto ou UNIR.</p>
+</footer>
+
+<script src="data/data.js"></script>
+<script src="engine.js"></script>
+<script src="data/bus-lines.js"></script>
+<script src="bus.js"></script>
+</body>
+</html>

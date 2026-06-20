@@ -1,17 +1,17 @@
-/* Service worker — consulta offline.
- * Estratégia stale-while-revalidate: responde da cache (rápido/offline)
- * e atualiza a cache em segundo plano quando há rede. */
 'use strict';
 
-var CACHE = 'metro-planner-v6';
+var CACHE = 'metro-planner-v9';
 var ASSETS = [
   './',
   './index.html',
+  './autocarros.html',
   './style.css',
   './engine.js',
   './router.js',
   './app.js',
+  './bus.js',
   './data/data.js',
+  './data/bus-lines.js',
   './manifest.json',
   './icon.svg'
 ];

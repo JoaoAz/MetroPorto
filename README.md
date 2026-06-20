@@ -5,10 +5,13 @@ na rede publicada do Metro do Porto: proximos horarios, percursos diretos ou com
 transbordo, duracao, zonas Andante e preco estimado. Funciona offline (PWA) e
 sem servicos externos.
 
-App publicada: <https://joaoaz.github.io/MetroPorto/>
+App publicada: <https://horarios-metro.pt/> (tambem em
+<https://joaoaz.github.io/MetroPorto/>). O dominio proprio e servido pelo
+ficheiro `app/CNAME`; como o deploy usa `force_orphan`, esse ficheiro tem de
+existir em `app/` para sobreviver a cada publicacao.
 
-Aplicacao independente, sem relacao oficial com a Metro do Porto. Informacoes
-ou sugestoes: <info@horarios-metro.pt>.
+Aplicacao independente, sem relacao oficial com a Metro do Porto ou UNIR.
+Informacoes ou sugestoes: <info@horarios-metro.pt>.
 
 ## Estado Dos Dados
 
@@ -19,6 +22,7 @@ ou sugestoes: <info@horarios-metro.pt>.
 | Topologia publicada | 6 linhas, 85 estacoes, aliases e linhas servidas | `data/network.json` |
 | Zonas Andante | Estimadas a partir do mapa e calibradas com exemplos | `data/network.json` |
 | Tarifario Andante ocasional | Real, em vigor desde 01/01/2026 | `data/fares.json` |
+| Autocarros UNIR (beta) | Reais (paragens principais), so Vila do Conde e Povoa de Varzim | `data/bus-schedules.json`, `app/data/bus-lines.js` |
 
 Calibracao de zonas atualmente testada:
 
@@ -93,6 +97,30 @@ O extrator atual suporta o PDF completo de 31 paginas com horarios das linhas
 A, B, C, E e F. A Linha D nao aparece nesse PDF; por isso e gerada como
 estimativa por frequencia a partir das capturas fornecidas.
 
+## Autocarros UNIR (beta)
+
+Pagina separada (`app/autocarros.html` + `app/bus.js`), ligada ao metro pelo
+cabecalho. Esta em **beta** e cobre apenas **Vila do Conde** e
+**Povoa de Varzim** (lote UT3). So pesquisa ligacoes diretas entre paragens
+principais publicadas nos PDFs oficiais; nao combina com o metro nem calcula
+transbordos entre autocarros.
+
+Pipeline:
+
+```powershell
+python -X utf8 tools\download_unir_pdfs.py --ut 3
+python -X utf8 tools\extract_bus_schedules.py
+node tools\test_bus_data.js
+```
+
+`download_unir_pdfs.py` puxa os PDFs e escreve um `index.json` por lote.
+`extract_bus_schedules.py` le `pdfs/unir/municipios/<municipio>/index.json`,
+extrai as paragens principais (expandindo as frequencias "20/20 min") e gera
+`data/bus-schedules.json` e `app/data/bus-lines.js`.
+
+Para acrescentar municipios, adicionar a respetiva pasta em
+`pdfs/unir/municipios/` com um `index.json` e voltar a correr o extrator.
+
 ## Atualizar Zonas E Tarifas
 
 Zonas:
@@ -131,3 +159,5 @@ Tarifas:
 - Feriados: apenas nacionais; feriados municipais nao sao distinguidos.
 - Linha Rosa/G e futuras extensoes nao incluidas.
 - Tempo de transbordo fixo; nao modela distancia real entre cais.
+- Autocarros em beta: so Vila do Conde e Povoa de Varzim, paragens principais,
+  ligacoes diretas (sem transbordos nem combinacao com o metro).

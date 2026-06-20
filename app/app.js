@@ -1,4 +1,3 @@
-/* app.js — camada de interface. A lógica vive em engine.js e router.js. */
 (function () {
   'use strict';
 
@@ -324,7 +323,7 @@
 
     if (!q.origin || !q.dest) {
       resultEl.appendChild(renderMessage(state.mode === 'plan'
-        ? 'Escolha a <strong>origem</strong> e o <strong>destino</strong>. A app encontra a linha — e o transbordo, se for preciso.'
+        ? 'Escolha a <strong>origem</strong> e o <strong>destino</strong>. A app encontra a linha e, se necessário, o transbordo.'
         : 'Escolha a linha e depois a origem e o destino dentro dessa linha.'));
       return;
     }

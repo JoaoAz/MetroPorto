@@ -1,0 +1,218 @@
+﻿{
+    "generatedAt":  "2026-06-15T22:42:30.2743874Z",
+    "sourceIndex":  "pdfs/unir/UT3/index.json",
+    "municipality":  "Vila do Conde",
+    "lineCount":  30,
+    "files":  [
+                  {
+                      "codamp":  3306,
+                      "designa":  "Circular | Vila do Conde",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3306.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3306.pdf"
+                  },
+                  {
+                      "codamp":  3501,
+                      "designa":  "Tougues - Vila do Conde (Centro) (via Retorta)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3501.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3501.pdf"
+                  },
+                  {
+                      "codamp":  3502,
+                      "designa":  "Tougues - Vila do Conde (Escolas) (via Azurara)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3502.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3502.pdf"
+                  },
+                  {
+                      "codamp":  3503,
+                      "designa":  "Póvoa de Varzim (CCT) - Hospital São João",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3503.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3503.pdf"
+                  },
+                  {
+                      "codamp":  3504,
+                      "designa":  "Santo Tirso (ERF) - Póvoa de Varzim (CCT)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3504.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3504.pdf"
+                  },
+                  {
+                      "codamp":  3505,
+                      "designa":  "Famalicão (CCT) - Vila do Conde (Centro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3505.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3505.pdf"
+                  },
+                  {
+                      "codamp":  3506,
+                      "designa":  "Vila do Conde (Centro) - Maia (Centro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3506.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3506.pdf"
+                  },
+                  {
+                      "codamp":  3507,
+                      "designa":  "Famalicão (CCT) - Vila do Conde (Centro) (via Escolas)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3507.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3507.pdf"
+                  },
+                  {
+                      "codamp":  3508,
+                      "designa":  "Vila do Conde (Centro) - Vilar do Pinheiro (Metro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3508.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3508.pdf"
+                  },
+                  {
+                      "codamp":  3509,
+                      "designa":  "Vila do Conde (Centro) - Guilhabreu (via Vilarinho)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3509.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3509.pdf"
+                  },
+                  {
+                      "codamp":  3510,
+                      "designa":  "Vila do Conde (Centro) - Vilar do Pinheiro (Metro) (via Praia de Mindelo)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3510.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3510.pdf"
+                  },
+                  {
+                      "codamp":  3511,
+                      "designa":  "Outeiro Maior - Vila do Conde (Escolas)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3511.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3511.pdf"
+                  },
+                  {
+                      "codamp":  3512,
+                      "designa":  "Mindelo (Escola) - Arões",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3512.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3512.pdf"
+                  },
+                  {
+                      "codamp":  3513,
+                      "designa":  "Vila do Conde (Escolas) - Vilar do Pinheiro (via Vairão)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3513.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3513.pdf"
+                  },
+                  {
+                      "codamp":  3514,
+                      "designa":  "Junqueira - Vila do Conde (Escolas) (via Seixo)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3514.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3514.pdf"
+                  },
+                  {
+                      "codamp":  3516,
+                      "designa":  "Parada - Vila do Conde (Escolas) (via Lamelas)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3516.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3516.pdf"
+                  },
+                  {
+                      "codamp":  3517,
+                      "designa":  "Fontaínhas - Vila do Conde (Escolas) (via Junqueira)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3517.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3517.pdf"
+                  },
+                  {
+                      "codamp":  3518,
+                      "designa":  "Mindelo (Escola) - Vilar do Pinheiro (Metro) (via Carvalhido)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3518.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3518.pdf"
+                  },
+                  {
+                      "codamp":  3519,
+                      "designa":  "Vila de Conde (Centro) - Guilhabréu (via Fajozes)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3519.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3519.pdf"
+                  },
+                  {
+                      "codamp":  3521,
+                      "designa":  "Ferreiró - Vila do Conde (Escolas)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3521.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3521.pdf"
+                  },
+                  {
+                      "codamp":  3523,
+                      "designa":  "Ribeirinha (Escola) - Vilar do Pinheiro (Metro) (via Malta)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3523.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3523.pdf"
+                  },
+                  {
+                      "codamp":  3524,
+                      "designa":  "Fornelo - Vila do Conde (Centro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3524.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3524.pdf"
+                  },
+                  {
+                      "codamp":  3525,
+                      "designa":  "Ribeirinha (Escola) - Varziela (Zona Industrial) (via Tresval)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3525.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3525.pdf"
+                  },
+                  {
+                      "codamp":  3528,
+                      "designa":  "Ribeirinha (Escola) - Vila do Conde (Escolas)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3528.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3528.pdf"
+                  },
+                  {
+                      "codamp":  3529,
+                      "designa":  "Souto da Sapateira - Vila Chã (via Modivas Centro Metro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3529.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3529.pdf"
+                  },
+                  {
+                      "codamp":  3530,
+                      "designa":  "Modivas Centro (Metro) - Gião (via EN306)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3530.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3530.pdf"
+                  },
+                  {
+                      "codamp":  3531,
+                      "designa":  "Fashion Outlet (Metro) - Modivas Sul (Metro) (via Vila Chã e Praia de Labruge)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3531.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3531.pdf"
+                  },
+                  {
+                      "codamp":  3532,
+                      "designa":  "Guilhabreu - Modivas Sul (Metro)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3532.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3532.pdf"
+                  },
+                  {
+                      "codamp":  3533,
+                      "designa":  "Vairão - Mindelo (Praia)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3533.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3533.pdf"
+                  },
+                  {
+                      "codamp":  3534,
+                      "designa":  "Vila do Conde (Centro) - Maia (Centro) (via Escolas do Castêlo)",
+                      "mun":  "VILA DO CONDE",
+                      "pdfFile":  "3534.pdf",
+                      "sourcePdfUrl":  "https://paragens.amp.pt/web/horarios_pdf/schedules/UT3/3534.pdf"
+                  }
+              ]
+}

@@ -1,13 +1,3 @@
-/*
- * engine.js — Utilidades de tempo e calendário (lógica pura, sem DOM).
- * Usado pelo browser (window.MetroEngine) e por Node (module.exports).
- *
- * Conceito central: "dia de serviço". As viagens que partem depois da meia-noite
- * (00:01, 00:32, ...) pertencem ao dia de serviço anterior; internamente todas as
- * horas são minutos desde as 00:00 do dia de serviço (00:27 da madrugada = 1467).
- * O corte é às 04:00. A mesma regra existe em tools/extract.py e
- * tools/build_data.py (service_minutes) — alterar nos três sítios.
- */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
   else root.MetroEngine = factory();

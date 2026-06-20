@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .claude/
+
+# Despejo bruto do download UNIR (duplica os PDFs ja organizados em
+# pdfs/unir/municipios/). Reproduzivel com tools/download_unir_pdfs.py.
+pdfs/unir/UT3/
