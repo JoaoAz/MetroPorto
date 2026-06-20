@@ -31,24 +31,42 @@
     return n;
   }
 
+  var LANG = (window.MetroI18n && window.MetroI18n.lang) || 'pt';
+  var LOCALE = LANG === 'en' ? 'en-GB' : 'pt-PT';
+
   function stationName(id) { return router.station(id).name; }
 
+  // Nome de linha localizado: "Linha B" / "Line B" (a letra mantém-se).
+  function lineName(line) {
+    return t('line') + ' ' + line.id.toUpperCase();
+  }
+
   function fmtDate(d) {
-    var s = new Intl.DateTimeFormat('pt-PT',
+    var s = new Intl.DateTimeFormat(LOCALE,
       { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   function fmtDur(min) {
-    if (min < 60) return min + ' min';
-    return Math.floor(min / 60) + ' h ' + (min % 60 ? (min % 60) + ' min' : '');
+    if (min < 60) return min + ' ' + t('min');
+    return Math.floor(min / 60) + ' ' + t('hour') + ' ' +
+      (min % 60 ? (min % 60) + ' ' + t('min') : '');
   }
 
-  function fmtPrice(v) { return v.toFixed(2).replace('.', ',') + ' €'; }
+  function fmtPrice(v) {
+    return v.toFixed(2).replace('.', LANG === 'en' ? '.' : ',') + ' €';
+  }
 
-  var DAY_LABEL = {
-    weekday: 'dia útil', saturday: 'sábado', sunday_holiday: 'domingo/feriado'
-  };
+  function dayLabel(dt) { return t('day_' + dt); }
+
+  function priceReason(price) {
+    switch (price.reasonCode) {
+      case 'zones_missing': return t('reason_zones_missing');
+      case 'zones_disconnected': return t('reason_zones_disconnected');
+      case 'no_fare': return t('reason_no_fare', { title: 'Z' + price.zoneCount });
+      default: return price.reason || '';
+    }
+  }
 
   function loadPrefs() {
     try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; }
@@ -67,7 +85,7 @@
     var line = router.line(lineId);
     var b = el('span', 'line-dot', line.id.toUpperCase());
     b.style.background = line.color;
-    b.title = line.name;
+    b.title = lineName(line);
     return b;
   }
 
@@ -137,17 +155,17 @@
   function buildLineChips() {
     var wrap = document.getElementById('line-chips');
     METRO.network.lines.forEach(function (line) {
-      var chip = el('button', 'line-chip', line.name);
+      var chip = el('button', 'line-chip', lineName(line));
       chip.type = 'button';
       chip.setAttribute('role', 'radio');
       chip.dataset.line = line.id;
       chip.style.setProperty('--line-color', line.color);
       if (METRO.schedules[line.id] && METRO.schedules[line.id].demo) {
         chip.classList.add('demo-line');
-        chip.title = 'Linha sem horários reais neste PDF; usa horários temporários.';
+        chip.title = t('badge_temp_title');
       } else if (METRO.schedules[line.id] && METRO.schedules[line.id].estimated) {
         chip.classList.add('estimated-line');
-        chip.title = 'Horários estimados por frequência; confirmar no operador.';
+        chip.title = t('badge_estimated_title');
       }
       chip.addEventListener('click', function () { pickLine(line.id); });
       wrap.appendChild(chip);
@@ -195,7 +213,7 @@
     var names = el('p', 'leg-route',
       stationName(leg.from) + ' → ' + stationName(leg.to));
     if (leg.service === 'Bx') {
-      names.appendChild(badge('Bx', 'bx', 'Serviço expresso — não para em todas as estações'));
+      names.appendChild(badge('Bx', 'bx', t('bx_title')));
     }
     txt.appendChild(names);
     if (leg.dep) txt.appendChild(el('p', 'leg-times', leg.dep + ' – ' + leg.arr));
@@ -207,18 +225,14 @@
     var p = el('div', 'price-row');
     if (price.available) {
       var main = el('p', 'price-main');
-      main.textContent = 'Andante ' + price.title + ' — ' +
+      main.textContent = t('price_andante', { title: price.title }) +
         (price.estimated ? '≈ ' : '') + fmtPrice(price.price);
       p.appendChild(main);
       p.appendChild(el('p', 'price-note',
-        'Zonas estimadas a partir de ' + price.originZone +
-        '. Confirmar preço e zonas no operador.'));
-      if (price.estimated) {
-        p.title = 'Estimativa: zonas atribuídas a partir do mapa Andante, por validar.';
-      }
+        t('price_zones_note', { zone: price.originZone })));
     } else {
       p.classList.add('muted');
-      p.textContent = 'Preço não calculado: ' + price.reason + '.';
+      p.textContent = t('price_not_calc', { reason: priceReason(price) });
     }
     return p;
   }
@@ -229,13 +243,15 @@
     var head = el('div', 'journey-head');
     var times = el('p', 'journey-times', j.dep + ' → ' + j.arr);
     head.appendChild(times);
-    var meta = el('p', 'journey-meta', fmtDur(j.durationMin) +
-      (j.nTransfers ? ' · ' + j.nTransfers + ' transbordo' + (j.nTransfers > 1 ? 's' : '') : ' · direto'));
+    var meta = el('p', 'journey-meta', fmtDur(j.durationMin) + ' · ' +
+      (j.nTransfers
+        ? j.nTransfers + ' ' + (j.nTransfers > 1 ? t('transfer_many') : t('transfer_one'))
+        : t('direct')));
     head.appendChild(meta);
     card.appendChild(head);
     if (opts.waitMin !== undefined && opts.waitMin !== null) {
-      var w = el('p', 'next-wait', opts.waitMin <= 0 ? 'a partir agora'
-        : 'parte em ' + fmtDur(opts.waitMin));
+      var w = el('p', 'next-wait', opts.waitMin <= 0 ? t('wait_now')
+        : t('wait_in', { dur: fmtDur(opts.waitMin) }));
       if (opts.waitMin <= 1) w.classList.add('now');
       card.appendChild(w);
     }
@@ -243,17 +259,15 @@
       if (i > 0) {
         var tr = j.transfers[i - 1];
         card.appendChild(el('p', 'transfer-row',
-          '⇄ Transbordo em ' + stationName(tr.station) + ' · espera ' + tr.waitMin + ' min'));
+          t('transfer_at', { station: stationName(tr.station), min: tr.waitMin })));
       }
       card.appendChild(renderLeg(leg));
     });
     card.appendChild(renderPriceRow(j.price));
     if (j.demo) {
-      card.appendChild(badge('horários temporários', 'demo',
-        'Este percurso usa uma linha sem horários reais no PDF carregado.'));
+      card.appendChild(badge(t('badge_temp'), 'demo', t('badge_temp_title')));
     } else if (j.estimated) {
-      card.appendChild(badge('Linha D: horário estimado', 'estimated',
-        'Horário gerado por frequência a partir das imagens fornecidas; confirmar no operador.'));
+      card.appendChild(badge(t('badge_estimated'), 'estimated', t('badge_estimated_title')));
     }
     if (opts.highlight) card.appendChild(renderShareButton());
     return card;
@@ -288,6 +302,7 @@
     }
     var di = document.getElementById('travel-date');
     if (di.value && di.value !== dateISO(new Date())) p.set('data', di.value);
+    if (LANG === 'en') p.set('lang', 'en');
     var qs = p.toString();
     return location.origin + location.pathname + (qs ? '?' + qs : '');
   }
@@ -328,28 +343,28 @@
     var url = buildShareUrl();
     var oId = state.mode === 'line' ? state.lineOrigin : state.origin;
     var dId = state.mode === 'line' ? state.lineDest : state.dest;
-    var text = 'Metro do Porto: ' + stationName(oId) + ' → ' + stationName(dId);
+    var text = t('share_text', { from: stationName(oId), to: stationName(dId) });
     if (navigator.share) {
-      navigator.share({ title: 'Horários Metro do Porto', text: text, url: url })
+      navigator.share({ title: t('share_title'), text: text, url: url })
         .catch(function () { /* cancelado */ });
       return;
     }
     var done = function () {
       var original = btn.textContent;
-      btn.textContent = '✓ Link copiado';
+      btn.textContent = t('link_copied');
       btn.classList.add('copied');
       setTimeout(function () { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copie o link:', url); });
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt(t('copy_prompt'), url); });
     } else {
-      window.prompt('Copie o link:', url);
+      window.prompt(t('copy_prompt'), url);
     }
   }
 
   function renderShareButton() {
     var row = el('div', 'share-row');
-    var btn = el('button', 'share-btn', '⤴ Partilhar viagem');
+    var btn = el('button', 'share-btn', t('share_trip'));
     btn.type = 'button';
     btn.addEventListener('click', function () { shareCurrent(btn); });
     row.appendChild(btn);
@@ -389,7 +404,7 @@
   function renderDateChip(qctx) {
     var chip = document.getElementById('daytype-chip');
     var dt = engine.dayTypeFor(qctx.selected, METRO.holidays);
-    chip.textContent = (qctx.live ? 'Hoje · ao vivo · ' : 'Desde o início do serviço · ') + DAY_LABEL[dt];
+    chip.textContent = (qctx.live ? t('chip_today_live') : t('chip_from_service')) + dayLabel(dt);
     chip.className = 'daytype-chip' + (dt === 'sunday_holiday' ? ' holiday' : '');
   }
 
@@ -398,7 +413,7 @@
     var qctx = queryContext(now);
     var autoDay = engine.dayTypeFor(qctx.selected, METRO.holidays);
     document.getElementById('date-line').textContent =
-      fmtDate(qctx.selected) + ' · ' + DAY_LABEL[autoDay];
+      fmtDate(qctx.selected) + ' · ' + dayLabel(autoDay);
     renderDateChip(qctx);
 
     syncUrl();
@@ -406,13 +421,12 @@
     var q = currentQuery();
 
     if (!q.origin || !q.dest) {
-      resultEl.appendChild(renderMessage(state.mode === 'plan'
-        ? 'Escolha a <strong>origem</strong> e o <strong>destino</strong>. A app encontra a linha e, se necessário, o transbordo.'
-        : 'Escolha a linha e depois a origem e o destino dentro dessa linha.'));
+      resultEl.appendChild(renderMessage(t(state.mode === 'plan'
+        ? 'msg_choose_plan' : 'msg_choose_line')));
       return;
     }
     if (q.origin === q.dest) {
-      resultEl.appendChild(renderMessage('A origem e o destino são a mesma estação.'));
+      resultEl.appendChild(renderMessage(t('msg_same_station')));
       return;
     }
 
@@ -422,36 +436,34 @@
 
     if (r.state === 'none') {
       resultEl.appendChild(renderMessage(state.mode === 'line'
-        ? 'Estas estações não estão ambas na ' + router.line(state.line).name +
-          '. Use o modo <strong>Planear viagem</strong> para percursos com transbordo.'
-        : 'Não foi encontrado percurso entre estas estações.'));
+        ? t('msg_none_line', { line: lineName(router.line(state.line)) })
+        : t('msg_none_plan')));
       return;
     }
 
     if (r.state === 'untimed') {
-      resultEl.appendChild(renderMessage('Há percurso, mas <strong>ainda não há horários ' +
-        'carregados</strong> para a(s) linha(s) necessária(s).'));
+      resultEl.appendChild(renderMessage(t('msg_untimed')));
       r.untimedRoutes.forEach(function (u) {
         var card = el('div', 'card journey');
         u.legs.forEach(function (leg, i) {
           if (i > 0) card.appendChild(el('p', 'transfer-row',
-            '⇄ Transbordo em ' + stationName(leg.from)));
+            t('transfer_at_short', { station: stationName(leg.from) })));
           card.appendChild(renderLeg(leg));
         });
         card.appendChild(renderPriceRow(u.price));
         card.appendChild(el('p', 'muted',
-          'Sem horários para: ' + u.missingLines.map(function (l) {
-            return router.line(l).name;
-          }).join(', ')));
+          t('msg_no_times_for', { lines: u.missingLines.map(function (l) {
+            return lineName(router.line(l));
+          }).join(', ') })));
         resultEl.appendChild(card);
       });
       return;
     }
 
     if (r.state === 'tomorrow') {
-      resultEl.appendChild(renderMessage('<strong>Já não há viagens hoje</strong> para este percurso. ' +
-        'Primeira opção de ' + fmtDate(r.nextServiceDate).toLowerCase() +
-        ' (' + DAY_LABEL[r.dayType] + '):'));
+      resultEl.appendChild(renderMessage(t('msg_tomorrow', {
+        date: fmtDate(r.nextServiceDate).toLowerCase(), day: dayLabel(r.dayType)
+      })));
       resultEl.appendChild(renderJourneyCard(r.best, { highlight: true }));
       return;
     }
@@ -461,7 +473,7 @@
     resultEl.appendChild(renderJourneyCard(r.best, { highlight: true, waitMin: waitMin }));
     if (r.following.length) {
       var listCard = el('div', 'card');
-      listCard.appendChild(el('p', 'list-title', 'Opções seguintes'));
+      listCard.appendChild(el('p', 'list-title', t('next_options')));
       var ul = el('ul', 'dep-list');
       r.following.forEach(function (j) {
         var li = el('li');
@@ -483,36 +495,31 @@
     var real = [], estimated = [], demo = [];
     METRO.network.lines.forEach(function (l) {
       var s = METRO.schedules[l.id];
-      if (s && s.estimated) estimated.push(l.name);
-      else if (s && !s.demo) real.push(l.name);
-      else demo.push(l.name);
+      var nm = lineName(l);
+      if (s && s.estimated) estimated.push(nm);
+      else if (s && !s.demo) real.push(nm);
+      else demo.push(nm);
     });
-    var src = 'Horários oficiais do PDF: ' + (real.join(', ') || 'nenhum');
+    var src = t('src_official', { lines: real.join(', ') || t('src_none') });
     var bSched = METRO.schedules.b;
     if (bSched && bSched.validity && bSched.validity.from) {
-      src += ' (em vigor desde ' + bSched.validity.from.split('-').reverse().join('/') + ')';
+      src += t('src_since', { date: bSched.validity.from.split('-').reverse().join('/') });
     }
-    if (demo.length) {
-      src += '. Sem horários reais neste PDF: ' + demo.join(', ') + ' (usa horários temporários).';
-    }
-    if (estimated.length) {
-      src += '. Estimados por frequência: ' + estimated.join(', ') + '.';
-    }
+    if (demo.length) src += t('src_temp', { lines: demo.join(', ') });
+    if (estimated.length) src += t('src_estimated', { lines: estimated.join(', ') });
     document.getElementById('source-line').textContent = src;
 
     var f = METRO.fares;
-    document.getElementById('fares-line').textContent =
-      'Tarifário Andante ocasional em vigor desde ' +
-      f.validFrom.split('-').reverse().join('/') + ' (' + f.source + ').';
-    document.getElementById('notes-line').textContent =
-      'Tolerância de ±2 min nos horários. Preços e zonas estimados — confirmar sempre no operador.';
+    document.getElementById('fares-line').textContent = t('fares_line', {
+      date: f.validFrom.split('-').reverse().join('/'), source: f.source
+    });
+    document.getElementById('notes-line').textContent = t('notes_line');
 
     if (bSched && bSched.validity && bSched.validity.from) {
       var age = (Date.now() - new Date(bSched.validity.from).getTime()) / 86400000;
       if (age > STALE_AFTER_DAYS) {
         var banner = document.getElementById('stale-banner');
-        banner.textContent = 'Os horários da Linha B têm mais de ' + Math.floor(age / 30) +
-          ' meses. Verifique se há versão mais recente do PDF.';
+        banner.textContent = t('stale_banner', { months: Math.floor(age / 30) });
         banner.classList.remove('hidden');
       }
     }

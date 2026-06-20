@@ -1,11 +1,12 @@
 'use strict';
 
-var CACHE = 'metro-planner-v11';
+var CACHE = 'metro-planner-v12';
 var ASSETS = [
   './',
   './index.html',
   './autocarros.html',
   './style.css',
+  './i18n.js',
   './engine.js',
   './router.js',
   './app.js',

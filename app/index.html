@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1c1c1e">
-  <title>Horários Metro do Porto | Consulta rápida por estação</title>
+  <title data-i18n-doc="doc_title">Horários Metro do Porto | Consulta rápida por estação</title>
 
-  <meta name="description" content="Consulte os horários do Metro do Porto de forma simples. Escolha a linha, a estação e o sentido da viagem para encontrar rapidamente o próximo metro.">
+  <meta name="description" data-i18n-desc="doc_desc" content="Consulte os horários do Metro do Porto de forma simples. Escolha a linha, a estação e o sentido da viagem para encontrar rapidamente o próximo metro.">
 
-  <meta name="keywords" content="horários metro porto, metro do porto horários, próximo metro porto, horário metro linha b, metro estádio do dragão, zonas andante metro porto">
+  <meta name="keywords" content="horários metro porto, metro do porto horários, próximo metro porto, horário metro linha b, metro estádio do dragão, zonas andante metro porto, porto metro timetable, porto metro schedule">
 
   <link rel="canonical" href="https://horarios-metro.pt/">
+  <link rel="alternate" hreflang="pt" href="https://horarios-metro.pt/">
+  <link rel="alternate" hreflang="en" href="https://horarios-metro.pt/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://horarios-metro.pt/">
 
   <meta property="og:title" content="Horários Metro do Porto">
   <meta property="og:description" content="Consulta simples dos horários do Metro do Porto por linha, estação e sentido.">
@@ -21,6 +24,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
+<script src="i18n.js"></script>
 <!-- Google Analytics só carrega após consentimento (ver consent.js) -->
 <script src="consent.js" defer></script>
 </head>
@@ -31,12 +35,15 @@
     <h1>Metro do Porto</h1>
     <p id="date-line" class="date-line">A carregar…</p>
   </div>
-  <a class="header-link" href="autocarros.html">Autocarros <span class="beta-tag">beta</span></a>
+  <div class="header-actions">
+    <div class="lang-toggle" role="group" aria-label="Language"></div>
+    <a class="header-link" href="autocarros.html"><span data-i18n="buses">Autocarros</span> <span class="beta-tag">beta</span></a>
+  </div>
 </header>
 
 <main>
   <section class="card date-card">
-    <label for="travel-date">Data da viagem</label>
+    <label for="travel-date" data-i18n="travel_date">Data da viagem</label>
     <div class="date-row">
       <input type="date" id="travel-date">
       <span id="daytype-chip" class="daytype-chip"></span>
@@ -44,29 +51,31 @@
   </section>
 
   <nav class="mode-tabs" role="tablist" aria-label="Modo de consulta">
-    <button id="tab-plan" class="mode-tab active" role="tab" aria-selected="true">Planear viagem</button>
-    <button id="tab-line" class="mode-tab" role="tab" aria-selected="false">Por linha</button>
+    <button id="tab-plan" class="mode-tab active" role="tab" aria-selected="true" data-i18n="tab_plan">Planear viagem</button>
+    <button id="tab-line" class="mode-tab" role="tab" aria-selected="false" data-i18n="tab_line">Por linha</button>
   </nav>
 
   <!-- Modo: planear viagem (pesquisa global, transbordos automáticos) -->
   <section id="mode-plan" class="card">
     <div class="search-row">
-      <label for="origin-input">Origem</label>
+      <label for="origin-input" data-i18n="from">Origem</label>
       <div class="search-box">
         <input id="origin-input" type="text" autocomplete="off" spellcheck="false"
-               placeholder="Pesquisar estação…" aria-label="Estação de origem">
-        <button class="clear-btn hidden" data-for="origin-input" aria-label="Limpar origem">×</button>
+               placeholder="Pesquisar estação…" data-i18n-placeholder="search_station"
+               aria-label="Origem" data-i18n-aria-label="from">
+        <button class="clear-btn hidden" data-for="origin-input" aria-label="×">×</button>
         <div class="suggestions hidden" id="origin-suggestions"></div>
       </div>
     </div>
     <button id="swap" class="swap-btn" type="button" title="Trocar origem e destino"
-            aria-label="Trocar origem e destino">⇅</button>
+            data-i18n-title="swap" data-i18n-aria-label="swap" aria-label="Trocar origem e destino">⇅</button>
     <div class="search-row">
-      <label for="dest-input">Destino</label>
+      <label for="dest-input" data-i18n="to">Destino</label>
       <div class="search-box">
         <input id="dest-input" type="text" autocomplete="off" spellcheck="false"
-               placeholder="Pesquisar estação…" aria-label="Estação de destino">
-        <button class="clear-btn hidden" data-for="dest-input" aria-label="Limpar destino">×</button>
+               placeholder="Pesquisar estação…" data-i18n-placeholder="search_station"
+               aria-label="Destino" data-i18n-aria-label="to">
+        <button class="clear-btn hidden" data-for="dest-input" aria-label="×">×</button>
         <div class="suggestions hidden" id="dest-suggestions"></div>
       </div>
     </div>
@@ -74,21 +83,21 @@
 
   <!-- Modo: por linha (progressivo: linha -> origem -> destino) -->
   <section id="mode-line" class="card hidden">
-    <p class="field-label">Linha</p>
-    <div id="line-chips" class="line-chips" role="radiogroup" aria-label="Escolher linha"></div>
+    <p class="field-label" data-i18n="line">Linha</p>
+    <div id="line-chips" class="line-chips" role="radiogroup" aria-label="Linha"></div>
     <div id="line-selects" class="line-selects hidden">
       <div class="select-row">
-        <label for="line-origin">Origem</label>
+        <label for="line-origin" data-i18n="from">Origem</label>
         <select id="line-origin"></select>
       </div>
       <div class="select-row">
-        <label for="line-dest">Destino</label>
+        <label for="line-dest" data-i18n="to">Destino</label>
         <select id="line-dest"></select>
       </div>
     </div>
   </section>
 
-  <section class="fare-warning" aria-label="Aviso sobre preços e zonas">
+  <section class="fare-warning" data-i18n-html="fare_warning" aria-label="Aviso sobre preços e zonas">
     <strong>Preços estimados.</strong>
     Confirma no operador antes de viajar. As zonas Andante (Z2, Z3, ...)
     são calculadas a partir do mapa e podem ser imprecisas.
@@ -98,8 +107,8 @@
 
   <section id="result" aria-live="polite">
     <div class="card state-msg" id="boot-error">
-      <p><strong>Não foi possível iniciar a aplicação.</strong></p>
-      <p>Se é a primeira utilização, gere os dados: <code>python tools/build_data.py</code>
+      <p data-i18n-html="boot_error_title"><strong>Não foi possível iniciar a aplicação.</strong></p>
+      <p data-i18n-html="boot_error_body">Se é a primeira utilização, gere os dados: <code>python tools/build_data.py</code>
       e recarregue a página.</p>
     </div>
   </section>
@@ -109,7 +118,7 @@
   <p id="source-line"></p>
   <p id="fares-line"></p>
   <p id="notes-line"></p>
-  <p class="independent-line">
+  <p class="independent-line" data-i18n-html="independent_line">
     Aplicação independente, sem relação oficial com a Metro do Porto. Para informações
     ou sugestões: <a href="mailto:info@horarios-metro.pt">info@horarios-metro.pt</a>.
   </p>

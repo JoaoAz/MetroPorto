@@ -243,7 +243,8 @@
         return stationById[sid].zones || [];
       });
       if (zonesSeq.some(function (z) { return z.length === 0; })) {
-        return { available: false, reason: 'zonas por validar nos dados da rede' };
+        return { available: false, reasonCode: 'zones_missing',
+                 reason: 'zonas por validar nos dados da rede' };
       }
       var best = null;
       zonesSeq[0].forEach(function (originZone) {   // 1.ª validação
@@ -262,7 +263,8 @@
         }
       });
       if (!best) {
-        return { available: false, reason: 'zonas sem ligação no grafo de adjacência' };
+        return { available: false, reasonCode: 'zones_disconnected',
+                 reason: 'zonas sem ligação no grafo de adjacência' };
       }
       return { available: true, rings: best.rings, originZone: best.originZone };
     }
@@ -274,7 +276,7 @@
       var key = 'Z' + n;
       var table = fares.occasional || {};
       if (table[key] === undefined) {
-        return { available: false, zoneCount: n,
+        return { available: false, zoneCount: n, reasonCode: 'no_fare',
                  reason: 'sem tarifa conhecida para ' + key };
       }
       return { available: true, zoneCount: n, originZone: rt.originZone,

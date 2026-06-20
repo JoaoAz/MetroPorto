@@ -13,11 +13,9 @@
   var engine = window.MetroEngine;
   var holidays = window.METRO.holidays || {};
 
-  var DAY_LABEL = {
-    weekday: 'dia útil',
-    saturday: 'sábado',
-    sunday_holiday: 'domingo/feriado'
-  };
+  var LANG = (window.MetroI18n && window.MetroI18n.lang) || 'pt';
+  var LOCALE = LANG === 'en' ? 'en-GB' : 'pt-PT';
+  function dayLabel(dt) { return t('day_' + dt); }
 
   var state = {
     origin: null,
@@ -73,7 +71,7 @@
   }
 
   function fmtDate(date) {
-    var text = new Intl.DateTimeFormat('pt-PT', {
+    var text = new Intl.DateTimeFormat(LOCALE, {
       weekday: 'long',
       day: 'numeric',
       month: 'long'
@@ -82,8 +80,9 @@
   }
 
   function fmtDur(minutes) {
-    if (minutes < 60) return minutes + ' min';
-    return Math.floor(minutes / 60) + ' h ' + (minutes % 60 ? (minutes % 60) + ' min' : '');
+    if (minutes < 60) return minutes + ' ' + t('min');
+    return Math.floor(minutes / 60) + ' ' + t('hour') + ' ' +
+      (minutes % 60 ? (minutes % 60) + ' ' + t('min') : '');
   }
 
   function stationName(stopId) {
@@ -110,6 +109,7 @@
     if (state.dest) p.set('para', state.dest);
     var di = document.getElementById('bus-date');
     if (di.value && di.value !== dateISO(new Date())) p.set('data', di.value);
+    if (LANG === 'en') p.set('lang', 'en');
     var qs = p.toString();
     return location.origin + location.pathname + (qs ? '?' + qs : '');
   }
@@ -136,28 +136,28 @@
 
   function shareCurrent(btn) {
     var url = buildShareUrl();
-    var text = 'Autocarros UNIR: ' + stationName(state.origin) + ' → ' + stationName(state.dest);
+    var text = t('bus_share_text', { from: stationName(state.origin), to: stationName(state.dest) });
     if (navigator.share) {
-      navigator.share({ title: 'Horários de autocarros UNIR', text: text, url: url })
+      navigator.share({ title: t('bus_share_title'), text: text, url: url })
         .catch(function () { /* cancelado */ });
       return;
     }
     var done = function () {
       var original = btn.textContent;
-      btn.textContent = '✓ Link copiado';
+      btn.textContent = t('link_copied');
       btn.classList.add('copied');
       setTimeout(function () { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copie o link:', url); });
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt(t('copy_prompt'), url); });
     } else {
-      window.prompt('Copie o link:', url);
+      window.prompt(t('copy_prompt'), url);
     }
   }
 
   function renderShareButton() {
     var row = el('div', 'share-row');
-    var btn = el('button', 'share-btn', '⤴ Partilhar viagem');
+    var btn = el('button', 'share-btn', t('share_trip'));
     btn.type = 'button';
     btn.addEventListener('click', function () { shareCurrent(btn); });
     row.appendChild(btn);
@@ -278,8 +278,8 @@
 
   function renderDateChip(qctx) {
     var chip = document.getElementById('bus-daytype-chip');
-    chip.textContent = (qctx.live ? 'Hoje - ao vivo - ' : 'Desde o início do dia - ') +
-      DAY_LABEL[qctx.dayType];
+    chip.textContent = (qctx.live ? t('chip_today_live') : t('chip_from_day')) +
+      dayLabel(qctx.dayType);
     chip.className = 'daytype-chip' + (qctx.dayType === 'sunday_holiday' ? ' holiday' : '');
   }
 
@@ -365,7 +365,7 @@
     head.appendChild(el('p', 'journey-meta', fmtDur(journey.durationMin)));
     card.appendChild(head);
     if (opts.waitMin !== undefined && opts.waitMin !== null) {
-      var wait = el('p', 'next-wait', opts.waitMin <= 0 ? 'a partir agora' : 'parte em ' + fmtDur(opts.waitMin));
+      var wait = el('p', 'next-wait', opts.waitMin <= 0 ? t('wait_now') : t('wait_in', { dur: fmtDur(opts.waitMin) }));
       if (opts.waitMin <= 1) wait.classList.add('now');
       card.appendChild(wait);
     }
@@ -401,11 +401,11 @@
     resultEl.textContent = '';
 
     if (!state.origin || !state.dest) {
-      resultEl.appendChild(renderMessage('Escolha a <strong>origem</strong> e o <strong>destino</strong>.'));
+      resultEl.appendChild(renderMessage(t('bus_choose')));
       return;
     }
     if (state.origin === state.dest) {
-      resultEl.appendChild(renderMessage('A origem e o destino são a mesma paragem.'));
+      resultEl.appendChild(renderMessage(t('msg_same_stop')));
       return;
     }
 
@@ -413,14 +413,15 @@
     if (!journeys.length && qctx.live) {
       var next = nextService(state.origin, state.dest, qctx.selected);
       if (next) {
-      resultEl.appendChild(renderMessage('<strong>Já não há viagens hoje</strong> entre estas paragens. Primeiras de ' +
-          fmtDate(next.date).toLowerCase() + ' (' + DAY_LABEL[next.dayType] + '):'));
+        resultEl.appendChild(renderMessage(t('bus_tomorrow', {
+          date: fmtDate(next.date).toLowerCase(), day: dayLabel(next.dayType)
+        })));
         journeys = next.journeys;
       }
     }
 
     if (!journeys.length) {
-      resultEl.appendChild(renderMessage('Não encontrei ligação direta entre estas paragens principais para esta data.'));
+      resultEl.appendChild(renderMessage(t('bus_no_direct')));
       return;
     }
 
@@ -433,7 +434,7 @@
     var following = journeys.slice(1, 7);
     if (following.length) {
       var list = el('div', 'card');
-      list.appendChild(el('p', 'list-title', 'Opções seguintes'));
+      list.appendChild(el('p', 'list-title', t('next_options')));
       following.forEach(function (journey) {
         list.appendChild(renderCompactJourney(journey));
       });
@@ -477,8 +478,7 @@
   destAC.set(state.dest);
 
   document.getElementById('bus-summary').textContent =
-    allLines.length + ' linhas, ' + DATA.stops.length +
-    ' paragens principais e próximas partidas por origem/destino.';
+    t('bus_summary', { lines: allLines.length, stops: DATA.stops.length });
   document.getElementById('bus-app').hidden = false;
   render();
   setInterval(render, REFRESH_MS);

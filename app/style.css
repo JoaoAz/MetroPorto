@@ -52,8 +52,13 @@ main, .app-header, .app-footer {
 }
 .app-header h1 { font-size: 17px; margin: 0; }
 .date-line { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-.header-link {
+.header-actions {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-link {
   color: var(--ink);
   font-size: 14px;
   font-weight: 800;
@@ -61,7 +66,28 @@ main, .app-header, .app-footer {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 7px 11px;
+  white-space: nowrap;
 }
+
+/* Alternador de idioma PT|EN */
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  padding: 6px 10px;
+  min-height: 34px;
+  cursor: pointer;
+}
+.lang-btn.active { background: var(--accent); color: var(--card); cursor: default; }
 
 /* Etiqueta "beta" */
 .beta-tag {

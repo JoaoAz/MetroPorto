@@ -44,21 +44,21 @@
     if (value === 'granted') loadGA();
   }
 
+  var tr = window.t || function (k) { return k; };
+
   var banner = el('div', 'consent-banner');
   banner.setAttribute('role', 'dialog');
-  banner.setAttribute('aria-label', 'Consentimento de cookies');
+  banner.setAttribute('aria-label', 'cookies');
 
   var text = el('p', 'consent-text');
-  text.textContent = 'Usamos cookies do Google Analytics apenas para medir a ' +
-    'utilização do site e melhorá-lo. Pode aceitar ou recusar — o site funciona ' +
-    'na mesma.';
+  text.textContent = tr('consent_text');
   banner.appendChild(text);
 
   var actions = el('div', 'consent-actions');
-  var reject = el('button', 'consent-btn consent-reject', 'Recusar');
+  var reject = el('button', 'consent-btn consent-reject', tr('consent_reject'));
   reject.type = 'button';
   reject.addEventListener('click', function () { decide('denied'); });
-  var accept = el('button', 'consent-btn consent-accept', 'Aceitar');
+  var accept = el('button', 'consent-btn consent-accept', tr('consent_accept'));
   accept.type = 'button';
   accept.addEventListener('click', function () { decide('granted'); });
   actions.appendChild(reject);
