@@ -1,6 +1,6 @@
 'use strict';
 
-var CACHE = 'metro-planner-v9';
+var CACHE = 'metro-planner-v10';
 var ASSETS = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ var ASSETS = [
   './router.js',
   './app.js',
   './bus.js',
+  './consent.js',
   './data/data.js',
   './data/bus-lines.js',
   './manifest.json',
