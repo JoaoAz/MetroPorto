@@ -2,7 +2,7 @@
 
 // IMPORTANTE: ao mudar assets, incrementar VERSION aqui E o ?v= nos
 // <link>/<script> de index.html e autocarros.html (mesmo numero).
-var VERSION = '13';
+var VERSION = '14';
 var Q = '?v=' + VERSION;
 var CACHE = 'metro-planner-v' + VERSION;
 var ASSETS = [

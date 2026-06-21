@@ -144,7 +144,8 @@ Tarifas:
 Os `<link>`/`<script>` em `index.html` e `autocarros.html` usam `?v=N` para
 evitar que um HTML novo emparelhe com CSS/JS antigos em cache (que produzia
 layouts partidos apos um deploy). Ao alterar ficheiros em `app/`, incrementar o
-mesmo numero em tres sitios: `VERSION` em `app/sw.js` e o `?v=N` nos dois HTML.
+mesmo numero em `VERSION` (`app/sw.js`) e nos `?v=N` dos dois HTML
+(`replace_all` de `?v=N`).
 O `python -m http.server` ignora a query, por isso funciona localmente na mesma.
 
 ## Regras De Calculo

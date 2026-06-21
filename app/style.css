@@ -166,9 +166,9 @@ main, .app-header, .app-footer {
 .date-card > label {
   font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em;
 }
-.date-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.date-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 6px; }
 .date-row input[type="date"] {
-  flex: 1;
+  flex: 1 1 160px;
   min-height: 44px;
   font-size: 17px;
   font-weight: 700;
@@ -180,7 +180,8 @@ main, .app-header, .app-footer {
   font-family: inherit;
 }
 .daytype-chip {
-  flex: none;
+  flex: 0 1 auto;
+  max-width: 100%;
   padding: 6px 12px;
   border-radius: 999px;
   background: var(--line);
