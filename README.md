@@ -139,6 +139,14 @@ Tarifas:
 - Manter `validFrom`, `source`, moeda e tabela `occasional`.
 - Correr `build_data.py` e os testes.
 
+## Cache E Versao De Assets
+
+Os `<link>`/`<script>` em `index.html` e `autocarros.html` usam `?v=N` para
+evitar que um HTML novo emparelhe com CSS/JS antigos em cache (que produzia
+layouts partidos apos um deploy). Ao alterar ficheiros em `app/`, incrementar o
+mesmo numero em tres sitios: `VERSION` em `app/sw.js` e o `?v=N` nos dois HTML.
+O `python -m http.server` ignora a query, por isso funciona localmente na mesma.
+
 ## Regras De Calculo
 
 - Hoje: modo ao vivo por dia civil. Mesmo depois da meia-noite, 13/06 e tratado

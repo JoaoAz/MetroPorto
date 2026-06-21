@@ -1,19 +1,23 @@
 'use strict';
 
-var CACHE = 'metro-planner-v13';
+// IMPORTANTE: ao mudar assets, incrementar VERSION aqui E o ?v= nos
+// <link>/<script> de index.html e autocarros.html (mesmo numero).
+var VERSION = '13';
+var Q = '?v=' + VERSION;
+var CACHE = 'metro-planner-v' + VERSION;
 var ASSETS = [
   './',
   './index.html',
   './autocarros.html',
-  './style.css',
-  './i18n.js',
-  './engine.js',
-  './router.js',
-  './app.js',
-  './bus.js',
-  './consent.js',
-  './data/data.js',
-  './data/bus-lines.js',
+  './style.css' + Q,
+  './i18n.js' + Q,
+  './engine.js' + Q,
+  './router.js' + Q,
+  './app.js' + Q,
+  './bus.js' + Q,
+  './consent.js' + Q,
+  './data/data.js' + Q,
+  './data/bus-lines.js' + Q,
   './manifest.json',
   './icon.svg'
 ];
