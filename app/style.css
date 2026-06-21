@@ -32,8 +32,9 @@ main, .app-header, .app-footer {
 /* Cabeçalho */
 .app-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   padding-top: 20px;
   padding-bottom: 12px;
 }
@@ -50,13 +51,20 @@ main, .app-header, .app-footer {
   align-items: center;
   justify-content: center;
 }
-.app-header h1 { font-size: 17px; margin: 0; }
-.date-line { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.app-header h1 { font-size: 17px; margin: 0; white-space: nowrap; }
+.date-line {
+  flex-basis: 100%;
+  margin: 0;
+  padding-left: 56px;
+  color: var(--muted);
+  font-size: 14px;
+}
 .header-actions {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: none;
 }
 .header-link {
   color: var(--ink);

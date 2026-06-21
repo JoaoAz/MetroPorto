@@ -411,9 +411,7 @@
   function render() {
     var now = new Date();
     var qctx = queryContext(now);
-    var autoDay = engine.dayTypeFor(qctx.selected, METRO.holidays);
-    document.getElementById('date-line').textContent =
-      fmtDate(qctx.selected) + ' · ' + dayLabel(autoDay);
+    document.getElementById('date-line').textContent = fmtDate(qctx.selected);
     renderDateChip(qctx);
 
     syncUrl();

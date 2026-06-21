@@ -28,7 +28,7 @@
       day_weekday: 'dia útil',
       day_saturday: 'sábado',
       day_sunday_holiday: 'domingo/feriado',
-      chip_today_live: 'Hoje · ao vivo · ',
+      chip_today_live: 'Hoje · ',
       chip_from_service: 'Desde o início do serviço · ',
       chip_from_day: 'Desde o início do dia · ',
 
@@ -131,7 +131,7 @@
       day_weekday: 'weekday',
       day_saturday: 'Saturday',
       day_sunday_holiday: 'Sunday/holiday',
-      chip_today_live: 'Today · live · ',
+      chip_today_live: 'Today · ',
       chip_from_service: 'From start of service · ',
       chip_from_day: 'From start of day · ',
 

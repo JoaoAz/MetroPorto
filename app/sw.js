@@ -1,6 +1,6 @@
 'use strict';
 
-var CACHE = 'metro-planner-v12';
+var CACHE = 'metro-planner-v13';
 var ASSETS = [
   './',
   './index.html',
